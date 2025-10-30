@@ -8,6 +8,11 @@ const addUser = (userObj)=>{
 }
 
 
+const getUserByUsername = (username) =>{
+     return User.findOne({userName:username})
+}
+
 module.exports = {
-    addUser
+    addUser,
+    getUserByUsername
 }

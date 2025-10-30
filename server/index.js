@@ -40,5 +40,5 @@ app.use('/auth', authRouter);
 app.listen(PORT, ()=>{
    console.log(`Listening on port: ${PORT}`) ;
    connectDB();
-   console.log('hello');
+   
 })

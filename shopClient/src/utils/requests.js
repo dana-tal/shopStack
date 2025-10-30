@@ -14,7 +14,7 @@ const sendRegistrationData = async ( data_obj)=>{
                 password: data_obj.password,
                 permitOrdersExposure: data_obj.permitOrdersExposure
              } )
-              console.log(response.data);
+            return (response.data);
       }
       catch(err)
       {
@@ -23,6 +23,23 @@ const sendRegistrationData = async ( data_obj)=>{
 }
 
 
+const sendLoginData = async ( data_obj) =>{
+    try
+    {
+             const response = await axios.post( DOMAIN+'/auth/login', { 
+                userName: data_obj.userName, 
+                password: data_obj.password                
+             } )
+            return (response.data);
+    }
+    catch(err)
+    {
+          console.error(err);
+    }
+}
+
+
 export {
-    sendRegistrationData
+    sendRegistrationData,
+    sendLoginData
 }
