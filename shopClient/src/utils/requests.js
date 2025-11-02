@@ -14,12 +14,28 @@ const sendRegistrationData = async ( data_obj)=>{
                 password: data_obj.password,
                 permitOrdersExposure: data_obj.permitOrdersExposure
              } )
-            return (response.data);
+             return {
+                        ok: true,
+                        data: response.data,        // the user object
+                        message: "Registration successful",
+                  };
+            
       }
       catch(err)
       {
-           console.error(err);
+           //console.error(err);
+           console.error("Server error:", err.response?.data || err.message);
+
+           // Return the server's response body if available
+            if (err.response && err.response.data) 
+            {
+                  return err.response.data;
+            } 
+
+            // fallback for network errors etc.
+            return ( { ok: false, message: "Network or unknown error" });
       }
+      
 }
 
 

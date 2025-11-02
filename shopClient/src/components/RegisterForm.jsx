@@ -21,6 +21,7 @@ function RegisterForm() {
     control,
     formState: { errors, isSubmitSuccessful },
     reset,
+    setError
   } = useForm({
     defaultValues: {
       firstName: "",
@@ -34,10 +35,41 @@ function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
- const onSubmit = (data) => {
+ const onSubmit = async (data) => {
     console.log("Form submitted:", data);
-        reset(); // clear the form after successful submission
-        sendRegistrationData(data);
+       
+        try
+        {
+            const response = await sendRegistrationData(data);
+            console.log("Server response:", response);
+            if (!response.ok) 
+            {
+                if (response.errorField) 
+                {
+                    setError(response.errorField, {
+                    type: "server",
+                    message: response.message,
+                    });
+                } 
+                else 
+                {
+                    setError("root", {
+                    type: "server",
+                    message: response.message || "Registration failed",
+                    });
+                }
+                return;
+            } // end of if !response.ok
+            reset(); // clear the form after successful submission
+        }
+        catch(err)
+        {
+          setError("root", {
+                type: "server",
+                message: "Network error. Please try again later.",
+              });
+        }
+
   };
 
 
@@ -55,6 +87,7 @@ function RegisterForm() {
         Registration Form
       </Typography>
 
+      {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
       {isSubmitSuccessful && <Alert severity="success">Registration successful!</Alert>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,8 +96,18 @@ function RegisterForm() {
                         <Typography sx={{ width: 120 }}>First Name:</Typography>
                         <Controller
                         name="firstName"
-                        control={control}
-                        rules={{ required: "First name is required" }}
+                        control={control}                        
+                         rules={{
+                                  required: "First name is required",
+                                  minLength: {
+                                    value: 2,
+                                    message: "First name must be at least 2 characters long",
+                                  },
+                                  pattern: {
+                                    value: /^[A-Za-zÀ-ž\s'-]+$/,
+                                    message: "Only letters ans spaces are allowed",
+                                  },
+                                }}
                         render={({ field }) => (
                             <TextField
                             {...field}
@@ -82,7 +125,17 @@ function RegisterForm() {
                         <Controller
                         name="lastName"
                         control={control}
-                        rules={{ required: "Last name is required" }}
+                        rules={{
+                                  required: "Last name is required",
+                                  minLength: {
+                                    value: 2,
+                                    message: "Last name must be at least 2 characters long",
+                                  },
+                                  pattern: {
+                                    value: /^[A-Za-zÀ-ž\s'-]+$/,
+                                    message: "Only letters ans spaces are allowed",
+                                  },
+                                }}
                         render={({ field }) => (
                             <TextField
                             {...field}
@@ -100,7 +153,26 @@ function RegisterForm() {
                         <Controller
                         name="userName"
                         control={control}
-                        rules={{ required: "Username is required" }}
+                        rules={{
+                                  required: "Username is required",
+                                  minLength: {
+                                    value: 3,
+                                    message: "Username must be at least 3 characters long",
+                                  },
+                                  maxLength: {
+                                    value: 20,
+                                    message: "Username must be less than 20 characters",
+                                  },
+                                  pattern: {
+                                    // Username rules:
+                                    //  - allowed: letters, digits, dot, underscore
+                                    //  - cannot start with digit, dot, or underscore
+                                    //  - cannot end with dot or underscore
+                                    value: /^(?![._\d])[A-Za-z0-9._]{1,18}(?<![._])$/,
+                                    message:
+                                      "Username can contain letters, numbers, dot and underscore only, cannot start with digit/dot/underscore or end with dot/underscore",
+                                  },
+                                }}
                         render={({ field }) => (
                             <TextField
                             {...field}
@@ -119,9 +191,28 @@ function RegisterForm() {
                     name="password"
                     control={control}                    
                     rules={{
-                        required: "Password is required",
-                        minLength: { value: 6, message: "Password must be at least 6 characters" },
-                    }}
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters long",
+                      },
+                      maxLength: {
+                        value: 128,
+                        message: "Password must be at most 128 characters long",
+                      },
+                      validate: {
+                        noSpaces: (v) => !/\s/.test(v) || "Password cannot contain spaces",
+                        hasUpper: (v) =>
+                          /[A-Z]/.test(v) || "Must contain at least one uppercase letter",
+                        hasLower: (v) =>
+                          /[a-z]/.test(v) || "Must contain at least one lowercase letter",
+                        hasDigit: (v) =>
+                          /\d/.test(v) || "Must contain at least one number",
+                        hasSymbol: (v) =>
+                          /[!@#$%^&*(),.?":{}|<>]/.test(v) ||
+                          "Must contain at least one special character",
+                      },
+                  }}
                     render={({ field }) => (
                        <TextField
                         {...field}

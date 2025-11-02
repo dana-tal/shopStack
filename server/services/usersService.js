@@ -27,7 +27,21 @@ const verifyUser = async (username,password) =>{
 
 }
 
+const userExists = async (username) =>{
+    try
+    {
+        const user = await usersRepo.getUserByUsername(username);
+        return user;
+    }
+    catch(err)
+    {
+        console.log("userExists failed with :",err);  
+        throw err;
+    }
+}
+
 module.exports = {
     addUser,
-    verifyUser
+    verifyUser,
+    userExists
 }
