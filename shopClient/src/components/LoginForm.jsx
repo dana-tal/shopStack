@@ -20,6 +20,7 @@ function LoginForm() {
     control,
     formState: { errors, isSubmitSuccessful },
     reset,
+    setError
   } = useForm({
     defaultValues: {
       userName: "",
@@ -31,10 +32,34 @@ function LoginForm() {
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
    const onSubmit = async (data) => {
-    console.log("Form submitted:", data);
-        reset(); // clear the form after successful submission
-    const result = await sendLoginData(data);    
-     console.log(result);
+    const trimmedData = {
+        userName: data.userName.trim(),
+        password: data.password.trim()
+    };
+    console.log("Form submitted:", trimmedData);
+    const response = await sendLoginData(trimmedData);    
+     console.log(response);
+       if(response.ok){  //  clear the form after successful submission
+        reset(); 
+    }
+    else
+    {
+        if (response.errorField) 
+        {
+            setError(response.errorField, {
+            type: "server",
+            message: response.message,
+            });
+        } 
+        else 
+        {
+          setError("root", {
+          type: "server",
+          message: response.message || "Registration failed",
+          });
+        }
+        return;
+    }
         
   };
 
@@ -49,6 +74,7 @@ function LoginForm() {
       borderRadius={2}
     >
      
+       {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
       {isSubmitSuccessful && <Alert severity="success">Login successful!</Alert>}
     <form onSubmit={handleSubmit(onSubmit)}>
          <Stack spacing={2}>
@@ -59,7 +85,10 @@ function LoginForm() {
                         <Controller
                         name="userName"
                         control={control}
-                        rules={{ required: "Username is required" }}
+                        rules={{ required: "Username is required",
+                                  minLength: { value: 3, message: "Username must be at least 3 characters" },
+                                    pattern: { value: /^[^\s]+$/, message: "Username cannot contain spaces" }
+                         }}
                         render={({ field }) => (
                             <TextField
                             {...field}

@@ -23,7 +23,6 @@ const sendRegistrationData = async ( data_obj)=>{
       }
       catch(err)
       {
-           //console.error(err);
            console.error("Server error:", err.response?.data || err.message);
 
            // Return the server's response body if available
@@ -46,11 +45,21 @@ const sendLoginData = async ( data_obj) =>{
                 userName: data_obj.userName, 
                 password: data_obj.password                
              } )
-            return (response.data);
+             return {
+                        ok: true,
+                        data: response.data,        // the user object
+                        message: "Login successful",
+                  };                       
     }
     catch(err)
     {
-          console.error(err);
+         console.error("Server error:", err.response?.data || err.message);
+           // Return the server's response body if available
+          return {
+            ok: false,
+            message: err.response?.data?.message || "Network or unknown error",
+            data: err.response?.data || null
+        };
     }
 }
 

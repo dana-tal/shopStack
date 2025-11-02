@@ -67,7 +67,7 @@ const validateUserPassword = (password, username) =>{
   
 }
 
-const validateUsername = async (userName) =>{
+const validateUsername = async (userName,includeUserExistsTest=true) =>{
 
     let result = null; // if all is well, null will be returned 
     const allowedCharsRegex = /^[a-zA-Z0-9._]+$/;
@@ -94,10 +94,13 @@ const validateUsername = async (userName) =>{
         result = { status:400, message:"Username cannot start with a digit, dot, or underscore, and cannot end with dot or underscore"}
      }
 
-     const userExists = await usersService.userExists(userName); // test if this username already exists 
-     if (userExists)
+     if ( includeUserExistsTest )
      {
-        result = { status:400, message:"Username is already taken"}
+        const userExists = await usersService.userExists(userName); // test if this username already exists 
+        if (userExists)
+        {
+            result = { status:400, message:"Username is already taken"}
+        }
      }
 
      return result;

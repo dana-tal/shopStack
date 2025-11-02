@@ -49,16 +49,29 @@ const registerUser = async (req,res) =>
 const loginUser = async (req,res) =>{
     try
     {
-        const userName =  req.body.userName;
-        const password = req.body.password;
+        let { userName, password } = req.body;
+
+        userName = userName?.trim();
+        password = password?.trim();
+
+        if (!userName || typeof userName !== 'string' || userName.length < 3)  
+        {
+            return res.status(400).json({ok:false, errorField:'userName', message: 'userName is a required string field and must have at least 3 characters'});
+        }
+    
+        if (!password || typeof password !== 'string' || password.length <6)
+        {
+            return res.status(400).json({ok:false, errorField:'password', message: 'password is a required string field and must have at least 6 characters'}); 
+        }
+   
         const isVerified = await usersService.verifyUser(userName,password);
         if ( isVerified)
         {
-             res.json({ message: "Login successful" , status:"O.K" });
+             res.json({ ok:true, message: "Login successful" , status:"O.K" });
         }
         else
         {
-              res.json({ message: "Login failed" , status:"Error" });
+              res.status(401).json({ ok:false, message: "Login failed" , status:"Error" });
         }
 
     }
