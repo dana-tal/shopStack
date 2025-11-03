@@ -13,6 +13,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { sendRegistrationData} from '../utils/requests';
 import { Link} from 'react-router-dom';
+import "./RegisterForm.css";
 
 function RegisterForm() {
 
@@ -83,7 +84,7 @@ function RegisterForm() {
       boxShadow={3}
       borderRadius={2}
     >
-      <Typography variant="h5" mb={3} textAlign="center">
+      <Typography variant="h5" mb={3} textAlign="center" >
         Registration Form
       </Typography>
 
@@ -93,7 +94,7 @@ function RegisterForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography sx={{ width: 120 }}>First Name:</Typography>
+                        <Typography sx={{ width: 120 }} className="reg-label-font">First Name:</Typography>
                         <Controller
                         name="firstName"
                         control={control}                        
@@ -121,7 +122,7 @@ function RegisterForm() {
                 </Stack>
 
                 <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography sx={{ width: 120 }}>Last Name:</Typography>
+                        <Typography sx={{ width: 120 }} className="reg-label-font"> Last Name:</Typography>
                         <Controller
                         name="lastName"
                         control={control}
@@ -149,7 +150,7 @@ function RegisterForm() {
                 </Stack>
 
                   <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography sx={{ width: 120 }}>Username:</Typography>
+                        <Typography sx={{ width: 120 }} className="reg-label-font">Username:</Typography>
                         <Controller
                         name="userName"
                         control={control}
@@ -186,7 +187,7 @@ function RegisterForm() {
                 </Stack>
 
                 <Stack direction="row" alignItems="center" spacing={2}>
-                    <Typography sx={{ width: 120 }}>Password:</Typography>
+                    <Typography sx={{ width: 120 }} className="reg-label-font">Password:</Typography>
                     <Controller
                     name="password"
                     control={control}                    
