@@ -1,0 +1,11 @@
+.admin-container
+{
+   /* background-color:#728FCE;*/
+    background: linear-gradient(45deg,#357EC7,#F2F0DF,#488AC7, #FFFAF0 ); /* #488AC7 */
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height: 100dvh;
+    overflow: auto;
+    padding:3px;
+}
