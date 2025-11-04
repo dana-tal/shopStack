@@ -6,13 +6,29 @@ import { useMatch } from "react-router-dom";
 function SiteTemplate() {
 
   const match_auth = useMatch("/auth/*");
+  const match_admin = useMatch("/admin/*");
+  const match_store = useMatch("/store/*");
 
-  const links = [
-            {link:'categories',name:'Categories'},
-            {link:'admin-products',name:'Products'},
-            {link:'customers',name:'Customers'},
-            {link:'statistics',name:'Statistics'}
-          ];
+  let links;
+
+  if (match_admin)
+  {
+      links = [
+                {link:'categories',name:'Categories'},
+                {link:'admin-products',name:'Products'},
+                {link:'customers',name:'Customers'},
+                {link:'statistics',name:'Statistics'}
+              ];
+  }
+  else if (match_store)
+  {
+      links = [
+                {link:'products',name:'Products'},
+                {link:'my-orders',name:'My Orders'},
+                {link:'my-account',name:'My Account'},
+                {link:'logout', name:'Logout'}
+      ];
+  }
           
   return (  
     <div className="site-container">  

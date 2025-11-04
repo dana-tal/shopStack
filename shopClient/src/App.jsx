@@ -7,6 +7,10 @@ import AdminProducts from "./components/AdminProducts";
 import Customers from "./components/Customers";
 import Statistics from "./components/Statistics";
 
+import StoreProducts from "./components/StoreProducts";
+import MyOrders from "./components/MyOrders";
+import MyAccount from "./components/MyAccount";
+
 function App() {
 
   return (
@@ -23,7 +27,12 @@ function App() {
                   <Route path="customers" element={<Customers/>} />
                   <Route path="statistics" element={<Statistics/>} />
               </Route>
-              
+              <Route path="store" element={<SiteTemplate/>} >
+                  <Route path="products" element={<StoreProducts/>} />
+                  <Route path="my-orders" element={<MyOrders/>} />
+                  <Route path="my-account" element={<MyAccount/>} />
+                  <Route path="logout" element={<Navigate to="/auth/login" replace />} />
+              </Route>              
         </Routes>    
     </>
   )
