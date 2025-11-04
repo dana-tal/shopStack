@@ -1,13 +1,15 @@
 import { Outlet } from "react-router-dom";
 import "./SiteTemplate.css";
 import NavBar from "./NavBar";
-import { useMatch } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 
 function SiteTemplate() {
 
   const match_auth = useMatch("/auth/*");
   const match_admin = useMatch("/admin/*");
   const match_store = useMatch("/store/*");
+
+  const navigate = useNavigate();
 
   let links;
 
@@ -26,7 +28,9 @@ function SiteTemplate() {
                 {link:'products',name:'Products'},
                 {link:'my-orders',name:'My Orders'},
                 {link:'my-account',name:'My Account'},
-                {link:'logout', name:'Logout'}
+                { name:'Logout', callback: ()=>{ 
+                        navigate("/auth/login", { replace: true });
+                }}
       ];
   }
           

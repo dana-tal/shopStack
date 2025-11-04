@@ -9,7 +9,18 @@ function NavBar({ links }) {
    return (
     <Box className="navbar-container">
       <Stack className="navbar-stack" direction="row" flexWrap="wrap" gap={2}>
-        { links.map( link =>{ return <Button key={link.name} variant="contained" className="navbar-button" component={NavLink} to={link.link} end >{link.name}</Button> })}
+        { links.map( link =>{ 
+             
+             if ( link.link)
+             {
+                return <Button key={link.name} variant="contained" className="navbar-button" component={NavLink} to={link.link} end >{link.name}</Button> 
+             }
+             else if (link.callback)
+             {
+                return <Button key={link.name} variant="contained" className="navbar-button" onClick={link.callback} >{link.name}</Button>
+             }
+        })
+        }
       </Stack>
     </Box>
   );
