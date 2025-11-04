@@ -1,8 +1,12 @@
 import { Outlet } from "react-router-dom";
-import "./AdminTemplate.css";
+import "./SiteTemplate.css";
 import NavBar from "./NavBar";
+import { useMatch } from "react-router-dom";
 
-function AdminTemplate() {
+function SiteTemplate() {
+
+  const match_auth = useMatch("/auth/*");
+
   const links = [
             {link:'categories',name:'Categories'},
             {link:'admin-products',name:'Products'},
@@ -11,9 +15,8 @@ function AdminTemplate() {
           ];
           
   return (  
-    <div className="admin-container">  
-        
-        <NavBar links={links} />   
+    <div className="site-container">  
+       { !match_auth && <NavBar links={links} /> }  
        <div className="outlet-style">
           <Outlet />      
         </div>
@@ -21,4 +24,4 @@ function AdminTemplate() {
   )
 }
 
-export default AdminTemplate
+export default SiteTemplate
