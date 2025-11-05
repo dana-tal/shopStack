@@ -29,6 +29,7 @@ function SiteTemplate() {
                 {link:'my-orders',name:'My Orders'},
                 {link:'my-account',name:'My Account'},
                 { name:'Logout', callback: ()=>{ 
+                        console.log('logging out');
                         navigate("/auth/login", { replace: true });
                 }}
       ];

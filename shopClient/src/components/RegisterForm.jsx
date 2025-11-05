@@ -12,7 +12,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { sendRegistrationData} from '../utils/requests';
-import { Link} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import "./RegisterForm.css";
 
 function RegisterForm() {
@@ -33,11 +33,13 @@ function RegisterForm() {
     },
   });
 
+  const navigate = useNavigate();
+  
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
  const onSubmit = async (data) => {
-    console.log("Form submitted:", data);
+   // console.log("Form submitted:", data);
        
         try
         {
@@ -62,6 +64,7 @@ function RegisterForm() {
                 return;
             } // end of if !response.ok
             reset(); // clear the form after successful submission
+             navigate("/store/products", { replace: true });
         }
         catch(err)
         {

@@ -42,7 +42,11 @@ const registerUser = async (req,res) =>
     }
     catch(err)
     {
-         return res.status(500).json(err);      
+         return res.status(500).json({
+                ok: false,
+                message: err.message || err,
+                error: err.message || err
+            });      
     }
 }
 
@@ -64,23 +68,26 @@ const loginUser = async (req,res) =>{
             return res.status(400).json({ok:false, errorField:'password', message: 'password is a required string field and must have at least 6 characters'}); 
         }
    
-        const isVerified = await usersService.verifyUser(userName,password);
-        if ( isVerified)
+        const userData = await usersService.verifyUser(userName,password);
+        if ( userData)
         {
-             res.json({ ok:true, message: "Login successful" , status:"O.K" });
+             return res.json({ ok:true,userData, message: "Login successful" , status:"O.K" });
         }
         else
         {
-              res.status(401).json({ ok:false, message: "Login failed" , status:"Error" });
+             return res.status(401).json({ ok:false, message: "Login failed, wrong credentials" , status:"Error" });
         }
 
     }
     catch(err)
     {
-          return res.status(500).json(err);   
+          return res.status(500).json({
+                ok: false,
+                message: err.message || err,
+                error: err.message || err
+            });   
     }
 }
-
 
 module.exports = {
     registerUser,

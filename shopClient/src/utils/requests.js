@@ -23,7 +23,7 @@ const sendRegistrationData = async ( data_obj)=>{
       }
       catch(err)
       {
-           console.error("Server error:", err.response?.data || err.message);
+         console.error("Server error:", err.response?.data || err.message);
 
            // Return the server's response body if available
             if (err.response && err.response.data) 
@@ -33,8 +33,39 @@ const sendRegistrationData = async ( data_obj)=>{
 
             // fallback for network errors etc.
             return ( { ok: false, message: "Network or unknown error" });
+           
       }
       
+}
+
+
+const analize_error = (err) =>{
+      console.log("analize error");
+    if (err.response)  // Server responded with non-2xx status
+      {
+      console.log("Server responded with:", err.response.data);
+      return {
+        ok: false,
+        message: err.response.data.message || "Login failed",
+        data: err.response.data,
+      };
+    } 
+    else if (err.request) // Request was sent, but no response
+    {
+      console.log("No response received:", err.request);
+      return {
+        ok: false,
+        message: "No response from server",
+      };
+    } 
+    else   // Something else went wrong
+    {
+      console.log("Unexpected error:", err.message);
+      return {
+        ok: false,
+        message: "Unexpected error: " + err.message,
+      };
+    }
 }
 
 
@@ -52,14 +83,8 @@ const sendLoginData = async ( data_obj) =>{
                   };                       
     }
     catch(err)
-    {
-         console.error("Server error:", err.response?.data || err.message);
-           // Return the server's response body if available
-          return {
-            ok: false,
-            message: err.response?.data?.message || "Network or unknown error",
-            data: err.response?.data || null
-        };
+    {     
+      return analize_error(err);
     }
 }
 

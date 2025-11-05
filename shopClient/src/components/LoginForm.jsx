@@ -11,7 +11,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { sendLoginData } from '../utils/requests';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 
 function LoginForm() {
 
@@ -28,6 +28,8 @@ function LoginForm() {
     },
   });
 
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -37,11 +39,21 @@ function LoginForm() {
         password: data.password.trim()
     };
     console.log("Form submitted:", trimmedData);
-    const response = await sendLoginData(trimmedData);    
-     console.log(response);
-       if(response.ok){  //  clear the form after successful submission
+    const response = await sendLoginData(trimmedData);   
+    //console.log("login response:"); 
+     //console.log(response);
+      if(response.ok)
+      {  //  clear the form after successful submission
         reset(); 
-    }
+        if ( response.data.userData.isAdmin)
+        {
+               navigate("/admin/categories", { replace: true });
+        }
+        else
+        {
+             navigate("/store/products", { replace: true });
+        }
+      }
     else
     {
         if (response.errorField) 
@@ -55,7 +67,7 @@ function LoginForm() {
         {
           setError("root", {
           type: "server",
-          message: response.message || "Registration failed",
+          message: response.message || "Login failed",
           });
         }
         return;

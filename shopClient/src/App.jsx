@@ -30,8 +30,7 @@ function App() {
               <Route path="store" element={<SiteTemplate/>} >
                   <Route path="products" element={<StoreProducts/>} />
                   <Route path="my-orders" element={<MyOrders/>} />
-                  <Route path="my-account" element={<MyAccount/>} />
-                  <Route path="logout" element={<Navigate to="/auth/login" replace />} />
+                  <Route path="my-account" element={<MyAccount/>} />                
               </Route>              
         </Routes>    
     </>
