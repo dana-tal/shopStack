@@ -52,6 +52,10 @@ const PORT = process.env.PORT || 3000;;
 
 app.use('/auth', authRouter);
   
+app.get("/", (req, res) => {
+  res.send("Server is running! ");
+});
+
 app.listen(PORT, ()=>{
    console.log(`Listening on port: ${PORT}`) ;
    connectDB();
