@@ -13,6 +13,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { sendRegistrationData} from '../utils/requests';
 import { Link, useNavigate} from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice"; 
 import "./RegisterForm.css";
 
 function RegisterForm() {
@@ -34,6 +36,7 @@ function RegisterForm() {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
@@ -44,7 +47,7 @@ function RegisterForm() {
         try
         {
             const response = await sendRegistrationData(data);
-            console.log("Server response:", response);
+          //  console.log("Server response:", response);
             if (!response.ok) 
             {
                 if (response.errorField) 
@@ -63,7 +66,8 @@ function RegisterForm() {
                 }
                 return;
             } // end of if !response.ok
-            reset(); // clear the form after successful submission
+            reset(); // clear the form after successful submission            
+            dispatch(setUser(response.userData));            
              navigate("/store/products", { replace: true });
         }
         catch(err)

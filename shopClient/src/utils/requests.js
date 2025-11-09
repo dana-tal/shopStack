@@ -13,12 +13,13 @@ const sendRegistrationData = async ( data_obj)=>{
                 userName: data_obj.userName, 
                 password: data_obj.password,
                 permitOrdersExposure: data_obj.permitOrdersExposure
-             } )
-             return {
+             } ,  { withCredentials: true }) // withCredentials - telling the browser : include cookies with this request and also accept and store any new cookies that come back from the server
+             return response.data;
+             /*return {
                         ok: true,
                         data: response.data,        // the user object
                         message: "Registration successful",
-                  };
+                  }; */
             
       }
       catch(err)
@@ -75,7 +76,7 @@ const sendLoginData = async ( data_obj) =>{
              const response = await axios.post( DOMAIN+'/auth/login', { 
                 userName: data_obj.userName, 
                 password: data_obj.password                
-             } )
+             },  { withCredentials: true } ) // withCredentials - telling the browser : include cookies with this request and also accept and store any new cookies that come back from the server
              return {
                         ok: true,
                         data: response.data,        // the user object
@@ -89,7 +90,23 @@ const sendLoginData = async ( data_obj) =>{
 }
 
 
+ const checkAuth = async ()=> {
+  try {
+    const res = await axios.get(`${DOMAIN}/auth/me`, {
+      withCredentials: true, // withCredentials: ensures the HTTP-only cookie is sent.
+    });
+
+    return { ok: true, data: res.data };
+  } 
+  catch (err) 
+  {
+    console.error("checkAuth error", err);
+    return { ok: false };
+  }
+}
+
 export {
     sendRegistrationData,
-    sendLoginData
+    sendLoginData,
+    checkAuth
 }

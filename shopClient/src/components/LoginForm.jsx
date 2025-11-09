@@ -13,6 +13,9 @@ import { useState } from "react";
 import { sendLoginData } from '../utils/requests';
 import {Link, useNavigate } from 'react-router-dom';
 
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice"; 
+
 function LoginForm() {
 
       const {
@@ -29,6 +32,7 @@ function LoginForm() {
   });
 
   const navigate = useNavigate();
+    const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
@@ -38,13 +42,14 @@ function LoginForm() {
         userName: data.userName.trim(),
         password: data.password.trim()
     };
-    console.log("Form submitted:", trimmedData);
     const response = await sendLoginData(trimmedData);   
-    //console.log("login response:"); 
-     //console.log(response);
+    console.log("login response:"); 
+     console.log(response);
       if(response.ok)
       {  //  clear the form after successful submission
         reset(); 
+
+         dispatch(setUser(response.data.userData)); // send the user info to  the Redux store 
         if ( response.data.userData.isAdmin)
         {
                navigate("/admin/categories", { replace: true });

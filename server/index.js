@@ -4,6 +4,19 @@ const connectDB = require('./configs/db');
 
 require('dotenv').config();  // load everything in .env file into process.env 
 
+const cookieParser = require("cookie-parser");
+
+/*
+cookie-parser is a middleware package for Express that:
+- Reads cookies from the incoming HTTP request header (Cookie).
+- Parses them into a nice JavaScript object.
+- Puts that object on req.cookies.
+*/
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET in environment");
+}
+
 const app = express();
 
 
@@ -31,6 +44,8 @@ app.use(cors({
 
 
 app.use(express.json());
+app.use(cookieParser());
+
 const authRouter = require('./routers/authRouter');
 
 const PORT = process.env.PORT || 3000;;

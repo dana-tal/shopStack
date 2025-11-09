@@ -2,23 +2,30 @@ const usersRepo = require('../repositories/usersRepo');
 const bcrypt = require('bcrypt');
 
 
-const addUser = (userObj) =>
+const addUser = async (userObj) =>
 {
-    return usersRepo.addUser(userObj);
+    try
+    {
+        const newUser = await usersRepo.addUser(userObj);
+        return ({ id: newUser._id, firstName: newUser.firstName, lastName: newUser.lastName, userName: newUser.userName,isAdmin: newUser.isAdmin, permitOrdersExposure: newUser.permitOrdersExposure});
+    }
+    catch(err)
+    {
+        console.log("addUser failed with :",err);  
+        throw err;
+    }
+
 }
 
 const verifyUser = async (username,password) =>{
      try
      {
         const user = await usersRepo.getUserByUsername(username);
-        console.log("user:");
-        console.log(user);
-
         if (!user) 
         {
-            throw new Error(`User with username: ${username} does not exist`);
+            return false;
         }
-        const userData = { firstName: user.firstName, lastName:user.lastName, userName: user.userName,isAdmin: user.isAdmin, permitOrdersExposure: user.permitOrdersExposure};
+        const userData = { id: user._id ,firstName: user.firstName, lastName:user.lastName, userName: user.userName,isAdmin: user.isAdmin, permitOrdersExposure: user.permitOrdersExposure};
         
         const isMatching = await bcrypt.compare(password, user.password);
         if (isMatching)
