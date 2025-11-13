@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const DOMAIN = import.meta.env.VITE_APP_DOMAIN;
-
+import { analize_error,DOMAIN  } from "./generalFuncs";
 
 const sendRegistrationData = async ( data_obj)=>{
 
@@ -14,13 +12,7 @@ const sendRegistrationData = async ( data_obj)=>{
                 password: data_obj.password,
                 permitOrdersExposure: data_obj.permitOrdersExposure
              } ,  { withCredentials: true }) // withCredentials - telling the browser : include cookies with this request and also accept and store any new cookies that come back from the server
-             return response.data;
-             /*return {
-                        ok: true,
-                        data: response.data,        // the user object
-                        message: "Registration successful",
-                  }; */
-            
+             return response.data;                      
       }
       catch(err)
       {
@@ -37,36 +29,6 @@ const sendRegistrationData = async ( data_obj)=>{
            
       }
       
-}
-
-
-const analize_error = (err) =>{
-      console.log("analize error");
-    if (err.response)  // Server responded with non-2xx status
-      {
-      console.log("Server responded with:", err.response.data);
-      return {
-        ok: false,
-        message: err.response.data.message || "Login failed",
-        data: err.response.data,
-      };
-    } 
-    else if (err.request) // Request was sent, but no response
-    {
-      console.log("No response received:", err.request);
-      return {
-        ok: false,
-        message: "No response from server",
-      };
-    } 
-    else   // Something else went wrong
-    {
-      console.log("Unexpected error:", err.message);
-      return {
-        ok: false,
-        message: "Unexpected error: " + err.message,
-      };
-    }
 }
 
 

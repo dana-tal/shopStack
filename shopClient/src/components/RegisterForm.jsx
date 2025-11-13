@@ -19,13 +19,7 @@ import "./RegisterForm.css";
 
 function RegisterForm() {
 
-      const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-    setError
-  } = useForm({
+    const registerForm =   useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -34,6 +28,16 @@ function RegisterForm() {
       permitOrdersExposure: false
     },
   });
+
+      const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitSuccessful },
+    reset,
+    setError
+  }  = registerForm;
+
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

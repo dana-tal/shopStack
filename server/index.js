@@ -47,10 +47,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 const authRouter = require('./routers/authRouter');
+const categoryRouter = require('./routers/categoryRouter');
 
 const PORT = process.env.PORT || 3000;;
 
 app.use('/auth', authRouter);
+app.use('/category', categoryRouter);
   
 app.get("/", (req, res) => {
   res.send("Server is running! ");

@@ -18,19 +18,22 @@ import { setUser } from "../store/authSlice";
 
 function LoginForm() {
 
-      const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-    setError
-  } = useForm({
+  const loginForm  = useForm({
     defaultValues: {
       userName: "",
       password: "",      
     },
   });
 
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitSuccessful },
+    reset,
+    setError
+  } = loginForm;
+
+ 
   const navigate = useNavigate();
     const dispatch = useDispatch();
 
