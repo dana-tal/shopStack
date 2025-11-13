@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser, clearUser } from "./store/authSlice";
-import { checkAuth } from "./utils/requests";
+import { checkAuth } from "./utils/authRequests";
 
 import RegisterForm from "./components/RegisterForm";
 import LoginForm from "./components/LoginForm";

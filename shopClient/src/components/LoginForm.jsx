@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import { sendLoginData } from '../utils/requests';
+import { sendLoginData } from '../utils/authRequests';
 import {Link, useNavigate } from 'react-router-dom';
 
 import { useDispatch } from "react-redux";

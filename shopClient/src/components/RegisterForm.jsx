@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import { sendRegistrationData} from '../utils/requests';
+import { sendRegistrationData} from '../utils/authRequests';
 import { Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice"; 
