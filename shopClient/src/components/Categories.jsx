@@ -2,9 +2,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
 import { useForm, Controller } from "react-hook-form";
-import {useState} from "react";
+import {useState, useEffect } from "react";
 
-import { requestCategoryAdd } from '../utils/categoryRequests';
+import { requestCategoryAdd ,requestAllCategories} from '../utils/categoryRequests';
 import {
   Box,
   Button,
@@ -17,22 +17,25 @@ import {
 
 function Categories() {
 
-   const [rows, setRows] = useState([
-    { id: 1, categoryName: "Toys" },
+  /*
+   { id: 1, categoryName: "Toys" },
     { id: 2, categoryName: "Books" }
-  ]);
+  */
+
+   const [rows, setRows] = useState([]);
 
   const columns = [
-  { field: 'categoryName', headerName: 'Category', width: 130 , sortable:true, valueGetter: (value,row)=>`${row.categoryName}`},
+  { field: 'categoryName', headerName: 'Category', flex:1 , sortable:true, valueGetter: (value,row)=>`${row.categoryName}`},
     { 
     field: 'edit', 
     headerName: 'Edit', 
-    width: 130,
+    flex:1,
     renderCell: (params) => (
       <Button
         variant="contained"
         size="small"
         onClick={() => console.log("Edit", params.row)}
+        sx={{ backgroundColor:"#4E9258" }}
       >
         Edit
       </Button>
@@ -41,13 +44,14 @@ function Categories() {
   { 
     field: 'remove', 
     headerName: 'Remove', 
-    width: 130,
+    flex:1,
     renderCell: (params) => (
       <Button
         variant="contained"
         color="error"
         size="small"
         onClick={() => console.log("Remove", params.row)}
+        sx={{ backgroundColor:"#CB6D51" }}
       >
         Remove
       </Button>
@@ -56,7 +60,7 @@ function Categories() {
 ];
 
  
- const paginationModel = { page: 0, pageSize: 5 };
+ const paginationModel = { page: 0, pageSize: 20 };
 
    const categoryForm = useForm({
     defaultValues: { categoryName: "" },
@@ -86,9 +90,22 @@ function Categories() {
        {
           console.log(err);
        }
-
      
     }
+
+
+    useEffect( ()=>{
+
+      const readAllCategories = async ()=>{
+
+          const all = await requestAllCategories();
+          setRows(all.data.categoryData);
+      }
+
+     readAllCategories();
+
+    }, []);
+
   return (
       <Box
        width={{ xs: "90%", sm: "70%", md: "70%", lg: "40%" }}
@@ -99,14 +116,43 @@ function Categories() {
       borderRadius={2}
     >
 
-        <Paper sx={{ height: 400, width: '100%', marginBottom:'30px' }}>
+        <Paper sx={{ minHeight: 400, width: '100%', marginBottom:'30px' , backgroundColor:"#FAF0E6" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
+        pageSizeOptions={[5, 10, 20, 30]}
+       
+        sx={{ border: 0, backgroundColor:"#F8F0E3", 
+
+          "& .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderTitleContainer": {
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            },
+              
+            "& .MuiDataGrid-columnHeader": {
+            backgroundColor: "#E1D9D1",
+            display: "flex",
+            justifyContent: "center",
+          },
+
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontWeight: "bold",
+                 textAlign: "center",
+                  width: "100%",
+              },
+                      
+            "& .MuiDataGrid-cell": {
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+
+                      "& .MuiDataGrid-row:hover": {
+                backgroundColor: "#FAEBD7", // put your desired hover color here "#D3E4CD
+              },
+         }}
       />
     </Paper>
 

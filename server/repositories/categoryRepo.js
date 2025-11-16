@@ -21,10 +21,24 @@ const getCategoryById = (id) =>
 }
 
 
+/*
 const getAllCategories =(filters = {})=>
 {
     return Category.find(filters).lean(); // lean makes the returned object json like and faster to retrieve and use (no mongoose overhead)
-}
+}*/
+
+const getAllCategories = (filters = {}) => {
+  return Category.aggregate([
+    { $match: filters },
+    {
+      $project: {
+        id: "$_id",
+        _id: 0,       
+        categoryName: 1
+      }
+    }
+  ]);
+};
 
 const categoryExists = (id)=>{
     return Category.exists({ _id: id});

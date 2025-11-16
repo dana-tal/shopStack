@@ -54,9 +54,26 @@ const removeCategory = async(req,res) =>
     }
 }
 
+const getAllCategories = async (req,res) =>
+{
+    try
+    {    
+        const allCategories = await categoryService.getAllCategories();
+        return res.status(200).json({ ok:true, categoryData:allCategories,message:"All categories returned successfully"});
+    }
+    catch(err)
+    {
+         return res.status(500).json({
+                ok: false,
+                message: err.message                 
+            });    
+    }
+}
+
 module.exports = 
 {
     addCategory,
     updateCategory,
-    removeCategory
+    removeCategory,
+    getAllCategories
 }

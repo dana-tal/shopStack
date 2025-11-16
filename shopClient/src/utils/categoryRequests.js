@@ -37,10 +37,19 @@ const requestCategoryUpdate = async (catId, catName) =>{
     }
 }
 
+const requestAllCategories = async ()=>{
+    const response = await axios.get(DOMAIN+'/category/all',  { withCredentials: true });
+         return {
+                        ok: true,
+                        data: response.data,        // the category object
+                        message: "All categories returned successfully",
+                  };
+   
+}
 
 export
 {
     requestCategoryAdd,
     requestCategoryUpdate,
-
+    requestAllCategories
 }

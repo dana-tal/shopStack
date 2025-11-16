@@ -39,6 +39,7 @@ function SiteTemplate() {
     <div className="site-container">  
        { !match_auth && <NavBar links={links} /> }  
        <div className="outlet-style">
+       
           <Outlet />      
         </div>
     </div>
