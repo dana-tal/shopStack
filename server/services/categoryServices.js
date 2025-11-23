@@ -21,7 +21,7 @@ const updateCategory = async (catId, catName)=>
 {
     try
     {
-        const updatedCategory = await categoryRepo.updateCategory(catId,{id:catId,categoryName:catName});
+        const updatedCategory = await categoryRepo.updateCategory(catId,{categoryName:catName});
         return updatedCategory;
     }
     catch(err)

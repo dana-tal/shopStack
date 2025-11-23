@@ -23,7 +23,7 @@ const requestCategoryAdd = async ( cat_obj) =>{
 const requestCategoryUpdate = async (catId, catName) =>{
     try
     {
-        const response = await axios.put(DOMAIN+`category/update/${catId}`,{id:catId, categoryName:catName},  { withCredentials: true });
+        const response = await axios.put(DOMAIN+`/category/update/${catId}`,{id:catId, categoryName:catName},  { withCredentials: true });
          return {
                         ok: true,
                         data: response.data,        // the category object
@@ -38,18 +38,44 @@ const requestCategoryUpdate = async (catId, catName) =>{
 }
 
 const requestAllCategories = async ()=>{
-    const response = await axios.get(DOMAIN+'/category/all',  { withCredentials: true });
-         return {
-                        ok: true,
-                        data: response.data,        // the category object
-                        message: "All categories returned successfully",
-                  };
-   
+    try
+    {
+        const response = await axios.get(DOMAIN+'/category/all',  { withCredentials: true });
+            return {
+                            ok: true,
+                            data: response.data,        // the category object
+                            message: "All categories returned successfully",
+                    };
+    }
+    catch(err)
+    {     
+      return analize_error(err);
+    }
+}
+
+const requestCategoryRemove = async (id) =>{
+ 
+    try
+    {
+        const response = await axios.delete(DOMAIN+'/category/remove/'+id,  { withCredentials: true });
+        return {
+                ok:true,
+                data:response.data,
+                message:"Category removed successfully"
+        };
+    }
+    catch(err)
+    {     
+      return analize_error(err);
+    } 
+    
+
 }
 
 export
 {
     requestCategoryAdd,
     requestCategoryUpdate,
-    requestAllCategories
+    requestAllCategories,
+    requestCategoryRemove
 }

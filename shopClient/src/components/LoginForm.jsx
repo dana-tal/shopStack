@@ -46,8 +46,6 @@ function LoginForm() {
         password: data.password.trim()
     };
     const response = await sendLoginData(trimmedData);   
-    console.log("login response:"); 
-     console.log(response);
       if(response.ok)
       {  //  clear the form after successful submission
         reset(); 

@@ -1,4 +1,5 @@
 const categoryService = require('../services/categoryServices');
+const validator = require('../utils/validator');
 
 
 const addCategory = async (req,res) =>
@@ -6,6 +7,11 @@ const addCategory = async (req,res) =>
     try
     {
         const { categoryName } = req.body;
+        const result = validator.validateCategoryName(categoryName);
+        if (result)
+        {
+            return res.status(result.status).json({ok:false, errorField:'categoryName',message:result.message});
+        }
         const newCategory = await categoryService.addCategory(categoryName);
         return res.status(201).json({ ok:true, categoryData: newCategory, message: "Category added successfully" });
     }
@@ -24,8 +30,12 @@ const updateCategory = async (req,res) =>
     {
         const id = req.params.id;
         const catObj = req.body;
-
-        const updatedCategory = categoryService.updateCategory(id,catObj);
+        const result = validator.validateCategoryName(catObj.categoryName);
+        if (result)
+        {
+            return res.status(result.status).json({ok:false, errorField:'categoryName',message:result.message});
+        }
+        const updatedCategory = await categoryService.updateCategory(id,catObj.categoryName);
         return res.status(200).json({ ok:true, categoryData:updatedCategory,message:"Category updated successfully"});
     }
     catch(err)
