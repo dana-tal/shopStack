@@ -13,7 +13,7 @@ export const useEditableCategory = () => {
       const resp = await requestCategoryAdd({ categoryName: name });
       if (resp.ok)
       {
-        setRows(prev => [...prev, { id: resp.data.categoryData._id, categoryName: name }]);
+        setRows(prev => [ { id: resp.data.categoryData._id, categoryName: name },...prev]);
         return true;
       } 
       else 
