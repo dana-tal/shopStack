@@ -1,10 +1,14 @@
 import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
+//import Paper from '@mui/material/Paper';
+import { Paper, Typography } from '@mui/material';
 
-const StyledTable= ({rows, columns, paginationModel , pageSizes})=>
+const StyledTable= ({rows, columns, paginationModel , pageSizes, title=""})=>
 {
   return (
-      <Paper sx={{ minHeight: 400, width: '100%', marginBottom:'30px' , backgroundColor:"#FAF0E6" }}>
+      <Paper sx={{ minHeight: 400, width: '100%', marginBottom:'30px' , backgroundColor:"#FAF0E6" }}> 
+        { title && <Typography variant="h6" sx={{ flex: 1, textAlign: 'center', backgroundColor:'#9F8C76', margin: 0,  padding: '8px 0',color:'white', fontWeight:'bold'}}>
+               {title}
+        </Typography> }
       <DataGrid
         rows={rows}
         columns={columns}
@@ -15,14 +19,16 @@ const StyledTable= ({rows, columns, paginationModel , pageSizes})=>
 
           "& .MuiDataGrid-columnHeader .MuiDataGrid-columnHeaderTitleContainer": {
               display: "flex",
-              justifyContent: "center",
+              /* justifyContent: "center",*/
               width: "100%",
             },
               
             "& .MuiDataGrid-columnHeader": {
-            backgroundColor: "#E1D9D1",
+            backgroundColor: "#EDE6D6", /*     #E1D9D1 */
             display: "flex",
-            justifyContent: "center",
+             justifyContent: "center",
+             color:'#644117',
+             paddingLeft:'15px'
           },
 
               "& .MuiDataGrid-columnHeaderTitle": {
@@ -34,7 +40,8 @@ const StyledTable= ({rows, columns, paginationModel , pageSizes})=>
             "& .MuiDataGrid-cell": {
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
+              paddingLeft:"15px !important"
+             /* justifyContent: "center",*/
             },
 
                       "& .MuiDataGrid-row:hover": {

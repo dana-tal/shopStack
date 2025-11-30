@@ -48,11 +48,13 @@ app.use(cookieParser());
 
 const authRouter = require('./routers/authRouter');
 const categoryRouter = require('./routers/categoryRouter');
+const productRouter = require('./routers/productRouter');
 
 const PORT = process.env.PORT || 3000;;
 
 app.use('/auth', authRouter);
 app.use('/category', categoryRouter);
+app.use('/product',productRouter);
   
 app.get("/", (req, res) => {
   res.send("Server is running! ");

@@ -8,7 +8,7 @@ const analize_error = (err) =>{
       console.log("Server responded with:", err.response.data);
       return {
         ok: false,
-        message: err.response.data.message || "Login failed",
+        message: err.response.data.message || "Action failed",
         data: err.response.data,
       };
     } 

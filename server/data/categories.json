@@ -1,0 +1,144 @@
+[{
+  "_id": {
+    "$oid": "6915c46bc2ec1448fd32ad20"
+  },
+  "categoryName": "Clothing",
+  "createdAt": {
+    "$date": "2025-11-13T11:43:39.622Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-24T07:48:11.897Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b1eecfed3d2ddb5e5fb4c"
+  },
+  "categoryName": "Baby Products",
+  "createdAt": {
+    "$date": "2025-11-17T13:11:08.701Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:11:08.701Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b2183fed3d2ddb5e5fb55"
+  },
+  "categoryName": "Arts",
+  "createdAt": {
+    "$date": "2025-11-17T13:22:11.512Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:22:11.512Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b2189fed3d2ddb5e5fb57"
+  },
+  "categoryName": "Books",
+  "createdAt": {
+    "$date": "2025-11-17T13:22:17.730Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:22:17.730Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b21a3fed3d2ddb5e5fb59"
+  },
+  "categoryName": "Grocery",
+  "createdAt": {
+    "$date": "2025-11-17T13:22:43.128Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:22:43.128Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b21c1fed3d2ddb5e5fb5c"
+  },
+  "categoryName": "Pet Supplies",
+  "createdAt": {
+    "$date": "2025-11-17T13:23:13.132Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:23:13.132Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b21e2fed3d2ddb5e5fb5f"
+  },
+  "categoryName": "Electronics",
+  "createdAt": {
+    "$date": "2025-11-17T13:23:46.459Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:23:46.459Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b21f8fed3d2ddb5e5fb61"
+  },
+  "categoryName": "Beauty",
+  "createdAt": {
+    "$date": "2025-11-17T13:24:08.081Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-24T12:02:45.357Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b2221fed3d2ddb5e5fb65"
+  },
+  "categoryName": "Health",
+  "createdAt": {
+    "$date": "2025-11-17T13:24:49.859Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-24T13:10:04.418Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b222bfed3d2ddb5e5fb67"
+  },
+  "categoryName": "Office Products",
+  "createdAt": {
+    "$date": "2025-11-17T13:24:59.270Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:24:59.270Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b2255fed3d2ddb5e5fb6b"
+  },
+  "categoryName": "Cell Phones",
+  "createdAt": {
+    "$date": "2025-11-17T13:25:41.508Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-23T10:50:35.030Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "691b2285fed3d2ddb5e5fb6f"
+  },
+  "categoryName": "Gourmet Food",
+  "createdAt": {
+    "$date": "2025-11-17T13:26:29.532Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-17T13:26:29.532Z"
+  }
+}]

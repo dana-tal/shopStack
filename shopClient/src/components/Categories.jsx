@@ -16,20 +16,25 @@ function Categories() {
        flex:1 ,
       sortable:true,
       valueGetter: (value,row)=>`${row.categoryName}`,
-      renderCell: renderCategoryName
+      renderCell: renderCategoryName,
+      align:'left',
+       headerAlign: 'left', 
   },
   { 
     field: 'edit', 
     headerName: 'Edit', 
     flex:1,
     renderCell: renderEditUpdateButton,
-
+    align:'center',
+     headerAlign: 'center',     
   },
   { 
     field: 'remove', 
     headerName: 'Remove', 
     flex:1,
-    renderCell: renderRemoveButton
+    renderCell: renderRemoveButton,
+    align:'center',
+     headerAlign: 'center', 
   },
 ];
 
@@ -55,7 +60,7 @@ function Categories() {
       boxShadow={3}
       borderRadius={2}
     >
-      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} />   
+      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Categories"/>   
       <CategoryForm onAddCategory={handleAddCategory} />
     </Box>
   )
