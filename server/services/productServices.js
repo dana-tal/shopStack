@@ -29,6 +29,11 @@ const deleteProduct = (id) =>{
     return productRepo.deleteProduct(id);
 }
 
+const deleteProducts = (ids) =>
+{
+    return productRepo.deleteProducts(ids);
+}
+
 const productExists = (id)=>{
     return productRepo.productExists(id);
 }
@@ -40,5 +45,6 @@ module.exports = {
     addProduct,
     updateProduct,
     deleteProduct,
+    deleteProducts,
     productExists
 }

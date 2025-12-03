@@ -16,6 +16,10 @@ const deleteProduct = (productId) => {
   return  Product.findByIdAndDelete(productId);
 };
 
+const deleteProducts = (productIds) => {
+  return Product.deleteMany({ _id: { $in: productIds } });
+};
+
 const getProductById = async (productId) => {
   
   if (!mongoose.Types.ObjectId.isValid(productId)) // Ensure productId is a valid ObjectId
@@ -102,6 +106,7 @@ module.exports ={
      addProduct,
      updateProduct,
      deleteProduct,
+     deleteProducts,
      getProductById,
      getAllProducts,
      productExists

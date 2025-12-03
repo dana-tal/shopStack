@@ -46,7 +46,24 @@ const requestAllProducts = async ()=> {
     }
 }
 
+const requestRemoveProducts = async (ids) =>{
+    try
+    {
+        const response = await axios.delete( DOMAIN+'/product/remove-many', {data: {ids: ids} });
+        return {
+                 ok:true,
+                 data: response.data,
+                 message:"Selected products deleted successfully"
+        };
+    }
+    catch(err)
+    {
+        return analize_error(err); 
+    }
+}
+
 export {
      requestProductAdd,
-     requestAllProducts
+     requestAllProducts,
+     requestRemoveProducts
 }

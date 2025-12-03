@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef} from "react";
 import { Button } from "@mui/material";
 import LightBox from "./LightBox";
 import ProductForm from "./ProductForm";
@@ -11,8 +11,19 @@ import  { useEditableProduct}  from '../custom_hooks/useEditableProduct';
 
 function AdminProducts() {
 
+  const { rows, handleProductAdd, fetchAllProducts, handleRemoveProducts,isLightboxOpen, setIsLightBoxOpen } = useEditableProduct();
+  const tableRef = useRef();
   
-  const { rows, handleProductAdd, fetchAllProducts, isLightboxOpen, setIsLightBoxOpen } = useEditableProduct();
+
+  
+  const handleClick = () => {
+     if (tableRef.current) 
+      {
+        const selectedIDs = tableRef.current.getSelectedIds();
+        handleRemoveProducts(Array.from(selectedIDs.ids));      
+    }
+  };
+
 
   const columns = [
     {
@@ -62,11 +73,13 @@ function AdminProducts() {
       boxShadow={3}
       borderRadius={2}
     >
-      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" />   
+      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
       <Button onClick={() => setIsLightBoxOpen(true)} variant="contained">
         Add New Product 
       </Button>
+
+       <Button onClick={handleClick}  sx={{ backgroundColor:"#CB6D51", color:"white", marginLeft:"10px" }}>Remove Selected Products</Button>
 
       <LightBox isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
             <ProductForm  onAddProduct={handleProductAdd}/ >

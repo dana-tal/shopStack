@@ -85,6 +85,24 @@ const updateProduct = async (req,res) =>
     }
 }
 
+
+const deleteProducts = async (req,res) =>
+{
+    try
+    {
+          const ids = req.body.ids;
+          const info = await productService.deleteProducts(ids);   
+          return res.status(200).json({ ok:true, productData: info, message:'Products deleted successfully '});
+    }
+    catch(err)
+    {
+         return res.status(500).json({
+                ok: false,
+                message: err.message                 
+            });   
+    }
+}
+
 const deleteProduct = async (req,res) =>
 {
     try
@@ -114,6 +132,7 @@ module.exports =
     addProduct,
     updateProduct,
     deleteProduct,
+    deleteProducts,
     getAllProducts,
     getProductById
 }
