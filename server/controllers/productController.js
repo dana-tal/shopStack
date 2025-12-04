@@ -73,11 +73,17 @@ const updateProduct = async (req,res) =>
     {
         const id = req.params.id;        
         const productObj = req.body;
+
+        console.log("id="+id);
+        console.log("updateProduct:");
+        console.log(productObj);
         const updatedProduct = await productService.updateProduct(id,productObj);
         return res.status(200).json({ok:true, productData:updatedProduct, message:'Product updated successfully '});
     }
     catch(err)
     {
+        console.log("Error");
+        console.log( err);
         return res.status(500).json({
                 ok: false,
                 message: err.message                 

@@ -2,6 +2,37 @@ import axios from "axios";
 import { analize_error,DOMAIN  } from "./generalFuncs";
 
 
+const requestProductUpdate = async (product_obj)=>
+{
+    console.log("requestProductUpdate:");
+    console.log(product_obj);
+
+     try
+    {
+        const response = await axios.put( DOMAIN+'/product/update/'+product_obj.id, 
+            {
+                title: product_obj.title,
+                price: +product_obj.price,
+                catId: product_obj.catId,
+                imageUrl: product_obj.imageUrl,
+                description: product_obj.description
+        },  { withCredentials: true } );
+
+        console.log("requestProductUpdate try");
+        console.log(response);
+        return {
+                   ok:true,
+                   data: response.data,
+                   message:'Product Updated successfully'
+        };
+    }
+    catch(err)
+    {
+        console.log("requestProductUpdate catch")
+        return analize_error(err);
+    }
+}
+
 const requestProductAdd = async (product_obj) =>{
     try
     {
@@ -25,6 +56,24 @@ const requestProductAdd = async (product_obj) =>{
     catch(err)
     {
         console.log("requestProductAdd catch")
+        return analize_error(err);
+    }
+}
+
+
+const requestProductById = async (prodId) =>
+{
+    try
+    {
+        const response =await axios.get(DOMAIN+'/product/'+prodId,{ withCredentials: true });
+        return {
+            ok: true,
+            data:  response.data,
+            message: "The product details read successfully"
+        }
+    }
+    catch(err)
+    {
         return analize_error(err);
     }
 }
@@ -64,6 +113,8 @@ const requestRemoveProducts = async (ids) =>{
 
 export {
      requestProductAdd,
+     requestProductUpdate,
      requestAllProducts,
-     requestRemoveProducts
+     requestRemoveProducts,
+     requestProductById
 }

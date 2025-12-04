@@ -11,7 +11,8 @@ import  { useEditableProduct}  from '../custom_hooks/useEditableProduct';
 
 function AdminProducts() {
 
-  const { rows, handleProductAdd, fetchAllProducts, handleRemoveProducts,isLightboxOpen, setIsLightBoxOpen } = useEditableProduct();
+  const { rows, handleProductAdd,handleProductUpdate, fetchAllProducts, handleRemoveProducts,isLightboxOpen,
+     setIsLightBoxOpen ,renderProductName,productId,setProductId} = useEditableProduct();
   const tableRef = useRef();
   
 
@@ -33,7 +34,8 @@ function AdminProducts() {
        sortable:true,
        valueGetter: (value,row)=>`${row.title}`,
        align:'left',
-       type:'string'
+       type:'string',
+        renderCell: renderProductName,
     },
     {
        field:'categoryName',
@@ -75,14 +77,14 @@ function AdminProducts() {
     >
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
-      <Button onClick={() => setIsLightBoxOpen(true)} variant="contained">
+      <Button onClick={() => { setIsLightBoxOpen(true);   setProductId(""); }  } variant="contained">
         Add New Product 
       </Button>
 
        <Button onClick={handleClick}  sx={{ backgroundColor:"#CB6D51", color:"white", marginLeft:"10px" }}>Remove Selected Products</Button>
 
-      <LightBox isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
-            <ProductForm  onAddProduct={handleProductAdd}/ >
+      <LightBox  key={productId || "new"}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
+            <ProductForm   onAddProduct={handleProductAdd} onUpdateProduct={handleProductUpdate} prodId={productId} />
         </LightBox>
     </Box>
     </>

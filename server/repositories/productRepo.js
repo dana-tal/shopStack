@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const Product = require('../models/productModel');
 
 
@@ -43,11 +45,8 @@ const getProductById = async (productId) => {
         _id: 0,
         title: 1,
         price: 1,
-        catId: 0,
         imageUrl: 1,
         description: 1,
-        createdAt: 0,
-        updatedAt: 0,
         category: {
           id: "$category._id",
           categoryName: "$category.categoryName"

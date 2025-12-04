@@ -1,12 +1,26 @@
 import { useState } from "react";
-import { requestProductAdd, requestAllProducts, requestRemoveProducts } from "../utils/productRequests";
+import { requestProductAdd,requestProductUpdate, requestAllProducts, requestRemoveProducts } from "../utils/productRequests";
+
 
 export const useEditableProduct = () => { 
       const [rows, setRows] = useState([]);
       const [isLightboxOpen, setIsLightBoxOpen] = useState(false);
-      
+      const [ productId, setProductId ] = useState(""); // the product to be editted 
+
+    const handleEditProduct=(prodId) =>{
+             //console.log("productId="+productId);
+             setProductId(prodId);
+             setIsLightBoxOpen(true);
+    }
+
+    const renderProductName = (params)=>{
+             return <span onClick={ ()=>{  handleEditProduct( params.row.id );  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>{params.row.title}</span>
+    }
+
+    
       const handleProductAdd = async (productObj, setError)=>{
               
+        
           const response = await requestProductAdd(productObj);
           if (response.ok)
           {
@@ -21,6 +35,28 @@ export const useEditableProduct = () => {
           }
          
       }
+
+    const handleProductUpdate = async (productObj, setError)=>
+      {
+
+        const response = await requestProductUpdate(productObj);
+        if (response.ok)
+        {
+            const updatedProduct = response.data.productData ;
+            setRows( (prevRows)=>{  
+                let temp = [...prevRows]; 
+                let updated = temp.map( (product)=>{ if (product.id=== updatedProduct.id){ return updatedProduct } else { return product }  } );
+                return updated;
+            });
+            setIsLightBoxOpen(false);              
+        }
+        else
+        {
+            console.log(response.message);
+            setError("root", { type: "server", message: response.message || "Update failed" }); 
+        }
+    }
+
 
       const handleRemoveProducts = async (ids) =>{
 
@@ -54,6 +90,6 @@ export const useEditableProduct = () => {
       }
 
 
-      return { rows,setRows, handleProductAdd ,fetchAllProducts, handleRemoveProducts,isLightboxOpen,setIsLightBoxOpen};
+      return { rows,setRows, handleProductAdd ,handleProductUpdate,fetchAllProducts, handleRemoveProducts,isLightboxOpen,setIsLightBoxOpen,renderProductName, productId, setProductId};
 };
 

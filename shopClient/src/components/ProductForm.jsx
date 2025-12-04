@@ -3,26 +3,68 @@ import {Button,TextField,Alert,Stack, Typography,Paper,Select,
     MenuItem,FormControl} from "@mui/material";
 import { useEffect, useState} from "react";
 import { requestAllCategories } from "../utils/categoryRequests";
+import { requestProductById } from "../utils/productRequests";
 
 
-const ProductForm = ({ onAddProduct }) =>{
+const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
-    const productForm = useForm({ defaultValues: { title: "", price:0, catId:"",imageUrl:"", description:"" }, });
+    const productForm = useForm({ defaultValues: { id:"",title: "", price:0, catId:"",imageUrl:"", description:"", }, });
     const { handleSubmit,control,formState: { errors },reset, setError}  = productForm;  
 
     const [categories, setCategories] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+
+   // console.log("In ProductForm , productId:"+prodId);
+
+   useEffect(() => {
+    if (selectedProduct) {
+        reset({
+             id: selectedProduct.id,
+            title: selectedProduct.title,
+            price: selectedProduct.price,
+            catId: selectedProduct.category.id,
+            imageUrl: selectedProduct.imageUrl,
+            description: selectedProduct.description
+        });
+    }
+}, [selectedProduct, reset]);
+
+   useEffect( ()=>{
+      const fetchProduct = async (id)=>{
+            const response = await requestProductById(id);
+             console.log("fetchProduct:");
+             console.log(response.data.productData);
+            if (response.ok)
+            {
+                 setSelectedProduct(response.data.productData);
+            }
+      } 
+      
+      if (prodId)
+      {
+        fetchProduct(prodId);
+      }
+      else
+      {
+         setSelectedProduct(null);
+      }
+
+   },[prodId]);
+
 
     const onSubmit = async (data) => 
     {
-        console.log("form data");
-        console.log(data);
+        let ok;
 
-        
-       // const error = validateCategoryName(data.categoryName);
-       // if (error) return setError("categoryName", { type: "manual", message: error });
-
-
-        const ok = await onAddProduct(data, setError);
+         if (prodId)
+         {
+               ok = await onUpdateProduct(data, setError);
+         }
+         else
+         {
+                ok = await onAddProduct(data, setError);
+         }
         if (ok) 
         {
             reset();
@@ -70,7 +112,7 @@ const ProductForm = ({ onAddProduct }) =>{
         {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
         <form onSubmit={handleSubmit(onSubmit)} style={{ border:"1px solid blue", padding:"10px"}}>
             <Typography variant="h5" align="center" sx={{ mb: 2 }}>
-                  Add a New Product
+               { prodId ? 'Edit a Product': 'Add a New Product'}
             </Typography>
 
             <Stack spacing={2}>
@@ -89,7 +131,8 @@ const ProductForm = ({ onAddProduct }) =>{
                         error={!!errors.title}
                         helperText={errors.title?.message}
                         placeholder="Product Title"
-                        sx={{ width: 450 }}                      
+                        sx={{ width: 450 }}   
+                                     
                         />
                     )}
                     />
@@ -181,9 +224,20 @@ const ProductForm = ({ onAddProduct }) =>{
                 )}
                 />
                 </Stack>
+                <Stack direction="row" spacing={1} alignItems="flex-start">
+                    <Controller
+                        name="id"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                            <input type="hidden" {...field} />
+                        )}
+                        />
+                </Stack>
+
 
                 <Button type="submit" variant="contained" sx={{ alignSelf: "flex-start", mt: 1 }}>
-                    Add Product
+                   {selectedProduct ? 'Update Product':'Add Product'}
                 </Button>
             </Stack>
         </form>

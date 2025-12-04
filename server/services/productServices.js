@@ -21,8 +21,15 @@ const addProduct = async (productObj) =>
   };
 }
 
-const updateProduct = ( id, productObj)=>{
-   return productRepo.updateProduct(id,productObj);
+const updateProduct = async ( id, productObj)=>{
+    let updatedProd = await productRepo.updateProduct(id,productObj);
+    updatedProd  = await updatedProd.populate("catId","categoryName");
+     return {
+    ...updatedProd.toObject(),
+     category:{ id: updatedProd.catId._id, categoryName: updatedProd.catId.categoryName }   
+  };
+
+  // return productRepo.updateProduct(id,productObj);
 }
 
 const deleteProduct = (id) =>{
