@@ -1,4 +1,6 @@
 const productService = require('../services/productServices');
+const genValidator = require('../utils/generalValidator');
+const productValidator = require('../utils/validateProduct');
 
 
 const getAllProducts = async (req,res) =>
@@ -25,6 +27,11 @@ const getProductById = async (req,res) =>
 {
     try
     {
+         const result = genValidator.validateMongoId('id',req.params.id);
+        if (result)
+        {
+            return res.status(result.status).json({ok:false,prudcutData:null,message:result.message});
+        }
         const id = req.params.id;
         const product = await productService.getProductById(id);
         if (!product) 
@@ -49,10 +56,15 @@ const addProduct = async (req,res) =>
 {
     try
     {
-        const productObj = req.body;
+        const result = productValidator.validateProductPayload(req,res);
+        if (result)
+        {
+            return result;
+        }
+        const productObj = req.body;      
         console.log("in addProduct, productObj:");
         console.log(productObj);
-
+       
         const newProduct = await productService.addProduct(productObj);
         return res.status(201).json({ok:true, productData:newProduct,message:'Product added successfully'});
     }
@@ -71,6 +83,11 @@ const updateProduct = async (req,res) =>
 {
     try
     {
+        const result = productValidator.validateProductPayload(req,res);
+        if (result)
+        {
+            return result;
+        }
         const id = req.params.id;        
         const productObj = req.body;
 
@@ -94,9 +111,19 @@ const updateProduct = async (req,res) =>
 
 const deleteProducts = async (req,res) =>
 {
+    let result=null,i;
     try
     {
           const ids = req.body.ids;
+          for (i=0; i<ids.length && result===null ;i++)
+          {
+              result = genValidator.validateMongoId('id',ids[i]);  
+          }
+          if (result)
+          {
+              return res.status(result.status).json({ok:false, pruductData:null, message:result.message});
+          }
+
           const info = await productService.deleteProducts(ids);   
           return res.status(200).json({ ok:true, productData: info, message:'Products deleted successfully '});
     }
@@ -113,8 +140,12 @@ const deleteProduct = async (req,res) =>
 {
     try
     {
-         const id = req.params.id;    
-
+        const result = genValidator.validateMongoId('id',req.params.id);
+        if (result)
+        {
+            return res.status(result.status).json({ok:false,prudcutData:null,message:result.message});
+        }
+        const id = req.params.id;    
         const exists = await productService.productExists(id);
         if (!exists)
         {

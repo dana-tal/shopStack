@@ -108,7 +108,12 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
         }}
         >
          
+{/*  
+    rules={{ required: "Product title is missing or has invalid type" }}
+     rules={{ required: "Price is required", min: { value: 0, message: "Price must be ≥ 0" } }}
+      rules={{ required: "Product image url is missing or has invalid type" }}
 
+*/}
         {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
         <form onSubmit={handleSubmit(onSubmit)} style={{ border:"1px solid blue", padding:"10px"}}>
             <Typography variant="h5" align="center" sx={{ mb: 2 }}>
@@ -122,7 +127,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="title"
                     control={control}
-                    rules={{ required: "Product title is missing or has invalid type" }}
+                   
                     render={({ field }) => (
                         <TextField
                         {...field}
@@ -143,7 +148,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="price"
                     control={control}
-                    rules={{ required: "Price is required", min: { value: 0, message: "Price must be ≥ 0" } }}
+                   
                     render={({ field }) => (
                         <TextField
                         {...field}
@@ -192,7 +197,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="imageUrl"
                     control={control}
-                    rules={{ required: "Product image url is missing or has invalid type" }}
+                   
                     render={({ field }) => (
                         <TextField
                         {...field}
