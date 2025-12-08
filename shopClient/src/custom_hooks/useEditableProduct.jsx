@@ -6,6 +6,8 @@ export const useEditableProduct = () => {
       const [rows, setRows] = useState([]);
       const [isLightboxOpen, setIsLightBoxOpen] = useState(false);
       const [ productId, setProductId ] = useState(""); // the product to be editted 
+      const [feedbackMsg, setFeedbackMsg] = useState("");
+
 
     const handleEditProduct=(prodId) =>{
              //console.log("productId="+productId);
@@ -17,6 +19,12 @@ export const useEditableProduct = () => {
              return <span onClick={ ()=>{  handleEditProduct( params.row.id );  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>{params.row.title}</span>
     }
 
+     const showFeedback = (msg)=>{
+             setFeedbackMsg(msg);
+              setTimeout(() => {
+                    setFeedbackMsg("");
+                    }, 4000);
+     }
     
       const handleProductAdd = async (productObj, setError)=>{
               
@@ -27,6 +35,7 @@ export const useEditableProduct = () => {
               const product = response.data.productData ;
               setRows( (prevRows)=>{  return [ product,...prevRows] } );
               setIsLightBoxOpen(false);
+              showFeedback("Product added successfully");             
           }
           else
           {
@@ -48,7 +57,8 @@ export const useEditableProduct = () => {
                 let updated = temp.map( (product)=>{ if (product.id=== updatedProduct.id){ return updatedProduct } else { return product }  } );
                 return updated;
             });
-            setIsLightBoxOpen(false);              
+            setIsLightBoxOpen(false);  
+            showFeedback("Product updated successfully");                 
         }
         else
         {
@@ -68,6 +78,7 @@ export const useEditableProduct = () => {
                        const updatedRows  =  temp.filter( prod=> { return !ids.includes(prod.id) } )
                        return updatedRows;
              })
+              showFeedback("Product(s) removed successfully");     
         }
         else
         {
@@ -90,6 +101,11 @@ export const useEditableProduct = () => {
       }
 
 
-      return { rows,setRows, handleProductAdd ,handleProductUpdate,fetchAllProducts, handleRemoveProducts,isLightboxOpen,setIsLightBoxOpen,renderProductName, productId, setProductId};
+      return { 
+                rows,setRows, handleProductAdd ,handleProductUpdate,
+                fetchAllProducts, handleRemoveProducts,isLightboxOpen,
+                setIsLightBoxOpen,renderProductName, productId, setProductId,
+                feedbackMsg, setFeedbackMsg
+            };
 };
 

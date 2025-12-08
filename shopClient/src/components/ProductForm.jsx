@@ -1,6 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import {Button,TextField,Alert,Stack, Typography,Paper,Select,
-    MenuItem,FormControl} from "@mui/material";
+    MenuItem,FormControl,FormHelperText} from "@mui/material";
 import { useEffect, useState} from "react";
 import { requestAllCategories } from "../utils/categoryRequests";
 import { requestProductById } from "../utils/productRequests";
@@ -14,9 +14,10 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
     const [categories, setCategories] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-
-   // console.log("In ProductForm , productId:"+prodId);
-
+    const titleRegex = /^[\p{L}\d\s.,!?'"-]+$/u; 
+    const forbiddenChars = /[<>{}\[\]]/; // Forbidden characters: < > { } [ ]
+    const scriptPattern = /(script|onerror|onload|javascript:)/i; // Script-like patterns
+   
    useEffect(() => {
     if (selectedProduct) {
         reset({
@@ -109,8 +110,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
         >
          
 {/*  
-    rules={{ required: "Product title is missing or has invalid type" }}
-     rules={{ required: "Price is required", min: { value: 0, message: "Price must be ≥ 0" } }}
+ 
       rules={{ required: "Product image url is missing or has invalid type" }}
 
 */}
@@ -127,7 +127,12 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="title"
                     control={control}
-                   
+                      rules={{ 
+                        required: "Product title is missing or has invalid type." ,
+                        minLength: { value: 2, message: "Title must be at least 2 characters" },
+                        maxLength: { value: 80, message: "Title cannot exceed 80 characters" },    
+                        pattern: { value: titleRegex, message: "Title contains invalid characters." },
+                      }}       
                     render={({ field }) => (
                         <TextField
                         {...field}
@@ -136,8 +141,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                         error={!!errors.title}
                         helperText={errors.title?.message}
                         placeholder="Product Title"
-                        sx={{ width: 450 }}   
-                                     
+                        sx={{ width: 450 }}                           
                         />
                     )}
                     />
@@ -148,7 +152,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="price"
                     control={control}
-                   
+                    rules={{ required: "Price is required", min: { value: 0.1, message: "Price must be > 0" } }}
                     render={({ field }) => (
                         <TextField
                         {...field}
@@ -168,8 +172,15 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                         name="catId"
                         control={control}
+                         rules={{
+                            required: "Category is required",
+                            pattern: {
+                            value: /^[0-9a-fA-F]{24}$/,
+                            message: "Invalid category ID format"
+                            }
+                        }}
                         render={({ field }) => (
-                            <FormControl sx={{ width: 450 }} size="small" variant="outlined">
+                            <FormControl sx={{ width: 450 }} size="small" variant="outlined"   error={!!errors.catId} >
                             <Select
                                 {...field}
                                 displayEmpty
@@ -185,6 +196,9 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                                 </MenuItem>
                                 ))}
                             </Select>
+                             {errors.catId && (
+                                    <FormHelperText>{errors.catId.message}</FormHelperText>
+                                )}
                             </FormControl>
                         )}
                         />
@@ -197,12 +211,17 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="imageUrl"
                     control={control}
-                   
+                     rules={{
+                        required: "Image URL is required",
+                        pattern: {
+                        value: /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i,
+                        message: "Invalid image URL or unsupported file type (allowed: jpg, jpeg, png, gif, webp)"
+                        }
+                    }}
                     render={({ field }) => (
                         <TextField
                         {...field}
-                        size="small"
-                        
+                        size="small"                        
                         error={!!errors.imageUrl}
                         helperText={errors.imageUrl?.message}
                         placeholder="Product Image Url"
@@ -217,6 +236,20 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                 <Controller
                 name="description"
                 control={control}
+                 rules={{ 
+                        required: "Product description is missing." ,
+                        minLength: { value: 5, message: "Description must be at least 5 characters" },
+                        maxLength: { value: 1000, message: "Description cannot exceed 1000 characters" },    
+                         validate: (value) => {
+                                if (forbiddenChars.test(value)) {
+                                    return "Description contains forbidden characters: < > { } [ ]";
+                                }
+                                if (scriptPattern.test(value)) {
+                                    return "Description contains unsafe script-like patterns";
+                                }
+                                return true; // all good
+                        }
+                      }}       
                 render={({ field }) => (
                     <TextField
                     {...field}
@@ -225,6 +258,8 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     multiline
                     rows={4}
                     placeholder="Description"
+                     error={!!errors.description}
+                     helperText={errors.description?.message}
                     />
                 )}
                 />

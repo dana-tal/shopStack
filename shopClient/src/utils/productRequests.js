@@ -3,10 +3,7 @@ import { analize_error,DOMAIN  } from "./generalFuncs";
 
 
 const requestProductUpdate = async (product_obj)=>
-{
-    console.log("requestProductUpdate:");
-    console.log(product_obj);
-
+{ 
      try
     {
         const response = await axios.put( DOMAIN+'/product/update/'+product_obj.id, 
@@ -18,8 +15,6 @@ const requestProductUpdate = async (product_obj)=>
                 description: product_obj.description
         },  { withCredentials: true } );
 
-        console.log("requestProductUpdate try");
-        console.log(response);
         return {
                    ok:true,
                    data: response.data,
@@ -45,8 +40,6 @@ const requestProductAdd = async (product_obj) =>{
                 description: product_obj.description
         },  { withCredentials: true } );
 
-        console.log("requestProductAdd try");
-        console.log(response);
         return {
                    ok:true,
                    data: response.data,

@@ -3,8 +3,9 @@ import { Button } from "@mui/material";
 import LightBox from "./LightBox";
 import ProductForm from "./ProductForm";
 import StyledTable from "./StyledTable";
-import {Box} from "@mui/material";
+import {Box, Alert} from "@mui/material";
 import  { useEditableProduct}  from '../custom_hooks/useEditableProduct';
+
 
 
 
@@ -12,7 +13,7 @@ import  { useEditableProduct}  from '../custom_hooks/useEditableProduct';
 function AdminProducts() {
 
   const { rows, handleProductAdd,handleProductUpdate, fetchAllProducts, handleRemoveProducts,isLightboxOpen,
-     setIsLightBoxOpen ,renderProductName,productId,setProductId} = useEditableProduct();
+     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg, setFeedbackMsg} = useEditableProduct();
   const tableRef = useRef();
   
 
@@ -75,6 +76,7 @@ function AdminProducts() {
       boxShadow={3}
       borderRadius={2}
     >
+      {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
       <Button onClick={() => { setIsLightBoxOpen(true);   setProductId(""); }  } variant="contained">

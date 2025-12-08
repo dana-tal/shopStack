@@ -7,7 +7,7 @@ export const useEditableCategory = () => {
   const [editValues, setEditValues] = useState({});  // a map , each id points to the updated value 
   const [updateErrors, setUpdateErrors] = useState({}); // a map , each id points to the error of this row
   const [rows, setRows] = useState([]);
-
+  
   const handleAddCategory = async (name, setError) => {
     try {
       const resp = await requestCategoryAdd({ categoryName: name });
@@ -161,5 +161,8 @@ export const useEditableCategory = () => {
 
    }
 
-  return { rows, setRows, editValues, setEditValues, updateErrors, setUpdateErrors, renderCategoryName ,renderEditUpdateButton, renderRemoveButton,handleAddCategory};
+  return { rows, setRows, editValues, setEditValues,
+           updateErrors, setUpdateErrors,
+          renderCategoryName ,renderEditUpdateButton, renderRemoveButton,
+          handleAddCategory};
 };
