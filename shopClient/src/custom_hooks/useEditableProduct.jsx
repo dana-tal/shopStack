@@ -16,7 +16,9 @@ export const useEditableProduct = () => {
     }
 
     const renderProductName = (params)=>{
-             return <span onClick={ ()=>{  handleEditProduct( params.row.id );  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>{params.row.title}</span>
+             return <span onClick={ ()=>{  handleEditProduct( params.row.id );  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>
+                {params.row.title}
+                </span>
     }
 
      const showFeedback = (msg)=>{

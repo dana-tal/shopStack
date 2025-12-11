@@ -148,7 +148,12 @@ export const useEditableCategory = () => {
                                           onChange={(e) => {                                            
                                           setEditValues((prev) => ({...prev,[params.row.id]: e.target.value})) ;   
                                           setUpdateErrors(prev => { const copy = { ...prev }; delete copy[params.row.id];return copy;});
-                                        }}                         
+                                        }}
+
+                                        onKeyDown={(e) => {
+                                            e.stopPropagation();   // <— prevents DataGrid from moving focus
+                                          }}
+                                                                 
                       />
                   </Tooltip>
                 </Box>

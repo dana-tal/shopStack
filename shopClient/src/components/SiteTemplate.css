@@ -33,6 +33,14 @@
     background-color: #FFFAF0 /* floral white */ ;
     margin:0 auto;
     min-width:80%;
+    padding-bottom:20px
+}
+
+@media (max-width: 360px) {
+  .outlet-style
+  {
+    margin:0;
+  }
 }
 
 

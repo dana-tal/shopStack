@@ -4,7 +4,7 @@ import {Button,TextField,Alert,Stack, Typography,Paper,Select,
 import { useEffect, useState} from "react";
 import { requestAllCategories } from "../utils/categoryRequests";
 import { requestProductById } from "../utils/productRequests";
-
+import { getFormWidthRange } from "../utils/styleFuncs";
 
 const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
@@ -13,6 +13,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
     const [categories, setCategories] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [paperWidth, setPaperWidth] = useState(getFormWidthRange());
 
     const titleRegex = /^[\p{L}\d\s.,!?'"-]+$/u; 
     const forbiddenChars = /[<>{}\[\]]/; // Forbidden characters: < > { } [ ]
@@ -73,6 +74,12 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
     };
 
 
+    useEffect(() => {
+            const update = () => setPaperWidth(getFormWidthRange());
+            window.addEventListener("resize", update);
+            return () => window.removeEventListener("resize", update);
+        }, []);
+
     useEffect( ()=>{
             
         const fetchAllCategories = async ()=>{
@@ -93,27 +100,21 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
     }, []);
 
+    
+
      return (
     <>
        <Paper
         elevation={0}
-        sx={{
-            p: 3,                 // inner padding
-            m: 2,
-            width: "90%",          // take 90% of screen width
-            maxWidth: 1000,        // max width limit
-            minWidth: 600,         // optional: prevent it from being too small
-            mx: "auto",
-            boxSizing: "border-box",
-           
-        }}
+         sx={{
+                p: 3,
+                m: "auto",
+                width: "100%",             // take full width of parent
+                maxWidth: 1200,            // limit max width
+                boxSizing: "border-box",
+            }}
         >
          
-{/*  
- 
-      rules={{ required: "Product image url is missing or has invalid type" }}
-
-*/}
         {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
         <form onSubmit={handleSubmit(onSubmit)} style={{ border:"1px solid blue", padding:"10px"}}>
             <Typography variant="h5" align="center" sx={{ mb: 2 }}>
@@ -122,8 +123,8 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
             <Stack spacing={2}>
 
-                 <Stack direction="row" spacing={1} alignItems="center">
-                    <Typography sx={{ width: 80 }}>Title:</Typography>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
+                    <Typography sx={{ width: { sm:80} }}>Title:</Typography>
                     <Controller
                     name="title"
                     control={control}
@@ -136,18 +137,17 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     render={({ field }) => (
                         <TextField
                         {...field}
-                        size="small"
-                        
+                        size="small"                        
                         error={!!errors.title}
                         helperText={errors.title?.message}
                         placeholder="Product Title"
-                        sx={{ width: 450 }}                           
+                         sx={{ width: "100%" }}                      
                         />
                     )}
                     />
                 </Stack>
 
-                 <Stack direction="row" spacing={1} alignItems="center">
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
                     <Typography sx={{ width:80 }}>Price:</Typography>
                     <Controller
                     name="price"
@@ -161,14 +161,14 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                         error={!!errors.price}
                         helperText={errors.price?.message}
                         placeholder="Enter price"
-                        sx={{ width: 100 }} 
+                        sx={{ width: "50%" }}
                         />
                     )}
                     />
                 </Stack>
 
-                <Stack direction="row" spacing={1} alignItems="center">
-                <Typography sx={{ width:80 }}>Category:</Typography>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
+                    <Typography sx={{ width:80 }}>Category:</Typography>
                     <Controller
                         name="catId"
                         control={control}
@@ -180,8 +180,9 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                             }
                         }}
                         render={({ field }) => (
-                            <FormControl sx={{ width: 450 }} size="small" variant="outlined"   error={!!errors.catId} >
+                            <FormControl sx={{ width: "100%" }} size="small" variant="outlined"   error={!!errors.catId} >
                             <Select
+                                sx={{ width: { xs:"90%" , sm:"100%"} }}  
                                 {...field}
                                 displayEmpty
                                 renderValue={(selected) => {
@@ -206,7 +207,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
                 </Stack>
 
-                <Stack direction="row" spacing={1} alignItems="center">
+                 <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
                     <Typography sx={{ width: 80 }}>Image Url:</Typography>
                     <Controller
                     name="imageUrl"
@@ -225,13 +226,13 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                         error={!!errors.imageUrl}
                         helperText={errors.imageUrl?.message}
                         placeholder="Product Image Url"
-                        sx={{ width: 450 }}                      
+                        sx={{ width: "100%" }}             
                         />
                     )}
                     />
                 </Stack>
 
-                <Stack direction="row" spacing={1} alignItems="flex-start">
+                 <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
                 <Typography sx={{ width: 80 }}>Description:</Typography>
                 <Controller
                 name="description"
@@ -254,7 +255,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <TextField
                     {...field}
                     size="small"
-                     sx={{ width: 450 }}     
+                    sx={{ width: "100%" }}
                     multiline
                     rows={4}
                     placeholder="Description"

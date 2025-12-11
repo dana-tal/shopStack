@@ -31,7 +31,7 @@ function CategoryForm({ onAddCategory }) {
                             <TextField
                             {...field}
                             size="small"
-                            fullWidth
+                            
                             error={!!errors.categoryName}
                             helperText={errors.categoryName?.message}
                             placeholder="Add a new category"
