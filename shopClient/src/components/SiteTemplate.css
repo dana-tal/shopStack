@@ -1,6 +1,6 @@
 .site-container
 {
-    background: linear-gradient(45deg,#357EC7,#F2F0DF,#488AC7, #FFFAF0 ); /* #488AC7 */
+    background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /#E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -34,6 +34,13 @@
     margin:0 auto;
     min-width:80%;
     padding-bottom:20px
+}
+
+@media (min-width: 768px) {
+  .outlet-style
+  {
+    width:80%;
+  }
 }
 
 @media (max-width: 360px) {

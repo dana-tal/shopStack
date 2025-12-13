@@ -4,7 +4,6 @@ import {Button,TextField,Alert,Stack, Typography,Paper,Select,
 import { useEffect, useState} from "react";
 import { requestAllCategories } from "../utils/categoryRequests";
 import { requestProductById } from "../utils/productRequests";
-import { getFormWidthRange } from "../utils/styleFuncs";
 
 const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
@@ -13,8 +12,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
     const [categories, setCategories] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [paperWidth, setPaperWidth] = useState(getFormWidthRange());
-
+  
     const titleRegex = /^[\p{L}\d\s.,!?'"-]+$/u; 
     const forbiddenChars = /[<>{}\[\]]/; // Forbidden characters: < > { } [ ]
     const scriptPattern = /(script|onerror|onload|javascript:)/i; // Script-like patterns
@@ -35,8 +33,6 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
    useEffect( ()=>{
       const fetchProduct = async (id)=>{
             const response = await requestProductById(id);
-             console.log("fetchProduct:");
-             console.log(response.data.productData);
             if (response.ok)
             {
                  setSelectedProduct(response.data.productData);
@@ -73,12 +69,6 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
         }
     };
 
-
-    useEffect(() => {
-            const update = () => setPaperWidth(getFormWidthRange());
-            window.addEventListener("resize", update);
-            return () => window.removeEventListener("resize", update);
-        }, []);
 
     useEffect( ()=>{
             

@@ -84,19 +84,20 @@ function LoginForm() {
 
   return (
     <Box
-       width={{ xs: "90%", sm: "70%", md: "70%", lg: "40%" }}
+       width="80%"
       mx="auto"
       mt={5}
       p={3}
       boxShadow={3}
       borderRadius={2}
+      
     >
      
        {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
       {isSubmitSuccessful && <Alert severity="success">Login successful!</Alert>}
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width:"100%"}}>
          <Stack spacing={2}>
-                 <Typography variant="h5" mb={3} textAlign="center">Next Generation E-Commerce</Typography>
+                 <Typography variant="h5" mb={3} textAlign="center" sx={{fontSize:"20px", whiteSpace:"nowrap" }}>Next Generation E-Commerce</Typography>
                
                 <Stack direction="row" alignItems="center" spacing={2}>
                         <Typography sx={{ width: 120 }}>Username:</Typography>

@@ -1,4 +1,4 @@
-import { useEffect, useRef} from "react";
+import { useEffect, useRef, useState} from "react";
 import { Button } from "@mui/material";
 import LightBox from "./LightBox";
 import ProductForm from "./ProductForm";
@@ -16,6 +16,7 @@ function AdminProducts() {
      setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg, setFeedbackMsg} = useEditableProduct();
   const tableRef = useRef();
   
+  const [buttonFontSize, setButtonFontSize] = useState(getButtonFontSize());
 
   
   const handleClick = () => {
@@ -65,7 +66,13 @@ function AdminProducts() {
         fetchAllProducts();
    },[]);
   
-   const fontSize = getButtonFontSize();
+   
+     useEffect(() => {
+               const update = () => { setButtonFontSize(getButtonFontSize()) };
+               window.addEventListener("resize", update);
+               return () => window.removeEventListener("resize", update);
+           }, []);
+
 
    return (
     <>
@@ -80,11 +87,11 @@ function AdminProducts() {
       {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
-      <Button onClick={() => { setIsLightBoxOpen(true);   setProductId(""); }  }  sx={{ fontSize:`${fontSize} !important`}} variant="contained">
+      <Button onClick={() => { setIsLightBoxOpen(true);   setProductId(""); }  }  sx={{ fontSize:`${buttonFontSize} !important`}} variant="contained">
         Add New Product 
       </Button>
 
-       <Button onClick={handleClick}  sx={{ backgroundColor:"#CB6D51", color:"white", marginLeft:"10px", fontSize:`${fontSize} !important` }}>Remove Products</Button>
+       <Button onClick={handleClick}  sx={{ backgroundColor:"#CB6D51", color:"white", marginLeft:"10px", fontSize:`${buttonFontSize} !important` }}>Remove Products</Button>
 
       <LightBox  key={productId || "new"}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
             <ProductForm   onAddProduct={handleProductAdd} onUpdateProduct={handleProductUpdate} prodId={productId} />

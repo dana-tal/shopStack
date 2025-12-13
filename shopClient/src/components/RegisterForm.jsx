@@ -88,7 +88,7 @@ function RegisterForm() {
 
   return (
     <Box
-       width={{ xs: "90%", sm: "70%", md: "70%", lg: "40%" }}
+      width="80%"
       mx="auto"
       mt={5}
       p={3}
@@ -102,10 +102,10 @@ function RegisterForm() {
       {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
       {isSubmitSuccessful && <Alert severity="success">Registration successful!</Alert>}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width:"100%"}}>
         <Stack spacing={2}>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography sx={{ width: 120 }} className="reg-label-font">First Name:</Typography>
+                        <Typography sx={{ width: 120, whiteSpace:"nowrap" }} className="reg-label-font">First Name:</Typography>
                         <Controller
                         name="firstName"
                         control={control}                        
@@ -133,7 +133,7 @@ function RegisterForm() {
                 </Stack>
 
                 <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography sx={{ width: 120 }} className="reg-label-font"> Last Name:</Typography>
+                        <Typography sx={{ width: 120 ,whiteSpace:"nowrap" }} className="reg-label-font"> Last Name:</Typography>
                         <Controller
                         name="lastName"
                         control={control}
@@ -161,7 +161,7 @@ function RegisterForm() {
                 </Stack>
 
                   <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography sx={{ width: 120 }} className="reg-label-font">Username:</Typography>
+                        <Typography sx={{ width: 120 ,whiteSpace:"nowrap" }} className="reg-label-font">Username:</Typography>
                         <Controller
                         name="userName"
                         control={control}
@@ -198,7 +198,7 @@ function RegisterForm() {
                 </Stack>
 
                 <Stack direction="row" alignItems="center" spacing={2}>
-                    <Typography sx={{ width: 120 }} className="reg-label-font">Password:</Typography>
+                    <Typography sx={{ width: 120,whiteSpace:"nowrap"  }} className="reg-label-font">Password:</Typography>
                     <Controller
                     name="password"
                     control={control}                    
