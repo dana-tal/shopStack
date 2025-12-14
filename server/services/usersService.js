@@ -60,8 +60,23 @@ const userExists = async (username) =>{
     }
 }
 
+const getAllUsers = async () =>{
+    try
+    {
+        const users = await usersRepo.getAllUsers();
+        return users;
+    }
+    catch(err)
+    {
+        console.log("getAllUsers failed with :",err);  
+        throw err;
+    }
+
+}
+
 module.exports = {
     addUser,
     verifyUser,
-    userExists
+    userExists,
+    getAllUsers
 }

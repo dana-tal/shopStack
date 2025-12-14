@@ -4,10 +4,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Paper, Typography } from '@mui/material';
 import { forwardRef, useRef, useImperativeHandle } from 'react';
 import { getStyledTableStyles} from "../utils/styledTableStyles";
+import { useMediaQuery } from '@mui/material';
 
 
 const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, title="",includeCheckboxes=false},ref)=>
 {
+   const isMobile = useMediaQuery('(max-width:600px)');
    const selectionRef = useRef([]);
 
   useImperativeHandle(ref, () => ({
@@ -33,6 +35,7 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
         
 
         sx={ getStyledTableStyles() }
+          getRowHeight={isMobile ? () => 'auto' : undefined}
       />
     </Paper>
   )

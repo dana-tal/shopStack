@@ -4,13 +4,14 @@ const getButtonFontSize = () => {
 
   if (window.matchMedia("(min-width: 401px)").matches) size = "12px";
   if (window.matchMedia("(min-width: 768px)").matches) size = "17px";
-  if (window.matchMedia( "(min-width: 912px)").matches) size = "19px";
-  if (window.matchMedia("(min-width: 1280px)").matches) size = "15px";
+  if (window.matchMedia( "(min-width: 912px)").matches) size = "17px";
+  if (window.matchMedia("(min-width: 1280px)").matches) size = "19px";
 
+  console.log("size="+size);
   return size;
 };
 
-
+/*
 const getFormWidthRange=()=> {
   const width = window.innerWidth;
 
@@ -32,9 +33,9 @@ const getFormWidthRange=()=> {
 
   return { minWidth: 800, maxWidth: 1000 };
 }
-
+*/
 
 export {
     getButtonFontSize,
-    getFormWidthRange
+   
 }

@@ -1,13 +1,16 @@
+
+ 
 .site-container
 {
-    background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /#E0FFFF *#F0F8FF, #F2F0DF */
+    background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /* #E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
     justify-content:center;
-    min-height: 100dvh;
+    /* min-height: 100dvh; */
     overflow: auto;
     padding:3px;
 }
+
 
 /* Override the tooltip background, color, and padding */
 .MuiTooltip-tooltip {
@@ -28,12 +31,13 @@
 
 .outlet-style
 {
-    min-height: 85dvh;
+   /* min-height: 85dvh; */
     overflow: auto;
     background-color: #FFFAF0 /* floral white */ ;
     margin:0 auto;
     min-width:80%;
-    padding-bottom:20px
+    padding-bottom:20px;
+    align-content: center;
 }
 
 @media (min-width: 768px) {
@@ -50,7 +54,13 @@
   }
 }
 
-
+@media (min-width:1024px)
+{
+  .outlet-style
+   {
+      min-height: 44dvh;
+   }
+}
 
 @media (max-height: 850px) {
    .outlet-style

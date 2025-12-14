@@ -39,19 +39,19 @@ export const getStyledTableStyles = () => {
                    },
                    "@media (min-width: 768px) and (max-width: 911px)": 
                    {
-                        fontSize:"18px"
+                        fontSize:"15px"
                    },
                    "@media (min-width: 912px) and (max-width: 1023px)": 
                    {
-                        fontSize:"19px"
+                        fontSize:"15px"
                    },
                    "@media (min-width: 1024px) and (max-width: 1100px)": 
                    { 
-                        fontSize:"21px"
+                        fontSize:"15px"
                    },
                     "@media (min-width: 1280px)": 
                    { 
-                        fontSize:"18px"
+                        fontSize:"15px"
                    }
 
 

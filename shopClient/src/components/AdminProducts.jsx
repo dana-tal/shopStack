@@ -77,7 +77,7 @@ function AdminProducts() {
    return (
     <>
      <Box
-       width={{ xs: "90%", sm: "70%", md: "70%", lg: "40%" }}
+       width={{ xs: "90%", sm: "70%", md: "70%", lg: "70%" }}
       mx="auto"
       mt={5}
       p={3}
