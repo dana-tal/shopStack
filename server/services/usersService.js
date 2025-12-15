@@ -74,9 +74,17 @@ const getAllUsers = async () =>{
 
 }
 
+
+const deleteUsers = (ids) =>
+{
+    return usersRepo.deleteUsers(ids);
+}
+
+
 module.exports = {
     addUser,
     verifyUser,
     userExists,
-    getAllUsers
+    getAllUsers,
+    deleteUsers
 }

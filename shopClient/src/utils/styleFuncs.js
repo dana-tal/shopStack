@@ -7,7 +7,6 @@ const getButtonFontSize = () => {
   if (window.matchMedia( "(min-width: 912px)").matches) size = "17px";
   if (window.matchMedia("(min-width: 1280px)").matches) size = "19px";
 
-  console.log("size="+size);
   return size;
 };
 

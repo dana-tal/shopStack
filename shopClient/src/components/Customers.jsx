@@ -4,11 +4,12 @@ import  { useEditableUser}  from '../custom_hooks/useEditableUser';
 import {Box, Alert, Typography} from "@mui/material";
 import { formatDate,isMobile } from "../utils/generalFuncs";
 import RowField from "./RowField";
+import CustomButton from "./CustomButton";
 
 function Customers() {
 
   const [isMobileDevice,setIsMobileDevice ] =useState(isMobile());
-  const { rows, fetchAllUsers } = useEditableUser();
+  const { rows, fetchAllUsers,handleRemoveUsers ,feedbackMsg } = useEditableUser();
   const tableRef = useRef(); // for accessing the checkboxes ...
   const paginationModel = { page: 0, pageSize: 10 };
   
@@ -16,6 +17,7 @@ function Customers() {
      if (tableRef.current) 
       {
         const selectedIDs = tableRef.current.getSelectedIds();
+        handleRemoveUsers(Array.from(selectedIDs.ids));
         //handleRemoveProducts(Array.from(selectedIDs.ids));      
     }
   };
@@ -98,9 +100,10 @@ function Customers() {
               boxShadow={3}
               borderRadius={2}
           >
+             {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
              <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers" includeCheckboxes={true} ref={tableRef} />   
-
-          
+              <CustomButton  clickHandler={handleClick} bgColor="#CB6D51" textColor="white" label="Remove Users"/>
+        
           </Box>
     </>
   )

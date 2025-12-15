@@ -20,8 +20,26 @@ const requestAllUsers = async ()=>{
 }
 
 
+const requestRemoveUsers = async (ids) =>{
+    try
+    {
+        const response = await axios.delete( DOMAIN+'/user/remove-many', {data: {ids: ids} });
+        return {
+                 ok:true,
+                 data: response.data,
+                 message:"Selected users deleted successfully"
+        };
+    }
+    catch(err)
+    {
+        return analize_error(err); 
+    }
+}
+
+
 export
 {
     requestAllUsers,
+    requestRemoveUsers
 }
 

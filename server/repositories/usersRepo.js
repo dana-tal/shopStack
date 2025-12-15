@@ -33,6 +33,9 @@ const getAllUsers = ( filters={}) => {
 }
 
 
+const deleteUsers = (userIds) => {
+  return User.deleteMany({ _id: { $in: userIds } });
+};
 
 /*
 const getAllUsers = () =>{
@@ -42,5 +45,6 @@ const getAllUsers = () =>{
 module.exports = {
     addUser,
     getUserByUsername,
-    getAllUsers
+    getAllUsers,
+    deleteUsers
 }
