@@ -5,7 +5,7 @@
     background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /* #E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
-    justify-content:center;
+   /* justify-content:center;  */
   /*  min-height: 100dvh;  */
     overflow: auto;
     padding:3px;
@@ -29,6 +29,10 @@
   color: #A70D2A !important;
 }
 
+.MuiDataGrid-root {
+  min-height: 400px; /* stable height until data loads */
+}
+
 .outlet-style
 {
    /* min-height: 85dvh; */
@@ -38,6 +42,7 @@
     min-width:80%;
     padding-bottom:20px;
     align-content: center;
+     min-height: 600px; 
 }
 
 @media (min-width: 768px) {

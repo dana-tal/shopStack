@@ -15,6 +15,7 @@ import { sendRegistrationData} from '../utils/authRequests';
 import { Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice"; 
+import "./AuthForm.css";
 import "./RegisterForm.css";
 
 function RegisterForm() {

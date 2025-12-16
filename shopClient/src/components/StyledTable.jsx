@@ -22,7 +22,9 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
                {title}
         </Typography> }
       <DataGrid
-         
+           loading={rows.length === 0}
+            style={{ minHeight: 400 }} 
+            density="standard"
         rows={rows}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
@@ -31,11 +33,17 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
           checkboxSelection={includeCheckboxes}
          onRowSelectionModelChange={(selectionModel) => {
           selectionRef.current = selectionModel; 
+            
         }}
         
 
-        sx={ getStyledTableStyles() }
-          getRowHeight={isMobile ? () => 'auto' : undefined}
+      sx={{
+          ...getStyledTableStyles(),
+          minHeight: rows.length === 0 ? 400 : 'auto', // stable height while loading
+          width: '100%',
+        }}
+        getRowHeight={isMobile ? () => 'auto' : undefined} // responsive on mobile
+         
       />
     </Paper>
   )
