@@ -1,27 +1,18 @@
 import StyledTable from "./StyledTable";
-import { useEffect,useRef ,useState} from "react";
+import { useEffect} from "react";
 import  { useEditableUser}  from '../custom_hooks/useEditableUser';
-import {Box, Alert, Typography} from "@mui/material";
-import { formatDate,isMobile } from "../utils/generalFuncs";
+import {Box, Alert} from "@mui/material";
+import { formatDate } from "../utils/generalFuncs";
 import RowField from "./RowField";
-import CustomButton from "./CustomButton";
+import { useIsMobile } from "../custom_hooks/useIsMobile";
 
 function Customers() {
 
-  const [isMobileDevice,setIsMobileDevice ] =useState(isMobile());
+  
+   const { isMobileDevice } = useIsMobile();
   const { rows, fetchAllUsers,handleRemoveUsers ,feedbackMsg } = useEditableUser();
-  const tableRef = useRef(); // for accessing the checkboxes ...
   const paginationModel = { page: 0, pageSize: 10 };
   
-  const handleClick = () => {
-     if (tableRef.current) 
-      {
-        const selectedIDs = tableRef.current.getSelectedIds();
-        handleRemoveUsers(Array.from(selectedIDs.ids));
-        //handleRemoveProducts(Array.from(selectedIDs.ids));      
-    }
-  };
-
   const mobileColumns = [
   {
     field: 'mobileView',
@@ -76,14 +67,6 @@ function Customers() {
 
   ]
 
-  
-    useEffect(() => {
-               const update = () => { setIsMobileDevice(isMobile()) };
-               
-               window.addEventListener("resize", update);
-               return () => window.removeEventListener("resize", update);
-           }, []);
-
 
   useEffect( ()=>{
     fetchAllUsers();
@@ -101,9 +84,8 @@ function Customers() {
               borderRadius={2}
           >
              {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
-             <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers" includeCheckboxes={true} ref={tableRef} />   
-              <CustomButton  clickHandler={handleClick} bgColor="#CB6D51" textColor="white" label="Remove Users"/>
-        
+             <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers"  />   
+           
           </Box>
     </>
   )

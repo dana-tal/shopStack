@@ -40,13 +40,15 @@ function formatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
+/*
 function isMobile() {
   return window.matchMedia("(max-width: 600px)").matches;
 }
+  */
 
 export {
     DOMAIN,
     analize_error,
     formatDate,
-    isMobile
+    /*isMobile */
 }

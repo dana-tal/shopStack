@@ -1,23 +1,24 @@
-import { useEffect, useRef, useState} from "react";
-import { Button } from "@mui/material";
+import { useEffect, useRef} from "react";
 import LightBox from "./LightBox";
 import ProductForm from "./ProductForm";
 import StyledTable from "./StyledTable";
 import {Box, Alert} from "@mui/material";
 import  { useEditableProduct}  from '../custom_hooks/useEditableProduct';
-import { getButtonFontSize } from '../utils/styleFuncs';
-
+import CustomButton from "./CustomButton";
+import { useIsMobile } from "../custom_hooks/useIsMobile";
 
 
 
 function AdminProducts() {
 
   const { rows, handleProductAdd,handleProductUpdate, fetchAllProducts, handleRemoveProducts,isLightboxOpen,
-     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg, setFeedbackMsg} = useEditableProduct();
-  const tableRef = useRef();
-  
-  const [buttonFontSize, setButtonFontSize] = useState(getButtonFontSize());
+     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg} = useEditableProduct();
 
+   const { isMobileDevice } = useIsMobile();
+
+  const tableRef = useRef();
+ // const isMobileDev = isMobile();
+  
   
   const handleClick = () => {
      if (tableRef.current) 
@@ -39,7 +40,12 @@ function AdminProducts() {
        type:'string',
         renderCell: renderProductName,
     },
-   /* {
+
+  ];
+
+  if (!isMobileDevice)
+  {
+     columns.push( {
        field:'categoryName',
        headerName:'Category',
        flex:1,
@@ -47,8 +53,8 @@ function AdminProducts() {
        valueGetter: (value,row)=>`${row.category.categoryName}`,
         align:'left',
         type:'string'
-    },*/
-  /*  {
+    });
+    columns.push({
        field:'price',
        headerName:'Price',
        flex:1,
@@ -57,8 +63,8 @@ function AdminProducts() {
         align:'center',
          headerAlign: 'center', 
         type:'number'
-    } */
-  ];
+    } )
+  }
 
    const paginationModel = { page: 0, pageSize: 10 };
 
@@ -67,13 +73,7 @@ function AdminProducts() {
    },[]);
   
    
-     useEffect(() => {
-               const update = () => { setButtonFontSize(getButtonFontSize()) };
-               window.addEventListener("resize", update);
-               return () => window.removeEventListener("resize", update);
-           }, []);
-
-
+   
    return (
     <>
      <Box
@@ -87,11 +87,10 @@ function AdminProducts() {
       {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
-      <Button onClick={() => { setIsLightBoxOpen(true);   setProductId(""); }  }  sx={{ fontSize:`${buttonFontSize} !important`}} variant="contained">
-        Add New Product 
-      </Button>
-
-       <Button onClick={handleClick}  sx={{ backgroundColor:"#CB6D51", color:"white", marginLeft:"10px", fontSize:`${buttonFontSize} !important` }}>Remove Products</Button>
+      
+      <CustomButton clickHandler={ () => { setIsLightBoxOpen(true);   setProductId(""); }} bgColor="#1974D2"  textColor="white" label="Add New Product"/>
+   
+      <CustomButton clickHandler={handleClick} bgColor="#CB6D51" textColor="white" label="Remove Products"/>
 
       <LightBox  key={productId || "new"}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
             <ProductForm   onAddProduct={handleProductAdd} onUpdateProduct={handleProductUpdate} prodId={productId} />

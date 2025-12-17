@@ -16,7 +16,8 @@ const productSchema = new mongoose.Schema({
                                  message: "Invalid URL format"
                                } 
                 },
-      description: { type:String, required:true, trim:true }
+      description: { type:String, required:true, trim:true },
+       isActive: { type: Boolean, default: true } 
 },{
      versionKey: false,
      timestamps:true
