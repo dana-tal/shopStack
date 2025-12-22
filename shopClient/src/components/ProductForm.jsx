@@ -105,6 +105,8 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
             }}
         >
          
+   
+
         {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
         <form onSubmit={handleSubmit(onSubmit)} style={{ border:"1px solid blue", padding:"10px"}}>
             <Typography variant="h5" align="center" sx={{ mb: 2 }}>
@@ -123,7 +125,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                         minLength: { value: 2, message: "Title must be at least 2 characters" },
                         maxLength: { value: 80, message: "Title cannot exceed 80 characters" },    
                         pattern: { value: titleRegex, message: "Title contains invalid characters." },
-                      }}       
+                     }}
                     render={({ field }) => (
                         <TextField
                         {...field}

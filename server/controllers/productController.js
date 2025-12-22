@@ -49,18 +49,11 @@ const getProductById = async (req,res) =>
     }
 }
 
-
-
-
 const addProduct = async (req,res) =>
 {
     try
     {
-        const result = productValidator.validateProductPayload(req,res);
-        if (result)
-        {
-            return result;
-        }
+        productValidator.validateProductPayload(req.body);        
         const productObj = req.body;             
         const newProduct = await productService.addProduct(productObj);
         return res.status(201).json({ok:true, productData:newProduct,message:'Product added successfully'});
@@ -69,10 +62,11 @@ const addProduct = async (req,res) =>
     {
         console.log("ERROR:");
         console.log(err);
-         return res.status(500).json({
-                ok: false,
-                message: err.message                 
-            });    
+        return res.status(err.status || 500).json({
+            ok: false,
+            message: err.message,
+            errorField: err.field,           
+         });  
     }
 }
 
@@ -80,11 +74,7 @@ const updateProduct = async (req,res) =>
 {
     try
     {
-        const result = productValidator.validateProductPayload(req,res);
-        if (result)
-        {
-            return result;
-        }
+        productValidator.validateProductPayload(req.body);        
         const id = req.params.id;        
         const productObj = req.body;
         const updatedProduct = await productService.updateProduct(id,productObj);
@@ -94,10 +84,11 @@ const updateProduct = async (req,res) =>
     {
         console.log("Error");
         console.log( err);
-        return res.status(500).json({
-                ok: false,
-                message: err.message                 
-            });     
+       return res.status(err.status || 500).json({
+            ok: false,
+            message: err.message,
+            errorField: err.field,           
+         });    
     }
 }
 
