@@ -5,12 +5,15 @@ import {Box, Alert} from "@mui/material";
 import { formatDate } from "../utils/generalFuncs";
 import RowField from "./RowField";
 import { useIsMobile } from "../custom_hooks/useIsMobile";
+import LightBox from "./LightBox";
+import CustomerForm from "./CustomerForm";
+
 
 function Customers() {
 
   
    const { isMobileDevice } = useIsMobile();
-  const { rows, fetchAllUsers,handleRemoveUsers ,feedbackMsg } = useEditableUser();
+  const { rows, fetchAllUsers,feedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen ,renderCustomerName,userId} = useEditableUser();
   const paginationModel = { page: 0, pageSize: 10 };
   
   const mobileColumns = [
@@ -44,7 +47,7 @@ function Customers() {
        valueGetter: (value,row)=>`${row.firstName} ${row.lastName}`,
        align:'left',
        type:'string',
-       /* renderCell: renderProductName, */
+       renderCell: renderCustomerName, 
     },
     {
         field:'joinedAt',
@@ -85,6 +88,10 @@ function Customers() {
           >
              {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
              <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers"  />   
+
+            <LightBox  key={userId}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
+                <CustomerForm   onUpdateUser={handleUserUpdate} userId={userId} />
+            </LightBox>
            
           </Box>
     </>

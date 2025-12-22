@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
 
 // This runs before saving a user
 userSchema.pre("save", async function (next) {
+  if (!this.password) return next(); // protects against empty string
   if (!this.isModified("password")) return next(); // only hash if password is new or changed , this line eliminates double hashing 
                                                     // this → refers to the current user document being saved.
   try {

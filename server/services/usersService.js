@@ -7,7 +7,13 @@ const addUser = async (userObj) =>
     try
     {
         const newUser = await usersRepo.addUser(userObj);
-        return ({ id: newUser._id, firstName: newUser.firstName, lastName: newUser.lastName, userName: newUser.userName,isAdmin: newUser.isAdmin, permitOrdersExposure: newUser.permitOrdersExposure});
+
+        const user = newUser.toObject(); 
+        delete user.password;
+        user.id = user._id;
+        delete user._id;
+        delete user.__v;
+        return (user);
     }
     catch(err)
     {
@@ -15,6 +21,30 @@ const addUser = async (userObj) =>
         throw err;
     }
 
+}
+
+const updateUser = async (id, userObj) =>
+{
+    try
+    {
+        if (userObj.password === "" || userObj.password == null) // password is optional and may be empty. Removing the password field prevents updating it to empty value.
+        {
+            delete userObj.password;
+        }
+        const updatedUser = await usersRepo.updateUser(id,userObj);
+        const user =updatedUser.toObject(); 
+        delete user.password;
+        user.id = user._id;
+        delete user._id;
+        delete user.__v;
+
+        return (user); 
+    }
+    catch(err)
+    {
+         console.log("updateUser failed with :",err);  
+        throw err;
+    }
 }
 
 const verifyUser = async (username,password) =>{
@@ -74,6 +104,25 @@ const getAllUsers = async () =>{
 
 }
 
+const getUserById = async (id) => {
+
+    try
+    {
+        const user = await usersRepo.getUserById(id);
+         if (!user) return null;
+        user.id = user._id;
+        delete user._id;
+        delete user.password;
+        return user;
+    }
+    catch(err)
+    {
+        console.log("getUserByID failed with :",err);  
+        throw err;
+    }
+
+}
+
 
 const deleteUsers = (ids) =>
 {
@@ -83,8 +132,10 @@ const deleteUsers = (ids) =>
 
 module.exports = {
     addUser,
+    updateUser,
     verifyUser,
     userExists,
     getAllUsers,
+    getUserById,
     deleteUsers
 }

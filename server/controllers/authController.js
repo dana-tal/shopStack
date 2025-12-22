@@ -1,5 +1,6 @@
 const usersService = require('../services/usersService');
-const validator = require('../utils/validator');
+//const validator = require('../utils/validator');
+const userValidator = require('../utils/validateUser');
 
 require('dotenv').config();  // load everything in .env file into process.env 
 const jwt = require("jsonwebtoken");
@@ -12,57 +13,33 @@ const registerUser = async (req,res) =>
 {
     try
     {
-     let result;
-     const names = ['firstName','lastName'];
-
-     for (const name of names) 
-     {
-        result = validator.validatePersonName(req.body[name], name);
-        if (result) 
-        {
-            return res.status(result.status).json({ok:false, errorField:name, message: result.message});
-        }
-    }
-    result = await validator.validateUsername(req.body.userName);
-    if (result)
-    {
-        return res.status(result.status).json({ok:false, errorField:'userName', message: result.message});
-    }
-    result = validator.validateUserPassword(req.body.password, req.body.userName);
-    if (result)
-    {
-        return res.status(result.status).json({ok:false, errorField:'password', message: result.message}); 
-    }
-
-    if (typeof req.body.permitOrdersExposure !== 'boolean') 
-    {
-       return res.status(400).json({ok:false, errorField:'permitOrdersExposure',messsage:"permitOrdersExposure must be a boolean (true/false)"});
-    }
-
+   
+     userValidator.validateUserPayload(req.body);
     const { firstName, lastName,userName, password ,permitOrdersExposure} = req.body;
         
 
-      // await usersService.addUser({ firstName,lastName,userName,password, permitOrdersExposure });
-       const newUser = await usersService.addUser({ firstName, lastName, userName, password, permitOrdersExposure });
+    const newUser = await usersService.addUser({ firstName, lastName, userName, password, permitOrdersExposure });
 
-        const token = jwt.sign(newUser, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign( { id: newUser.id, userName: newUser.userName }, JWT_SECRET, { expiresIn: "1h" });
 
+    
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             maxAge: 60 * 60 * 1000
             });
-
+    
         return res.status(201).json({ ok:true, userData: newUser, message: "Registration successful" });
-        //return res.status(201).json({firstName, lastName, userName,  permitOrdersExposure });
+      
     }
     catch(err)
     {
-         return res.status(500).json({
-                ok: false,
-                message: err.message                 
-            });      
+         return res.status(err.status || 500).json({
+            ok: false,
+            message: err.message,
+            errorField: err.field,           
+         });   
     }
 }
 

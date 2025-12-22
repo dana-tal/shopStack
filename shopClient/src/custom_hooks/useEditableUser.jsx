@@ -1,11 +1,28 @@
 import { useState } from "react";
-import { requestAllUsers,requestRemoveUsers} from "../utils/userRequests";
+import { requestAllUsers,requestRemoveUsers, requestUserUpdate} from "../utils/userRequests";
 
 
 
 export const useEditableUser = () => { 
-     const [rows, setRows] = useState([]);
-      const [feedbackMsg, setFeedbackMsg] = useState("");
+    const [rows, setRows] = useState([]);
+    const [feedbackMsg, setFeedbackMsg] = useState("");
+    const [isLightboxOpen, setIsLightBoxOpen] = useState(false);
+    const [ userId, setUserId ] = useState(""); // the user to be editted 
+
+
+    
+    const handleEditUser=(uId) =>{
+             setUserId(uId);
+             setIsLightBoxOpen(true);
+    }
+
+
+    
+    const renderCustomerName = (params)=>{
+             return <span onClick={ ()=>{  handleEditUser( params.row.id );  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>
+                {params.row.firstName+' '+params.row.lastName }
+                </span>
+    }
 
       const showFeedback = (msg)=>{
              setFeedbackMsg(msg);
@@ -47,5 +64,27 @@ export const useEditableUser = () => {
       }
 
 
-      return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg, setFeedbackMsg};
+      const handleUserUpdate = async (userObj, setError)=>
+      {
+        const response = await requestUserUpdate(userObj);
+        if (response.ok)
+        {
+            const updatedUser = response.data.userData ;
+            setRows( (prevRows)=>{  
+                let temp = [...prevRows]; 
+                let updated = temp.map( (user)=>{ if (user.id=== updatedUser.id){ return updatedUser } else { return user }  } );
+                return updated;
+            });
+            setIsLightBoxOpen(false);  
+            showFeedback("User updated successfully");                 
+        }
+        else
+        {
+            console.log(response.message);
+            setError("root", { type: "server", message: response.message || "Update failed" }); 
+        }
+    }
+
+
+      return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg, setFeedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen,renderCustomerName,userId};
 }
