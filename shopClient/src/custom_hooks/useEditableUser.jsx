@@ -64,6 +64,20 @@ export const useEditableUser = () => {
       }
 
 
+      const handleSimpleUserUpdate = async (userObj,setError) =>
+      {
+            const response = await requestUserUpdate(userObj);
+            if (response.ok)
+            {
+                  showFeedback("User updated successfully");         
+            }
+            else
+            {
+                console.log(response.message);
+                setError("root", { type: "server", message: response.message || "Update failed" }); 
+            }
+      }
+
       const handleUserUpdate = async (userObj, setError)=>
       {
         const response = await requestUserUpdate(userObj);
@@ -86,5 +100,5 @@ export const useEditableUser = () => {
     }
 
 
-      return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg, setFeedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen,renderCustomerName,userId};
+      return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg, setFeedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen,renderCustomerName,userId,handleSimpleUserUpdate};
 }
