@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import "./SiteTemplate.css";
 import NavBar from "./NavBar";
 import { useMatch, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { requestLogout } from "../utils/authRequests";
 
 function SiteTemplate() {
 
@@ -11,6 +13,9 @@ function SiteTemplate() {
 
   const navigate = useNavigate();
 
+    const info = useSelector((state) => state.auth);
+   // console.log("info",info);
+
   let links;
 
   if (match_admin)
@@ -19,7 +24,14 @@ function SiteTemplate() {
                 {link:'categories',name:'Categories'},
                 {link:'admin-products',name:'Products'},
                 {link:'customers',name:'Customers'},
-                {link:'statistics',name:'Statistics'}
+                {link:'statistics',name:'Statistics'},
+                { name:'Logout', callback: ()=>
+                    { 
+                        console.log('logging out');
+                        requestLogout();
+                        navigate("/auth/login", { replace: true });
+                    }
+                }
               ];
   }
   else if (match_store)
@@ -30,6 +42,7 @@ function SiteTemplate() {
                 {link:'my-account',name:'My Account'},
                 { name:'Logout', callback: ()=>{ 
                         console.log('logging out');
+                        requestLogout();
                         navigate("/auth/login", { replace: true });
                 }}
       ];
@@ -37,7 +50,7 @@ function SiteTemplate() {
           
   return (  
     <div className="site-container">  
-       { !match_auth && <NavBar links={links} /> }  
+       { !match_auth && <span> <h3 style={{ marginLeft:"30px" ,color:"#654321"}}>Hello, {info.userData.userName}</h3> <NavBar links={links} /></span> }  
        <div className="outlet-style">
        
           <Outlet />      

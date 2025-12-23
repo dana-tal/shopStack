@@ -95,7 +95,32 @@ const loginUser = async (req,res) =>{
     }
 }
 
+
+const logoutUser = (req, res) => {
+    try {
+        // Invalidate the cookie by overwriting it with an empty value
+        // and an immediate expiration date
+        res.cookie("token", "", {
+            httpOnly: true,                         // Keep the same flags as login
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            expires: new Date(0)                    // Expire immediately
+        });
+
+        return res.json({
+            ok: true,
+            message: "Logout successful"
+        });
+    } catch (err) {
+        return res.status(500).json({
+            ok: false,
+            message: err.message
+        });
+    }
+};
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }

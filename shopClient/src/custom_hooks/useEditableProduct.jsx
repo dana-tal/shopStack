@@ -95,7 +95,7 @@ export const useEditableProduct = () => {
            if (response.ok)
            {
                 setRows(response.data.productData);
-                console.log(response.data.productData);
+                //console.log(response.data.productData);
            }
            else
            {

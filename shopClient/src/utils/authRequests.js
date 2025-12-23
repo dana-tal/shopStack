@@ -51,6 +51,20 @@ const sendLoginData = async ( data_obj) =>{
     }
 }
 
+const requestLogout = async () =>{
+   
+  try
+  {
+    const response = await axios.post( DOMAIN+'/auth/logout',{}, {withCredentials:true});
+    return response.data;
+  }
+  catch(err)
+  {     
+    return analize_error(err);
+  }
+    
+}
+
 
  const checkAuth = async ()=> {
   try {
@@ -70,5 +84,6 @@ const sendLoginData = async ( data_obj) =>{
 export {
     sendRegistrationData,
     sendLoginData,
+    requestLogout,
     checkAuth
 }

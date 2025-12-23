@@ -6,6 +6,8 @@ require('dotenv').config();  // load everything in .env file into process.env
 
 const cookieParser = require("cookie-parser");
 
+const {requireAuth}= require("./middleware/auth");
+
 /*
 cookie-parser is a middleware package for Express that:
 - Reads cookies from the incoming HTTP request header (Cookie).
@@ -54,9 +56,9 @@ const userRouter = require('./routers/userRouter');
 const PORT = process.env.PORT || 3000;;
 
 app.use('/auth', authRouter);
-app.use('/category', categoryRouter);
-app.use('/product',productRouter);
-app.use('/user', userRouter);
+app.use('/category', requireAuth, categoryRouter);
+app.use('/product', requireAuth,productRouter);
+app.use('/user',  requireAuth,userRouter);
   
 app.get("/", (req, res) => {
   res.send("Server is running! ");

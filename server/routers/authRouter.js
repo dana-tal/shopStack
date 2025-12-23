@@ -5,6 +5,7 @@ const { verifyToken } = require("../middleware/auth");
 
 router.post('/register', authController.registerUser);
 router.post('/login', authController.loginUser);
+router.post('/logout',authController.logoutUser);
 router.get("/me", verifyToken, (req, res) => {
      
   return res.json({ ok: true, userData: req.user });
