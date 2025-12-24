@@ -1,7 +1,6 @@
 import CustomerForm from "./CustomerForm"
 import  { useEditableUser}  from '../custom_hooks/useEditableUser';
 import { useSelector } from "react-redux";
-import {Box, Alert} from "@mui/material";
 
 function MyAccount() {
 

@@ -33,6 +33,30 @@ const validateUrl = ( fieldName, urlAddress ) =>{
     return result;
 }
 
+const validateImageUrl = (fieldName, urlAddress) => {
+    let result = validateUrl(fieldName, urlAddress);
+    if (result !== null) return result;
+
+    const url = new URL(urlAddress);
+    const pathname = url.pathname;
+
+    // If there IS an extension, validate it
+    const hasExtension = /\.[^/.]+$/.test(pathname);
+    if (hasExtension) {
+        const allowedExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
+        if (!allowedExtensions.test(pathname)) {
+            return {
+                status: 400,
+                message: "Image url must end with a valid image extension (jpg, jpeg, png, gif, webp)"
+            };
+        }
+    }
+
+    // No extension → allowed
+    return null;
+};
+
+/*
 const validateImageUrl = (fieldName, urlAddress) =>{
 
    let result=null;
@@ -50,7 +74,7 @@ const validateImageUrl = (fieldName, urlAddress) =>{
   }
   return result;
 }
-
+*/
 
 const validatePositiveNumber = ( fieldName, numValue)=>
 {

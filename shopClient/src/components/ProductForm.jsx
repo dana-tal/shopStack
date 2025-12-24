@@ -204,13 +204,27 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     <Controller
                     name="imageUrl"
                     control={control}
-                     rules={{
-                        required: "Image URL is required",
-                        pattern: {
-                        value: /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i,
-                        message: "Invalid image URL or unsupported file type (allowed: jpg, jpeg, png, gif, webp)"
-                        }
-                    }}
+                    rules={{
+                                required: "Image URL is required",
+                                validate: (value) => {
+                                    try {
+                                    const url = new URL(value);
+                                    const pathname = url.pathname;
+
+                                    const hasExtension = /\.[^/.]+$/.test(pathname);
+                                    if (hasExtension) {
+                                        const allowedExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
+                                        if (!allowedExtensions.test(pathname)) {
+                                        return "Unsupported image type (jpg, jpeg, png, gif, webp)";
+                                        }
+                                    }
+
+                                    return true;
+                                    } catch {
+                                    return "Invalid URL";
+                                    }
+                                }
+                            }}
                     render={({ field }) => (
                         <TextField
                         {...field}
