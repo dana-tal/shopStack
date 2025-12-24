@@ -4,7 +4,7 @@ import {Button,TextField,Alert,Stack, Typography,Paper,Select,
 import { useEffect, useState} from "react";
 import { requestAllCategories } from "../utils/categoryRequests";
 import { requestProductById } from "../utils/productRequests";
-
+ 
 const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
     const productForm = useForm({ defaultValues: { id:"",title: "", price:0, catId:"",imageUrl:"", description:"", }, });
