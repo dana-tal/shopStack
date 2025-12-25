@@ -17,7 +17,8 @@ const productSchema = new mongoose.Schema({
                                } 
                 },
       description: { type:String, required:true, trim:true },
-       isActive: { type: Boolean, default: true } 
+       isActive: { type: Boolean, default: true },
+       quantity: { type: Number, default:0 } 
 },{
      versionKey: false,
      timestamps:true

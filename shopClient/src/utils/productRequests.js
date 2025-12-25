@@ -88,10 +88,28 @@ const requestAllProducts = async ()=> {
     }
 }
 
+const requestProductsPage = async (pageNum,pageSize) =>{
+    try
+    {
+
+        const response = await axios.get (DOMAIN+`/product/page?pageNum=${pageNum}&pageSize=${pageSize}`, { withCredentials: true });
+        return {
+            ok:true,
+            data: response.data,
+            message:"Products page returned successfully"
+        }
+
+    }
+    catch(err)
+    {
+        return analize_error(err);
+    }
+}
+
 const requestRemoveProducts = async (ids) =>{
     try
     {
-        const response = await axios.delete( DOMAIN+'/product/remove-many', {data: {ids: ids} });
+        const response = await axios.delete( DOMAIN+'/product/remove-many', {data: {ids: ids} ,  withCredentials: true});
         return {
                  ok:true,
                  data: response.data,
@@ -108,6 +126,7 @@ export {
      requestProductAdd,
      requestProductUpdate,
      requestAllProducts,
+     requestProductsPage,
      requestRemoveProducts,
      requestProductById
 }

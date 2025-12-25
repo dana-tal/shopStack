@@ -59,6 +59,55 @@ const getProductById = async (productId) => {
   return result[0] || null;
 };
 
+
+const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
+  const offset = (pageNum - 1) * pageSize;
+
+  // Build match stage dynamically
+  const matchStage = Object.keys(filters).length ? { $match: filters } : null;
+
+  const pipeline = [];
+
+  // Add match stage if there are filters
+  if (matchStage) pipeline.push(matchStage);
+
+  pipeline.push(
+    { $lookup: { from: "categories", localField: "catId", foreignField: "_id", as: "category" } },
+    { $unwind: "$category" },
+    { $sort: { createdAt: -1 } },
+    { $skip: offset },
+    { $limit: pageSize },
+    { $project: {
+        id: "$_id",
+        _id: 0,
+        title: 1,
+        price: 1,
+        imageUrl: 1,
+        description: 1,
+        category: { id: "$category._id", categoryName: "$category.categoryName" }
+    }}
+  );
+
+  // Add facet for totalItems
+  const result = await Product.aggregate([
+    {
+      $facet: {
+        products: pipeline,
+        totalItems: [
+          matchStage || { $match: {} },
+          { $count: "count" }
+        ]
+      }
+    }
+  ]);
+
+  const products = result[0].products;
+  const totalItems = result[0].totalItems[0] ? result[0].totalItems[0].count : 0;
+
+  return { products, totalItems };
+};
+
+
 const getAllProducts = (filters={}) => {
   return Product.aggregate([
     { $match: filters },
@@ -108,5 +157,6 @@ module.exports ={
      deleteProducts,
      getProductById,
      getAllProducts,
+     getProductsPage,
      productExists
 }

@@ -23,6 +23,38 @@ const getAllProducts = async (req,res) =>
     }
 }
 
+const getProductsPage = async (req,res) =>
+{
+    try
+    {
+        const pageNum = parseInt(req.query.pageNum);
+        const pageSize = parseInt(req.query.pageSize);
+
+       
+        // Optional filters
+        const filters = {};
+        if (req.query.isActive !== undefined)
+        {
+            filters.isActive = req.query.isActive === 'true';
+        }
+        if (req.query.catId) 
+        {
+            filters.catId = req.query.catId;
+        }
+
+        const result = await productService.getProductsPage(pageNum,pageSize,filters);
+        res.json(result);
+
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+                ok: false,
+                message: err.message                 
+            });    
+    }
+}
+
 const getProductById = async (req,res) =>
 {
     try
@@ -155,5 +187,6 @@ module.exports =
     deleteProduct,
     deleteProducts,
     getAllProducts,
+    getProductsPage,
     getProductById
 }
