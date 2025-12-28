@@ -3,6 +3,7 @@ import { requestProductsPage } from "../utils/productRequests";
 import ProductsGrid from "./ProductsGrid";
 import Paginator from "./Paginator";
 import Loader from "./Loader";
+import Filter from "./Filter";
 
 const PAGE_SIZE = import.meta.env.VITE_PRODUCTS_PAGE_SIZE;
 
@@ -41,7 +42,9 @@ function ProductsCatalog() {
   return <>
       { totalCount==0 && <Loader />}
       { totalCount >0 &&
-          (<><ProductsGrid products={products} />
+          (<>
+          <Filter />
+          <ProductsGrid products={products} />
           <Paginator totalPages={pagesNum} page={currentPage} pageChangedHandler={pageHandler}/></>)
       }
   </>
