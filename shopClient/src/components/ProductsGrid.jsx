@@ -11,6 +11,7 @@ function ProductsGrid({ products }) {
         maxWidth: 1200,
         marginLeft: "auto",
         marginRight: "auto",
+        marginTop:"10px"
       }}
     >
       {products.map((product) => (
