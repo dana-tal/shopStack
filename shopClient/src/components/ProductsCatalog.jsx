@@ -11,7 +11,7 @@ function ProductsCatalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const pagesNum = Math.ceil(totalCount / PAGE_SIZE);
@@ -39,14 +39,23 @@ function ProductsCatalog() {
     fetchProductsPage();
   }, [currentPage]);
 
+  const onParamsChange = (filterObj) =>{
+
+          console.log("###############");
+           console.log("catId:", filterObj.catId);
+           console.log("price", filterObj.price);
+           console.log("name",filterObj.name);
+  }
+
   return <>
-      { totalCount==0 && <Loader />}
+      { isLoading && <Loader />}
       { totalCount >0 &&
           (<>
-          <Filter />
+          <Filter handleParamsChange={onParamsChange} defaultPrice={40}/>
           <ProductsGrid products={products} />
           <Paginator totalPages={pagesNum} page={currentPage} pageChangedHandler={pageHandler}/></>)
       }
+      { totalCount===0 && <div style={{ display:"flex", justifyContent:"center"}}><h2>No products found</h2></div>}
   </>
 }
 
