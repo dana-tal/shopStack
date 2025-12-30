@@ -20,10 +20,10 @@ function ProductsCatalog() {
        setCurrentPage(pageNum);
   }
 
-  useEffect(() => {
-    const fetchProductsPage = async () => {
+
+  const fetchProductsPage = async (filters=null) => {
       setIsLoading(true);
-      const pageInfo = await requestProductsPage(currentPage, PAGE_SIZE);
+      const pageInfo = await requestProductsPage(currentPage, PAGE_SIZE,filters);
 
       console.log("pageInfo:");
       console.log(pageInfo);
@@ -36,22 +36,25 @@ function ProductsCatalog() {
       }
       setIsLoading(false);
     };
+
+  useEffect(() => {
+    
     fetchProductsPage();
   }, [currentPage]);
 
   const onParamsChange = (filterObj) =>{
 
-          console.log("###############");
-           console.log("catId:", filterObj.catId);
-           console.log("price", filterObj.price);
-           console.log("name",filterObj.name);
+    console.log("Filters changed:", filterObj);
+    setCurrentPage(1);
+    fetchProductsPage(filterObj); 
   }
 
   return <>
+       <Filter handleParamsChange={onParamsChange} defaultPrice={40}/>
       { isLoading && <Loader />}
       { totalCount >0 &&
           (<>
-          <Filter handleParamsChange={onParamsChange} defaultPrice={40}/>
+         
           <ProductsGrid products={products} />
           <Paginator totalPages={pagesNum} page={currentPage} pageChangedHandler={pageHandler}/></>)
       }

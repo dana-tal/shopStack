@@ -1,7 +1,7 @@
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { FormControl ,Grid, Typography, TextField} from '@mui/material';
+import { FormControl ,Grid, Typography, TextField, Button} from '@mui/material';
 import { useState , useEffect } from 'react';
 import { requestAllCategories} from '../utils/categoryRequests';
 import InputSlider from './InputSlider';
@@ -18,20 +18,33 @@ function Filter({handleParamsChange,defaultPrice}) {
       handleParamsChange(newObj);
   };
 
-  const onPriceChange = (priceVal) =>{
-
-    const newObj = { ...filterObj, price:priceVal };
-    setFilterObj( newObj);
+  const onPriceChange = (priceVal) => {
+  setFilterObj(prev => {
+    const newObj = { ...prev, price: priceVal };
     handleParamsChange(newObj);
-     //console.log("priceVal:",priceVal);
-  }
+    return newObj;
+  });
+};
 
-  const onNameChange = (newName) =>
+  const onNameChange = (event) => 
   {
-    const newObj = { ...filterObj, name:newName};
-    setFilterObj( newObj);
-    handleParamsChange(newObj);
+      const newObj = { ...filterObj, name:event.target.value};
+      setFilterObj( newObj);
+      handleParamsChange(newObj);
   }
+
+  const clearFilters = () => 
+  {
+    const clearedObj = {
+      catId: '',
+      price: defaultPrice,
+      name: ''
+    };
+
+    setFilterObj(clearedObj);
+    handleParamsChange(clearedObj);
+};
+
   
   useEffect( ()=>
     {
@@ -73,11 +86,15 @@ function Filter({handleParamsChange,defaultPrice}) {
 
         {/* Price Slider */}
         <Grid item xs={12} sm={6} md={3}>
-          <InputSlider changeHandler={onPriceChange} title="Price" minValue={20} maxValue={200} defaultVal={defaultPrice}/>
+          <InputSlider changeHandler={onPriceChange} title="Price" minValue={20} maxValue={200} value={filterObj.price}/>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <TextField id="title" label="Title" variant="outlined" />
+          <TextField id="title" label="Title" variant="outlined" onChange={onNameChange}  value={filterObj.name}/>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
+          <Button variant="contained" onClick={clearFilters}>Clear</Button>
         </Grid>
 
       </Grid>

@@ -59,19 +59,40 @@ const getProductById = async (productId) => {
   return result[0] || null;
 };
 
-
 const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
+
+  
+  console.log("filters=");
+  console.log(filters);
+
   const offset = (pageNum - 1) * pageSize;
 
-  // Build match stage dynamically
-  const matchStage = Object.keys(filters).length ? { $match: filters } : null;
+  // Build match filters
+  const matchFilters = {};
+  if (filters.catId) 
+  {
+    matchFilters.catId = new mongoose.Types.ObjectId(filters.catId);
+  }
+  
+  if (filters.price !== undefined) 
+  {
+     matchFilters.price = { $lte: Number(filters.price) };
+  }
+  if (filters.name) 
+  {
+     matchFilters.title = { $regex: filters.name, $options: "i" };
+  }
 
-  const pipeline = [];
-
-  // Add match stage if there are filters
-  if (matchStage) pipeline.push(matchStage);
-
-  pipeline.push(
+  if (filters.isActive !== undefined) 
+  {
+    matchFilters.isActive = filters.isActive === true || filters.isActive === "true";
+  }
+  // Products pipeline
+  const productsPipeline = [];
+  if (Object.keys(matchFilters).length > 0) {
+    productsPipeline.push({ $match: matchFilters });
+  }
+  productsPipeline.push(
     { $lookup: { from: "categories", localField: "catId", foreignField: "_id", as: "category" } },
     { $unwind: "$category" },
     { $sort: { createdAt: -1 } },
@@ -88,27 +109,35 @@ const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
     }}
   );
 
-  // Add facet for totalItems
+  // Total items pipeline
+  const totalItemsPipeline = [];
+  if (Object.keys(matchFilters).length > 0) {
+    totalItemsPipeline.push({ $match: matchFilters });
+  }
+  totalItemsPipeline.push({ $count: "count" });
+
+  // Run aggregation with facet
   const result = await Product.aggregate([
     {
       $facet: {
-        products: pipeline,
-        totalItems: [
-          matchStage || { $match: {} },
-          { $count: "count" }
-        ]
+        products: productsPipeline,
+        totalItems: totalItemsPipeline
       }
     }
   ]);
 
+  // Extract results
   const products = result[0].products;
   const totalItems = result[0].totalItems[0] ? result[0].totalItems[0].count : 0;
+  const totalPages = Math.ceil(totalItems / pageSize);
 
-  return { products, totalItems };
+  return { products, totalItems, totalPages, currentPage: pageNum };
 };
 
 
+
 const getAllProducts = (filters={}) => {
+
   return Product.aggregate([
     { $match: filters },
 

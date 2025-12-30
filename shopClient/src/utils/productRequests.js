@@ -88,11 +88,33 @@ const requestAllProducts = async ()=> {
     }
 }
 
-const requestProductsPage = async (pageNum,pageSize) =>{
+const requestProductsPage = async (pageNum,pageSize,filters=null) =>{
     try
     {
+             console.log("filters:");
+             console.log(filters);
+        let query = `/product/page?pageNum=${pageNum}&pageSize=${pageSize}`;
+        if (filters)
+        {
+            if (filters.catId)
+            {
+                query +='&catId='+filters.catId;
+            }
+            if (filters.price)
+            {
+                query +='&price='+filters.price;
+            }
+            if (filters.name)
+            {
+                query += '&name='+filters.name;
+            }
 
-        const response = await axios.get (DOMAIN+`/product/page?pageNum=${pageNum}&pageSize=${pageSize}`, { withCredentials: true });
+        }
+        
+
+        console.log("query="+query);
+
+        const response = await axios.get (DOMAIN+query, { withCredentials: true });
         return {
             ok:true,
             data: response.data,

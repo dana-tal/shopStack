@@ -41,6 +41,14 @@ const getProductsPage = async (req,res) =>
         {
             filters.catId = req.query.catId;
         }
+        if (req.query.price)
+        {
+            filters.price = req.query.price;
+        }
+        if (req.query.name)
+        {
+            filters.name = req.query.name;
+        }
 
         const result = await productService.getProductsPage(pageNum,pageSize,filters);
         res.json(result);
