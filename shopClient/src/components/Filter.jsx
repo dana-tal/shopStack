@@ -5,6 +5,7 @@ import { FormControl ,Grid, Typography, TextField, Button} from '@mui/material';
 import { useState , useEffect } from 'react';
 import { requestAllCategories} from '../utils/categoryRequests';
 import InputSlider from './InputSlider';
+import debounce from 'lodash.debounce';
 
 function Filter({handleParamsChange,defaultPrice}) {
 
@@ -13,25 +14,25 @@ function Filter({handleParamsChange,defaultPrice}) {
 
     const categoryChange = (event) => {
 
-      const newObj = { ...filterObj, catId: event.target.value };
+      const newObj = { ...filterObj, catId: event.target.value==='All' ? '':event.target.value };
       setFilterObj( newObj)
       handleParamsChange(newObj);
   };
 
-  const onPriceChange = (priceVal) => {
+  const onPriceChange =  debounce((priceVal) => {
   setFilterObj(prev => {
     const newObj = { ...prev, price: priceVal };
     handleParamsChange(newObj);
     return newObj;
   });
-};
+},500);
 
-  const onNameChange = (event) => 
+  const onNameChange = debounce((event) => 
   {
       const newObj = { ...filterObj, name:event.target.value};
       setFilterObj( newObj);
       handleParamsChange(newObj);
-  }
+  },500);
 
   const clearFilters = () => 
   {
@@ -73,10 +74,11 @@ function Filter({handleParamsChange,defaultPrice}) {
             <Select
                 labelId="category-label"
                 id="category-select"
-                value={filterObj.catId}
+                value={filterObj.catId || 'All'}
                 label="Category"
-                onChange={categoryChange}
+                onChange={categoryChange}               
             >
+                <MenuItem key='All' value='All'>All</MenuItem>
                 {categories.map(cat => (
                   <MenuItem key={cat.id} value={cat.id}>{cat.categoryName}</MenuItem>
                 ))}

@@ -2,12 +2,13 @@
  
 .site-container
 {
+   min-height: 100dvh;
     background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /* #E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
    /* justify-content:center;  */
    /* min-height: 100dvh;  */
-    overflow: auto;
+    overflow: hidden;
     padding:3px;
 }
 
@@ -35,14 +36,14 @@
 
 .outlet-style
 {
-   /* min-height: 85dvh; */
-    overflow: auto;
+   height: 100%;
+    overflow: hidden;
     background-color: #FFFAF0 /* floral white */ ;
     margin:0 auto;
     min-width:80%;
     padding-bottom:20px;
     align-content: center;
-     min-height: 600px; 
+   
 }
 
 @media (min-width: 768px) {
@@ -59,17 +60,6 @@
   }
 }
 
-@media (min-width:1024px)
-{
-  .outlet-style
-   {
-      min-height: 44dvh;
-   }
-   .site-container
-   {
-      min-height: 100dvh;
-   }
-}
 
 @media (max-height: 850px) {
    .outlet-style

@@ -49,17 +49,34 @@ function ProductsCatalog() {
     fetchProductsPage(filterObj); 
   }
 
-  return <>
-       <Filter handleParamsChange={onParamsChange} defaultPrice={40}/>
-      { isLoading && <Loader />}
-      { totalCount >0 &&
-          (<>
-         
+return (
+  <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <Filter handleParamsChange={onParamsChange} defaultPrice={40} />
+
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", position: "relative", minHeight: "60vh" }}>
+      
+      {isLoading && (
+        <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", alignItems: "center", background: "rgba(255,255,255,0.6)", zIndex: 10 }}>
+          <Loader />
+        </div>
+      )}
+
+      {products.length > 0 ? (
+        <div style={{ flex: 1, overflowY: "auto" }}>
           <ProductsGrid products={products} />
-          <Paginator totalPages={pagesNum} page={currentPage} pageChangedHandler={pageHandler}/></>)
-      }
-      { totalCount===0 && <div style={{ display:"flex", justifyContent:"center"}}><h2>No products found</h2></div>}
-  </>
+        </div>
+      ) : (
+        <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <h2>No products found</h2>
+        </div>
+      )}
+
+      {totalCount > 0 && <Paginator totalPages={pagesNum} page={currentPage} pageChangedHandler={pageHandler} />}
+    </div>
+  </div>
+);
+
+
 }
 
 export default ProductsCatalog;

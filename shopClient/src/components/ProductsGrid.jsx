@@ -7,12 +7,12 @@ function ProductsGrid({ products }) {
       container
       spacing={2}
        justifyContent="center"
-      sx={{
-        maxWidth: 1200,
-        marginLeft: "auto",
-        marginRight: "auto",
-        marginTop:"10px"
-      }}
+       sx={{
+          maxWidth: 1200,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingTop: "10px"
+  }}
     >
       {products.map((product) => (
         <Grid

@@ -1,4 +1,5 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, Box } from "@mui/material";
+import { memo } from "react";
 
 function ProductCard({ product }) {
   const { title, price, imageUrl } = product;
@@ -14,7 +15,7 @@ function ProductCard({ product }) {
         }}
       >
         {/* Image takes 60% of the height */}
-        <Box sx={{ height: "60%", overflow: "hidden" }}>
+        <Box sx={{ height: "50%", overflow: "hidden" }}>
           <CardMedia
             component="img"
             image={imageUrl}
@@ -55,4 +56,4 @@ function ProductCard({ product }) {
   );
 }
 
-export default ProductCard;
+export default memo(ProductCard);
