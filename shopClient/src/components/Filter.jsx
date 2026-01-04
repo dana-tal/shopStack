@@ -27,9 +27,9 @@ function Filter({handleParamsChange,defaultPrice}) {
   });
 },500);
 
-  const onNameChange = debounce((event) => 
+  const onNameChange = debounce((value) => 
   {
-      const newObj = { ...filterObj, name:event.target.value};
+      const newObj = { ...filterObj, name:value};
       setFilterObj( newObj);
       handleParamsChange(newObj);
   },500);
@@ -92,7 +92,7 @@ function Filter({handleParamsChange,defaultPrice}) {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <TextField id="title" label="Title" variant="outlined" onChange={onNameChange}  value={filterObj.name}/>
+          <TextField id="title" label="Title" variant="outlined" onChange={(e) => onNameChange(e.target.value)}  value={filterObj.name}/>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
