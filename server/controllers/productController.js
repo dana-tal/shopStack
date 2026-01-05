@@ -117,6 +117,9 @@ const updateProduct = async (req,res) =>
         productValidator.validateProductPayload(req.body);        
         const id = req.params.id;        
         const productObj = req.body;
+
+        console.log("my product");
+        console.log(productObj);
         const updatedProduct = await productService.updateProduct(id,productObj);
         return res.status(200).json({ok:true, productData:updatedProduct, message:'Product updated successfully '});
     }

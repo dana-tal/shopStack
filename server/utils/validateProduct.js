@@ -17,6 +17,11 @@ const validateProductPayload = (body) =>
     {
          throw { status: result.status, field: 'price', message: result.message};  
     }
+     result = genValidator.validatePositiveNumber('In Stock',productObj.inStock);
+    if (result)
+    {
+         throw { status: result.status, field: 'inStock', message: result.message};  
+    }
     result = genValidator.validateMongoId('catId',productObj.catId);
     if (result)
     {

@@ -10,6 +10,7 @@ const requestProductUpdate = async (product_obj)=>
             {
                 title: product_obj.title,
                 price: +product_obj.price,
+                inStock: +product_obj.inStock,
                 catId: product_obj.catId,
                 imageUrl: product_obj.imageUrl,
                 description: product_obj.description

@@ -47,6 +47,8 @@ const getProductById = async (productId) => {
         price: 1,
         imageUrl: 1,
         description: 1,
+        inStock:1,
+        soldUnits:1,
         category: {
           id: "$category._id",
           categoryName: "$category.categoryName"
@@ -105,6 +107,8 @@ const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
         price: 1,
         imageUrl: 1,
         description: 1,
+        inStock:1,
+        soldUnits:1,
         category: { id: "$category._id", categoryName: "$category.categoryName" }
     }}
   );
@@ -164,6 +168,8 @@ const getAllProducts = (filters={}) => {
         price: 1,
         imageUrl: 1,
         description: 1,
+        inStock:1,
+        soldUnits:1,
         // rename category._id to category.id
         category: {
           id: "$category._id",

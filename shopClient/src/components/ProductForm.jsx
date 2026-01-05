@@ -7,7 +7,7 @@ import { requestProductById } from "../utils/productRequests";
  
 const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
-    const productForm = useForm({ defaultValues: { id:"",title: "", price:0, catId:"",imageUrl:"", description:"", }, });
+    const productForm = useForm({ defaultValues: { id:"",title: "", price:0,inStock:0, catId:"",imageUrl:"", description:"", }, });
     const { handleSubmit,control,formState: { errors },reset, setError}  = productForm;  
 
     const [categories, setCategories] = useState([]);
@@ -23,6 +23,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
              id: selectedProduct.id,
             title: selectedProduct.title,
             price: selectedProduct.price,
+            inStock: selectedProduct.inStock,
             catId: selectedProduct.category.id,
             imageUrl: selectedProduct.imageUrl,
             description: selectedProduct.description
@@ -153,6 +154,27 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                         error={!!errors.price}
                         helperText={errors.price?.message}
                         placeholder="Enter price"
+                        sx={{ width: "50%" }}
+                        />
+                    )}
+                    />
+                </Stack>
+
+                
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
+                    <Typography sx={{ width:80 }}>In Stock:</Typography>
+                    <Controller
+                    name="inStock"
+                    control={control}
+                    rules={{ required: "In Stock is required", min: { value: 0.1, message: "In Stock must be > 0" } }}
+                    render={({ field }) => (
+                        <TextField
+                        {...field}
+                        type="number"
+                        size="small"
+                        error={!!errors.inStock}
+                        helperText={errors.inStock?.message}
+                        placeholder="Enter InStock"
                         sx={{ width: "50%" }}
                         />
                     )}
