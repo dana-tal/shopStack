@@ -2,7 +2,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { FormControl ,Grid, Typography, TextField, Button} from '@mui/material';
-import { useState , useEffect } from 'react';
+import { useState , useEffect ,useMemo } from 'react';
 import { requestAllCategories} from '../utils/categoryRequests';
 import InputSlider from './InputSlider';
 import debounce from 'lodash.debounce';
@@ -12,27 +12,35 @@ function Filter({handleParamsChange,defaultPrice}) {
    const [filterObj, setFilterObj] = useState({catId:'',price:defaultPrice,name:''});
    const [categories, setCategories] = useState([]);
 
+
+  const debouncedParamsChange = useMemo( () => debounce(handleParamsChange, 500),[handleParamsChange]);
+
     const categoryChange = (event) => {
 
-      const newObj = { ...filterObj, catId: event.target.value==='All' ? '':event.target.value };
-      setFilterObj( newObj)
-      handleParamsChange(newObj);
+        setFilterObj(prev => {
+                          const newObj = { ...prev, catId: event.target.value==='All' ? '':event.target.value};
+                          debouncedParamsChange(newObj);
+                          return newObj;
+                        });
+
   };
 
-  const onPriceChange =  debounce((priceVal) => {
+  const onPriceChange =  (priceVal) => {
   setFilterObj(prev => {
-    const newObj = { ...prev, price: priceVal };
-    handleParamsChange(newObj);
-    return newObj;
-  });
-},500);
+                          const newObj = { ...prev, price: priceVal };
+                          debouncedParamsChange(newObj);
+                          return newObj;
+                        });
+};
 
-  const onNameChange = debounce((value) => 
+  const onNameChange = (value) => 
   {
-      const newObj = { ...filterObj, name:value};
-      setFilterObj( newObj);
-      handleParamsChange(newObj);
-  },500);
+    setFilterObj(prev => {
+                          const newObj = { ...prev, name:value};
+                          debouncedParamsChange(newObj);
+                          return newObj;
+                        });    
+  };
 
   const clearFilters = () => 
   {
@@ -43,6 +51,7 @@ function Filter({handleParamsChange,defaultPrice}) {
     };
 
     setFilterObj(clearedObj);
+    debouncedParamsChange.cancel();
     handleParamsChange(clearedObj);
 };
 
@@ -58,7 +67,11 @@ function Filter({handleParamsChange,defaultPrice}) {
         readAllCategories();
     }, []);
 
-
+useEffect(() => {
+  return () => {
+    debouncedParamsChange.cancel();
+  };
+}, [debouncedParamsChange]);
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ width: '100%', padding: 1, backgroundColor: 'tan' }}>
