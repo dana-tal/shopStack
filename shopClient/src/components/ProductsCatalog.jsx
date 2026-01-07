@@ -4,6 +4,7 @@ import ProductsGrid from "./ProductsGrid";
 import Paginator from "./Paginator";
 import Loader from "./Loader";
 import Filter from "./Filter";
+import Cart from "./Cart";
 
 const PAGE_SIZE = import.meta.env.VITE_PRODUCTS_PAGE_SIZE;
 
@@ -48,7 +49,9 @@ function ProductsCatalog() {
   }
 
 return (
-  <div style={{ display: "flex", flexDirection: "column" }}>
+ 
+
+  <div style={{flexGrow: 1, display: "flex", flexDirection: "column" }}>
     <Filter handleParamsChange={onParamsChange} defaultPrice={40} />
 
    <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
@@ -92,7 +95,9 @@ return (
   )}
 </div>
 
+    <Cart />
   </div>
+ 
 );
 
 
