@@ -1,13 +1,15 @@
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
  
 .site-container
 {
-   min-height: 100dvh;
+   min-height: auto;
     background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /* #E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
-   /* justify-content:center;  */
-   /* min-height: 100dvh;  */
     overflow: hidden;
     padding:3px;
 }
@@ -36,12 +38,12 @@
 
 .outlet-style
 {
-   height: 100%;
+   height: auto;
     overflow: hidden;
     background-color: #FFFAF0 /* floral white */ ;
     margin:0 auto;
     min-width:80%;
-    padding-bottom:20px;
+    padding-bottom:0;
     align-content: center;
    
 }

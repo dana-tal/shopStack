@@ -64,8 +64,6 @@ const getProductById = async (productId) => {
 const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
 
   
-  console.log("filters=");
-  console.log(filters);
 
   const offset = (pageNum - 1) * pageSize;
 
@@ -97,7 +95,7 @@ const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
   productsPipeline.push(
     { $lookup: { from: "categories", localField: "catId", foreignField: "_id", as: "category" } },
     { $unwind: "$category" },
-    { $sort: { createdAt: -1 } },
+    { $sort: { createdAt: -1, _id: 1 } },
     { $skip: offset },
     { $limit: pageSize },
     { $project: {

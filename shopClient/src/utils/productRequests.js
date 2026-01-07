@@ -92,8 +92,7 @@ const requestAllProducts = async ()=> {
 const requestProductsPage = async (pageNum,pageSize,filters=null) =>{
     try
     {
-             console.log("filters:");
-             console.log(filters);
+            
         let query = `/product/page?pageNum=${pageNum}&pageSize=${pageSize}`;
         if (filters)
         {
@@ -112,9 +111,6 @@ const requestProductsPage = async (pageNum,pageSize,filters=null) =>{
 
         }
         
-
-        console.log("query="+query);
-
         const response = await axios.get (DOMAIN+query, { withCredentials: true });
         return {
             ok:true,

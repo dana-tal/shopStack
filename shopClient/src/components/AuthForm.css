@@ -4,4 +4,10 @@
 {
    justify-content:center; 
    min-height: 100dvh; 
+   height:100dvh;
+}
+
+.outlet-style
+{
+   min-height:400px;
 }
