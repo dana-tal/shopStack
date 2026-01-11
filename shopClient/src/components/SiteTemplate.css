@@ -10,8 +10,9 @@
     background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /* #E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
-    overflow: hidden;
+    overflow: auto;
     padding:3px;
+   
 }
 
 
@@ -39,7 +40,7 @@
 .outlet-style
 {
    height: auto;
-    overflow: hidden;
+    overflow: auto;
     background-color: #FFFAF0 /* floral white */ ;
     margin:0 auto;
     min-width:80%;
@@ -52,6 +53,7 @@
   .outlet-style
   {
     width:80%;
+    
   }
 }
 

@@ -17,14 +17,15 @@ function ProductCard({ product }) {
 
 
   return (
-    <Box sx={{ width: { xs: "100%", sm: 200, md: 240 } }}>
+    <Box sx={{ width: { xs: "90%", sm: 200, md: 220 } }}   >
       <Card
         sx={{
           width: "100%",
           aspectRatio: "1 / 1",       // keeps the card square
           display: "grid",
           gridTemplateRows: "1.3fr auto auto", 
-          minHeight:0
+          minHeight:0,
+          marginLeft:{xs:"20px", sm:0,md:0}
         }}
       >
         {/* Image takes 60% of the height */}

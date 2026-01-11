@@ -76,9 +76,7 @@ useEffect(() => {
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ width: '100%', padding: 1, backgroundColor: 'tan' }}>
         
-         <Grid item xs={12} sm={6} md={3}>
-         <Typography>Filter By:</Typography>
-         </Grid>
+        
         {/* Category */}
         <Grid item xs={12} sm={6} md={3}>
          
