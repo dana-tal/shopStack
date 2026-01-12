@@ -1,7 +1,16 @@
-import { Grid } from "@mui/material";
+import { Grid ,Box} from "@mui/material";
 import ProductCard from "./ProductCard";
+import { useTheme, useMediaQuery } from '@mui/material';
 
 function ProductsGrid({ products }) {
+
+ const theme = useTheme();
+   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+const PAGE_SIZE = import.meta.env.VITE_PRODUCTS_PAGE_SIZE;
+
+  console.log("length=", products.length);
+ const placeholders = Array.from({ length: PAGE_SIZE - products.length }, (_, i) => i);
   return (
     <Grid
       container
@@ -26,6 +35,14 @@ function ProductsGrid({ products }) {
           <ProductCard product={product} />
         </Grid>
       ))}
+
+       {!isMobile && placeholders.map((i) => (
+          <Box key={i} sx={{ visibility: "hidden" }}>
+              <ProductCard  product={products[0]} />
+        </Box>
+      ))}
+
+        
     </Grid>
   );
 }

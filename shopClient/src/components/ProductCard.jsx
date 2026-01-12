@@ -17,7 +17,7 @@ function ProductCard({ product }) {
 
 
   return (
-    <Box sx={{ width: { xs: "90%", sm: 200, md: 220 } }}   >
+    <Box sx={{ width: { xs: "90%", sm: 200, md: 220, lg:230 } }}   >
       <Card
         sx={{
           width: "100%",

@@ -49,6 +49,20 @@
    
 }
 
+@media (min-width:1200px)
+{
+   .site-container
+   {
+    height:100vh;
+   }
+
+   .outlet-style
+   {
+     min-height:854px;
+   }
+  
+}
+
 @media (min-width: 768px) {
   .outlet-style
   {

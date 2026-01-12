@@ -28,7 +28,7 @@ function Cart() {
         onClick={toggleDrawer}
         sx={{
           position: 'fixed',
-          bottom: 16,
+          top: 16,
           right: 16,
           zIndex: 1300,
           bgcolor: 'primary.main',

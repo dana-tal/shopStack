@@ -49,9 +49,9 @@ function SiteTemplate() {
   }
           
   return (  
-    <div className="site-container">  
+    <div className={ match_auth ? "site-container site-container2":"site-container"} >  
        { !match_auth && <span> <h3 style={{ marginLeft:"30px" ,color:"#654321"}}>Hello, {info.userData.userName}</h3> <NavBar links={links} /></span> }  
-       <div className="outlet-style">
+       <div className={ match_auth ? "outlet-style2":"outlet-style"} >
        
           <Outlet />      
         </div>
