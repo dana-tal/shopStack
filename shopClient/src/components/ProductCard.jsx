@@ -3,16 +3,54 @@ import { memo, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-function ProductCard({ product }) {
-  const { title, price, imageUrl, inStock, soldUnits } = product;
-  const [quantity, setQuantity] = useState(0);
+import { updateProduct, removeProduct } from "../store/cartSlice"; 
+import { useDispatch, useSelector } from "react-redux";
 
-   const handleIncrement = () => {
-    if (quantity < inStock) setQuantity(quantity + 1);
+
+function ProductCard({ product }) {
+
+    const dispatch = useDispatch();
+//  const count = useSelector((state) => state.counter.value);
+  const allProducts = useSelector( (state)=> state.cart.cartProducts);
+  let cartProduct ;
+  if ( allProducts.hasOwnProperty(product.id))
+  {
+       cartProduct = allProducts[product.id];
+  } 
+  else
+  {
+      cartProduct = { id: product.id, price:product.price, quantity:0,name:product.title};
+  }
+  const quantity = cartProduct.quantity;
+
+
+  const { title, price, imageUrl, inStock, soldUnits } = product;
+//  const [quantity, setQuantity] = useState(0);
+
+   const handleIncrement = () => 
+  {
+    if (quantity < inStock) 
+    {
+      const newQuantity = quantity +1;
+     // setQuantity(newQuantity);
+      dispatch(updateProduct({id: product.id, price: product.price, quantity:newQuantity,name:product.title}))
+    }
   };
 
   const handleDecrement = () => {
-    if (quantity > 0) setQuantity(quantity - 1);
+    if (quantity > 0) 
+    {
+       const newQuantity = quantity - 1;
+       //setQuantity(newQuantity);
+       if (newQuantity===0)
+       {
+          dispatch(removeProduct({id: product.id}))
+       }
+       else
+       {
+          dispatch(updateProduct({id: product.id, price: product.price, quantity:newQuantity,name:product.title}));
+       }
+    }
   };
 
 

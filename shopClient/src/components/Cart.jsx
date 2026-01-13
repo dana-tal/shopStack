@@ -2,11 +2,19 @@ import { Box, Typography, Drawer, useMediaQuery, IconButton } from "@mui/materia
 import { useState } from "react";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSelector } from "react-redux";
 
 function Cart() {
   const [open, setOpen] = useState(false);
   
   const isSmallScreen = useMediaQuery("(max-width:600px)");
+
+const myCart = useSelector( (state)=> state.cart);
+
+console.log( "cart products");
+console.log(myCart.cartProducts);
+console.log("totalPrice",myCart.totalPrice);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
