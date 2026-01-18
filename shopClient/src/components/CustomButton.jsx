@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { getButtonFontSize } from '../utils/styleFuncs';
 import { useState,useEffect } from "react";
 
-function CustomButton({ clickHandler, bgColor="#488AC7", textColor="white", label}) 
+function CustomButton({ clickHandler, bgColor="#488AC7", textColor="white",textTransform="uppercase" ,label}) 
 {      
     const [buttonFontSize, setButtonFontSize] = useState(getButtonFontSize());
 
@@ -14,7 +14,7 @@ function CustomButton({ clickHandler, bgColor="#488AC7", textColor="white", labe
    
 
   return (
-     <Button onClick={clickHandler}  sx={{ backgroundColor:bgColor, color:textColor, marginLeft:"10px", fontSize:`${buttonFontSize} !important` }}>{label}</Button>
+     <Button onClick={clickHandler}  sx={{ backgroundColor:bgColor,textTransform:textTransform ,color:textColor, marginLeft:"10px", fontSize:`${buttonFontSize} !important` }}>{label}</Button>
   )
 }
 

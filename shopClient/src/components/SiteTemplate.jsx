@@ -4,6 +4,8 @@ import NavBar from "./NavBar";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { requestLogout } from "../utils/authRequests";
+import { useDispatch} from "react-redux";
+import { resetCart } from "../store/cartSlice"; 
 
 function SiteTemplate() {
 
@@ -11,12 +13,20 @@ function SiteTemplate() {
   const match_admin = useMatch("/admin/*");
   const match_store = useMatch("/store/*");
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
     const info = useSelector((state) => state.auth);
-   // console.log("info",info);
-
+   
   let links;
+
+  const handleLogout = ()=>{
+        console.log('logging out');
+        dispatch(resetCart())
+        requestLogout();
+        navigate("/auth/login", { replace: true });
+  }
 
   if (match_admin)
   {
@@ -25,13 +35,7 @@ function SiteTemplate() {
                 {link:'admin-products',name:'Products'},
                 {link:'customers',name:'Customers'},
                 {link:'statistics',name:'Statistics'},
-                { name:'Logout', callback: ()=>
-                    { 
-                        console.log('logging out');
-                        requestLogout();
-                        navigate("/auth/login", { replace: true });
-                    }
-                }
+                { name:'Logout', callback: handleLogout}
               ];
   }
   else if (match_store)
@@ -40,11 +44,7 @@ function SiteTemplate() {
                 {link:'products',name:'Products'},
                 {link:'my-orders',name:'My Orders'},
                 {link:'my-account',name:'My Account'},
-                { name:'Logout', callback: ()=>{ 
-                        console.log('logging out');
-                        requestLogout();
-                        navigate("/auth/login", { replace: true });
-                }}
+                { name:'Logout', callback: handleLogout}
       ];
   }
           
