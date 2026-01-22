@@ -18,6 +18,8 @@ function SiteTemplate() {
   const navigate = useNavigate();
 
     const info = useSelector((state) => state.auth);
+
+  //  console.log(info.userData);
    
   let links;
 

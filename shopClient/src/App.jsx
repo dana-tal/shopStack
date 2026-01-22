@@ -16,6 +16,7 @@ import Statistics from "./components/Statistics";
 import ProductsCatalog from "./components/ProductsCatalog";
 import MyOrders from "./components/MyOrders";
 import MyAccount from "./components/MyAccount";
+import ThankU from "./components/ThankU";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -72,7 +73,8 @@ function App() {
               <Route path="store" element={<ProtectedRoute><SiteTemplate/></ProtectedRoute>} >
                   <Route path="products" element={<ProductsCatalog/>} />
                   <Route path="my-orders" element={<MyOrders/>} />
-                  <Route path="my-account" element={<MyAccount/>} />                
+                  <Route path="my-account" element={<MyAccount/>} />   
+                  <Route path="thankyou" element={<ThankU/>} />             
               </Route>              
         </Routes>    
     </>

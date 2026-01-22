@@ -52,6 +52,7 @@ const authRouter = require('./routers/authRouter');
 const categoryRouter = require('./routers/categoryRouter');
 const productRouter = require('./routers/productRouter');
 const userRouter = require('./routers/userRouter');
+const orderRouter = require('./routers/orderRouter');
 
 const PORT = process.env.PORT || 3000;;
 
@@ -59,6 +60,7 @@ app.use('/auth', authRouter);
 app.use('/category', requireAuth, categoryRouter);
 app.use('/product', requireAuth,productRouter);
 app.use('/user',  requireAuth,userRouter);
+app.use('/order',requireAuth, orderRouter);
   
 app.get("/", (req, res) => {
   res.send("Server is running! ");
