@@ -1,4 +1,4 @@
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const Order = require('../models/orderModel');
 const OrderDetails = require('../models/orderDetails');
@@ -14,9 +14,10 @@ const addOrderDetails =( productRow) =>{
     return orderDetails.save();
 }
 
+
 const getProductsOrders = ()=>{
 
-     return orderDetailsModel.aggregate([
+     return OrderDetails.aggregate([
     // Group by productId and sum quantities
     {
       $group: {
@@ -54,8 +55,47 @@ const getProductsOrders = ()=>{
 
 } 
 
+
+const getUserOrderedProducts =(userId) => {
+    return OrderDetails.aggregate([
+        {
+            $lookup: {
+                from: "orders",
+                localField: "orderId",
+                foreignField: "_id",
+                as: "order"
+            }
+        },
+        { $unwind: "$order" },
+        { $match: { "order.userId": new mongoose.Types.ObjectId(userId) } },
+        {
+            $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "product"
+            }
+        },
+        { $unwind: "$product" },
+        {
+            $project: {
+                _id: 0,
+                id: "$_id",
+                productName: "$product.title",
+                quantity: "$quantity",
+                total: "$productTotal",
+                orderDate: "$order.createdAt"
+            }
+        },
+        { $sort: { orderDate: -1 } }
+    ]);
+    
+}
+
+
+
 const getUserOrders = (userId) =>{
-         return orderModel.aggregate([
+         return Order.aggregate([
     // 1. Filter orders by userId
     {
       $match: {
@@ -122,5 +162,6 @@ module.exports ={
      addOrder,
      addOrderDetails,
      getUserOrders,
-     getProductsOrders
+     getProductsOrders,
+     getUserOrderedProducts
 }

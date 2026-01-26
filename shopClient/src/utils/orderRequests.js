@@ -27,6 +27,28 @@ const requestOrderPlace = async (userId,order_obj)=>{
 }
 
 
+const requestUserOrders = async (userId) => 
+{
+    try
+    {
+        const response =await axios.get(DOMAIN+'/order/'+userId,{ withCredentials: true });
+        return {
+            ok: true,
+            data:  response.data,
+            message: "The user orders read successfully"
+        }
+    }
+    catch(err)
+    {
+        console.log("error:");
+        console.log(err);
+       // return analize_error(err);
+    }
+}
+
+
+
 export {
-    requestOrderPlace
+    requestOrderPlace,
+    requestUserOrders
 }

@@ -16,8 +16,13 @@ const addOrder = async (orderInfo) =>{
     return  { id: _id, ...rest };
 }
 
+const getUserOrders = async (userId) =>{
+    const userOrders = await orderRepo.getUserOrderedProducts(userId);
+    return userOrders;
+}
 
 
 module.exports = {
-    addOrder
+    addOrder,
+    getUserOrders
 }

@@ -1,25 +1,19 @@
 
 const DOMAIN = import.meta.env.VITE_APP_DOMAIN;
-import {  useNavigate } from "react-router-dom";
 
 const analize_error = (err) =>{
-
-   const navigate = useNavigate();
-
+   
       console.log("analize error");
     if (err.response)  // Server responded with non-2xx status
       {
       console.log("Server responded with:", err.response.data);
       const msg = err.response.data.message;
+      let errInfo = {   ok: false, message: err.response.data.message || "Action failed", data: err.response.data};
       if (msg === 'Not logged in')
       {
-             navigate("/auth/login", { replace: true });
+          errInfo.redirectTo ="/auth/login";             
       }  
-      return {
-        ok: false,
-        message: err.response.data.message || "Action failed",
-        data: err.response.data,
-      };
+      return errInfo;
     } 
     else if (err.request) // Request was sent, but no response
     {

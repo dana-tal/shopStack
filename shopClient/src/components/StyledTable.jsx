@@ -7,7 +7,7 @@ import { getStyledTableStyles} from "../utils/styledTableStyles";
 import { useMediaQuery } from '@mui/material';
 
 
-const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, title="",includeCheckboxes=false},ref)=>
+const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, title="",includeCheckboxes=false, zebraRows = false},ref)=>
 {
    const isMobile = useMediaQuery('(max-width:600px)');
    const selectionRef = useRef([]);
@@ -15,6 +15,8 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
   useImperativeHandle(ref, () => ({
     getSelectedIds: () => selectionRef.current
   }));
+
+console.log("zebraRows:",zebraRows)
 
   return (
       <Paper sx={{  width: '96%', marginBottom:'30px !important' , backgroundColor:"#FAF0E6" }}> 
@@ -27,6 +29,17 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
             density="standard"
         rows={rows}
         columns={columns}
+        getRowClassName={(params) =>{
+                if (zebraRows)
+                {
+                  return params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+                }
+                else
+                {
+                    return '';
+                }
+              }
+        }
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions= { pageSizes}
           disableRowSelectionOnClick
@@ -41,10 +54,28 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
           ...getStyledTableStyles(),
           minHeight: rows.length === 0 ? 400 : 'auto', // stable height while loading
           width: '100%',
+
+// #C9C0BB 
+
+// Zebra stripes with higher specificity
+"& .even.MuiDataGrid-row": { backgroundColor: "#f5f5f5" },
+"& .odd.MuiDataGrid-row": { backgroundColor: "#C8AD7F" },
+
+
+// Hover effect
+"& .even.MuiDataGrid-row:hover": { backgroundColor: "#e0dcd1 !important" },
+"& .odd.MuiDataGrid-row:hover": { backgroundColor: "#e0dcd1 !important" },
+
+
+// Selected rows
+"& .even.Mui-selected": { backgroundColor: "#c8b69c !important" },
+"& .odd.Mui-selected": { backgroundColor: "#c8b69c !important" },
+
         }}
         getRowHeight={isMobile ? () => 'auto' : undefined} // responsive on mobile
          
       />
+   
     </Paper>
   )
 });
