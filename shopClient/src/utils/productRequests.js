@@ -89,6 +89,23 @@ const requestAllProducts = async ()=> {
     }
 }
 
+const requestSoldProducts = async () =>{
+    try
+    {
+        const response = await axios.get (DOMAIN +'/product/sold',{ withCredentials: true })
+        return {
+                    ok:true,
+                    data: response.data,
+                    message:"Sold products returned successfully"
+                };
+    }
+    catch(err)
+    {
+        return analize_error(err);
+    }
+}
+
+
 const requestProductsPage = async (pageNum,pageSize,filters=null) =>{
     try
     {
@@ -145,6 +162,7 @@ export {
      requestProductAdd,
      requestProductUpdate,
      requestAllProducts,
+     requestSoldProducts,
      requestProductsPage,
      requestRemoveProducts,
      requestProductById

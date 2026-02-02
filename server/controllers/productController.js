@@ -23,6 +23,26 @@ const getAllProducts = async (req,res) =>
     }
 }
 
+const getSoldProducts = async (req,res) =>
+{
+    try
+    {
+        const products = await productService.getSoldProducts();
+         if (!products)
+        {
+             return res.status(204).json({ok:false,productData:null, message: 'The request was successful, but there are no sold products yet'});             
+        }
+        return res.status(200).json({ok:true,productData:products, message:'Sold products retrieved successfully'})
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+                ok: false,
+                message: err.message                 
+            });    
+    }
+}
+
 const getProductsPage = async (req,res) =>
 {
     try
@@ -198,6 +218,7 @@ module.exports =
     deleteProduct,
     deleteProducts,
     getAllProducts,
+    getSoldProducts,
     getProductsPage,
     getProductById
 }

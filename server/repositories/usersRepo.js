@@ -1,5 +1,6 @@
 
 const User = require('../models/userModel');
+const Order = require('../models/orderModel');
 
 
 const addUser = (userObj)=>{
@@ -59,10 +60,41 @@ const updateUser = async (id, userObj) =>
    return await user.save();                                                                         
 }
 
-/*
-const getAllUsers = () =>{
-    return User.find({}, '-password');
-}*/
+const getBuyers = () =>{
+
+    return Order.aggregate([
+    // 1. Group orders by userId (this guarantees uniqueness)
+    {
+      $group: {
+        _id: "$userId"
+      }
+    },
+
+    // 2. Join with users collection
+    {
+      $lookup: {
+        from: "users",            // MongoDB collection name (plural!)
+        localField: "_id",  // the grouped _id
+        foreignField: "_id",
+        as: "user"
+      }
+    },
+
+    // 3. Flatten the joined user array
+    { $unwind: "$user" },
+
+    // 4. Shape the response
+    {
+      $project: {
+        _id: 0,
+        userId: "$user._id",
+        firstName: "$user.firstName",
+        lastName: "$user.lastName"
+      }
+    }
+  ]);
+
+}
 
 module.exports = {
     addUser,
@@ -70,5 +102,6 @@ module.exports = {
     getUserById,
     getAllUsers,
     deleteUsers,
-    updateUser
+    updateUser, 
+    getBuyers
 }

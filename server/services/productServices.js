@@ -6,6 +6,10 @@ const getAllProducts =  (filters={})=>
     return productRepo.getAllProducts(filters);   
 }
 
+const getSoldProducts =  () =>{
+      return productRepo.getSoldProducts();   
+}
+
 const getProductsPage = async (pageNum, pageSize, filters) =>
 {
      const pageInfo = await productRepo.getProductsPage(pageNum, pageSize,filters);
@@ -40,6 +44,12 @@ const updateProduct = async ( id, productObj)=>{
   // return productRepo.updateProduct(id,productObj);
 }
 
+const sellProduct = async (productId, quantity) =>
+{
+     const updatedProd =  await productRepo.sellProduct(productId,quantity);
+     return updatedProd;
+}
+
 const deleteProduct = (id) =>{
     return productRepo.deleteProduct(id);
 }
@@ -56,10 +66,12 @@ const productExists = (id)=>{
 
 module.exports = {
     getAllProducts,
+    getSoldProducts,
     getProductsPage,
     getProductById,
     addProduct,
     updateProduct,
+    sellProduct,
     deleteProduct,
     deleteProducts,
     productExists

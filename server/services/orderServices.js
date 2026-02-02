@@ -1,5 +1,5 @@
 const orderRepo = require('../repositories/orderRepo');
-
+const productService = require('../services/productServices');
 
 
 const addOrder = async (orderInfo) =>{
@@ -12,6 +12,7 @@ const addOrder = async (orderInfo) =>{
     {
         total = productEntry.price * productEntry.quantity;
         await orderRepo.addOrderDetails({ orderId: newOrder._id, productId: productEntry.id ,price:productEntry.price,quantity: productEntry.quantity, productTotal: total});
+        await productService.sellProduct(productEntry.id,productEntry.quantity);
     }
     return  { id: _id, ...rest };
 }
@@ -21,8 +22,14 @@ const getUserOrders = async (userId) =>{
     return userOrders;
 }
 
+const getUserProductQuantities = async (userId) =>{
+    const userProducts = await orderRepo.getUserProductQuantities(userId);
+    return userProducts;
+}
+
 
 module.exports = {
     addOrder,
-    getUserOrders
+    getUserOrders,
+    getUserProductQuantities
 }

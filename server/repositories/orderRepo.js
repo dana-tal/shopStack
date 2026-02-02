@@ -158,10 +158,54 @@ const getUserOrders = (userId) =>{
 }
 
 
+
+ const getUserProductQuantities = async (userId) => {
+    
+        // First, get all order IDs for this user
+        const userOrders = await Order.find({ userId }).select('_id');
+        const orderIds = userOrders.map(o => o._id);
+
+        if (orderIds.length === 0) return []; // user has no orders
+
+        // Aggregate orderDetails for these orders
+       return OrderDetails.aggregate([
+            { $match: { orderId: { $in: orderIds } } }, // only this user's orders
+            { 
+                $group: { 
+                    _id: "$productId",           // group by product
+                    totalQuantity: { $sum: "$quantity" } // sum quantity
+                }
+            },
+            { 
+                $lookup: {                    // join with products collection to get product details
+                    from: "products",
+                    localField: "_id",   //grouped _id is the productId
+                    foreignField: "_id", // products._id
+                    as: "product"
+                }
+            },
+            { $unwind: "$product" },          // flatten the product array
+            { 
+                $project: {                    // select what to return
+                    productId: "$_id",
+                    title: "$product.title",
+                    totalQuantity: 1,
+                    _id: 0
+                } 
+            }
+        ]);
+
+       
+   
+}
+
+
+
 module.exports ={
      addOrder,
      addOrderDetails,
      getUserOrders,
      getProductsOrders,
-     getUserOrderedProducts
+     getUserOrderedProducts,
+     getUserProductQuantities
 }

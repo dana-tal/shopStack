@@ -14,6 +14,33 @@ const updateProduct = (id, productObj) =>
                                                                     // the document as it was before the update 
 }
 
+
+
+
+const sellProduct = async (productId, quantity) => {
+  try {
+          const updatedProduct = await Product.findOneAndUpdate(
+          { _id: productId, inStock: { $gte: quantity } }, // only update if enough stock
+          {
+              $inc: {
+                      soldUnits: quantity,
+                      inStock: -quantity
+                    }
+          },
+          { new: true }
+          );
+          if (!updatedProduct) 
+          {
+            throw new Error('Not enough stock or product not found');
+          }
+          return updatedProduct;
+  } 
+  catch (error)
+  {
+      throw error;
+  }
+}
+
 const deleteProduct = (productId) => {
   return  Product.findByIdAndDelete(productId);
 };
@@ -137,6 +164,20 @@ const getProductsPage = async (pageNum = 1, pageSize = 10, filters = {}) => {
 };
 
 
+const getSoldProducts = ()=>{
+   return Product.aggregate([
+    { $match: { soldUnits: { $gt: 0 } } },
+    {
+      $project: {
+        id: '$_id',
+        title: 1,
+        soldUnits: 1,
+        _id: 0
+      }
+    }
+  ]);
+}
+
 
 const getAllProducts = (filters={}) => {
 
@@ -186,10 +227,12 @@ const productExists = (id) =>{
 module.exports ={
      addProduct,
      updateProduct,
+     sellProduct,
      deleteProduct,
      deleteProducts,
      getProductById,
      getAllProducts,
+     getSoldProducts,
      getProductsPage,
      productExists
 }

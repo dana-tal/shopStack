@@ -39,16 +39,30 @@ const requestUserOrders = async (userId) =>
         }
     }
     catch(err)
-    {
-        console.log("error:");
-        console.log(err);
-       // return analize_error(err);
+    {       
+        return analize_error(err);
     }
 }
 
-
+const requestUserProducts = async (userId) =>
+{
+    try
+    {
+        const response =await axios.get(DOMAIN+'/order/products/'+userId,{ withCredentials: true });
+        return {
+            ok: true,
+            data:  response.data,
+            message: "The user products read successfully"
+        }
+    }
+    catch(err)
+    {       
+        return analize_error(err);
+    }
+}
 
 export {
     requestOrderPlace,
-    requestUserOrders
+    requestUserOrders,
+    requestUserProducts
 }

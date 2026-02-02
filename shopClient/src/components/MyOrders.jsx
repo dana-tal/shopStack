@@ -77,8 +77,11 @@ function MyOrders() {
       p={3}
       boxShadow={0}
       borderRadius={2}
+      textAlign ="center"
     >
-      <StyledTable rows={userOrders} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Orders" zebraRows={true} />         
+     
+     { userOrders.length >0 &&  <StyledTable rows={userOrders} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Orders" zebraRows={true} />   }
+     { userOrders.length ===0 && <p>No orders yet</p>}      
     </Box>
   )
 }

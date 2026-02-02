@@ -57,27 +57,27 @@ const getUserOrders = async (req,res) =>
     }    
 }
 
-/*
-
-const getProductById = async (req,res) =>
+const getUserProductQuantities = async (req,res) =>
 {
     try
     {
-         const result = genValidator.validateMongoId('id',req.params.id);
+         const result = genValidator.validateMongoId('userId',req.params.userId);
         if (result)
         {
-            return res.status(result.status).json({ok:false,prudcutData:null,message:result.message});
+            return res.status(result.status).json({ok:false,orderData:null,message:result.message});
         }
-        const id = req.params.id;
-        const product = await productService.getProductById(id);
-        if (!product) 
+        const userId = req.params.userId; 
+        productsInfo = await orderService.getUserProductQuantities(userId);
+        if (!productsInfo)
         {
-            return res.status(404).json({ok:false,productData:null,message: `The product ${id} does not exist` });
+              return res.status(404).json({ok:false,orderData:null,message: `The user ${userId} does not have any products yet` });
         }
-        return res.status(200).json({ok:true,productData:product,message:'Product info returned successfully'});  
+        return res.status(200).json({ok:true,orderData:productsInfo,message:'Products info returned successfully'});  
     }
     catch(err)
     {
+        console.log(err);
+        console.log(err);
          return res.status(500).json({
                 ok: false,
                 message: err.message                 
@@ -85,10 +85,9 @@ const getProductById = async (req,res) =>
     }
 }
 
-*/
-
 module.exports =
 {
     placeOrder,
-    getUserOrders
+    getUserOrders,
+    getUserProductQuantities 
 }
