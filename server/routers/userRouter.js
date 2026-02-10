@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 
 router.get('/all',userController.getAllUsers);
+router.get('/buyers', userController.getBuyers);
 router.get('/:id', userController.getUserById);
 router.delete("/remove-many",userController.deleteUsers);
 router.put('/update/:id', userController.updateUser);

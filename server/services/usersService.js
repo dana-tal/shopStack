@@ -129,6 +129,18 @@ const deleteUsers = (ids) =>
     return usersRepo.deleteUsers(ids);
 }
 
+const getBuyers = async () =>{
+     try
+    {
+        const buyers = await usersRepo.getBuyers();
+        return buyers;
+    }
+    catch(err)
+    {
+        console.log("getAllUsers failed with :",err);  
+        throw err;
+    }
+}
 
 module.exports = {
     addUser,
@@ -136,6 +148,7 @@ module.exports = {
     verifyUser,
     userExists,
     getAllUsers,
+    getBuyers,
     getUserById,
     deleteUsers
 }

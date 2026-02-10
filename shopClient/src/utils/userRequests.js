@@ -40,6 +40,26 @@ const requestAllUsers = async ()=>{
 }
 
 
+const requestBuyers = async ()=>{
+    try
+    {
+        const response = await axios.get(DOMAIN+'/user/buyers',  { withCredentials: true });
+            return {
+                            ok: true,
+                            data: response.data,        // the category object
+                            message: "All buyers read successfully",
+                    };
+    }
+    catch(err)
+    {     
+      return analize_error(err);
+    }
+}
+
+
+
+
+
 const requestRemoveUsers = async (ids) =>{
     try
     {
@@ -77,6 +97,7 @@ const requestUserById = async (userId) =>
 export
 {
     requestAllUsers,
+    requestBuyers,
     requestRemoveUsers,
     requestUserUpdate,
     requestUserById

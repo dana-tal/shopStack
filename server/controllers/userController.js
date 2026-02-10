@@ -19,6 +19,24 @@ const getAllUsers = async (req,res) =>{
 
 }
 
+
+const getBuyers = async (req,res) =>{
+
+    try
+    {    
+        const buyers = await userService.getBuyers();
+        return res.status(200).json({ ok:true, userData:buyers,message:"All buyers read successfully"});
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+                    ok: false,
+                    message: err.message                 
+        });    
+    }
+
+}
+
 const getUserById = async (req,res) => {
     try
     {
@@ -99,6 +117,7 @@ const deleteUsers = async (req,res) =>
 
 module.exports = {
     getAllUsers,
+    getBuyers,
     getUserById,
     deleteUsers,
     updateUser
