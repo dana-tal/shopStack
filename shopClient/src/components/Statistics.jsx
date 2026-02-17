@@ -63,31 +63,6 @@ function Statistics() {
   // Total chart height
 const chartHeight = Math.max(300, barProducts.length * 50);
 
-// Chart margins
-const marginTop = 20;
-const marginBottom = 30;
-
-// Vertical space for bars
-const verticalSpace = chartHeight - marginTop - marginBottom;
-
-// Height of each bar band
-const bandHeight = barProducts.length ? verticalSpace / barProducts.length : 0;
-
-// Maximum quantity for horizontal scaling
-const maxQuantity = Math.max(...barProducts.map(p => p.quantity), 1);
-
-const yScale = (index) => {
-  // each bar's vertical center
-  // @mui/x-charts divides chartHeight - top - bottom into bands + internal padding
-  const bandCount = barProducts.length;
-  const availableHeight = chartHeight - 20 - 30; // top and bottom margins
-  const paddingRatio = 0.1; // 10% of band is padding
-  const bandHeight = availableHeight / bandCount;
-  const innerHeight = bandHeight * (1 - paddingRatio);
-  const offset = bandHeight * index + innerHeight / 2 + 20; // add top margin
-  return offset;
-};
-
   return (
         <Grid container spacing={3} justifyContent="center">
             <Grid item xs={12} md={6}>
@@ -132,11 +107,24 @@ const yScale = (index) => {
       { scaleType: 'band', dataKey: 'name', width: 140 },
     ]}
     series={[
-      { dataKey: 'quantity', color: '#1976d2' },
+      { dataKey: 'quantity', color: '#1976d2', barLabel: 'value',           // show the value
+      barLabelPlacement: 'center', // center the label inside each bar
+      // font styling (color may still follow theme)
+      barLabelStyle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+      }, },
     ]}
     margin={{ left: 10, right: 50, top: 20, bottom: 30 }}
     height={chartHeight}
     width={500}
+
+      sx={{
+        '& .MuiBarLabel-root': {
+          fontSize: '11px',
+          fill:'white'
+        },
+      }}
   />
 
   
