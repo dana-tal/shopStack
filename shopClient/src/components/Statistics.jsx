@@ -19,8 +19,8 @@ function Statistics() {
 
      const fetchUserProducts = async () =>{
 
-      const info = await requestUserProducts(userId); // '6943d4acc577d09801c4d5bf'
-      console.log("user products:");
+      const info = await requestUserProducts(userId); 
+     // console.log("user products:");
      // console.log(info.data.orderData);
 
       const prods = info.data.orderData.map( (prod)=>{ return{ name:prod.title, quantity:prod.totalQuantity } } );
@@ -52,8 +52,8 @@ function Statistics() {
                                                   label: product.title,
                                               } } 
                                 );
-       console.log("pieData:");
-       console.log(pieData);
+     //  console.log("pieData:");
+     //  console.log(pieData);
         setPieProducts(pieData);
     }
      fetchSoldProducts();
@@ -93,45 +93,37 @@ const chartHeight = Math.max(300, barProducts.length * 50);
                       Products Baught by {userId ? users.find(u => u.userId === userId)?.firstName : 'User'}
                     </Typography>
                   </Box>
-                  {false && <Box  sx={{ width: '100%', minWidth: 500, height: { xs: 300, md: 300 } }} />  }
-                  
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-  {/* Bar chart */}
-  <BarChart
-    dataset={barProducts}
-    layout="horizontal"
-    xAxis={[
-      { label: 'Quantity', max: Math.max(...barProducts.map(p => p.quantity)) + 2 },
-    ]}
-    yAxis={[
-      { scaleType: 'band', dataKey: 'name', width: 140 },
-    ]}
-    series={[
-      { dataKey: 'quantity', color: '#1976d2', barLabel: 'value',           // show the value
-      barLabelPlacement: 'center', // center the label inside each bar
-      // font styling (color may still follow theme)
-      barLabelStyle: {
-        fontSize: 12,
-        fontWeight: 'bold',
-      }, },
-    ]}
-    margin={{ left: 10, right: 50, top: 20, bottom: 30 }}
-    height={chartHeight}
-    width={500}
+                          <BarChart
+                            dataset={barProducts}
+                            layout="horizontal"
+                            xAxis={[
+                              { label: 'Quantity', max: Math.max(...barProducts.map(p => p.quantity)) + 2 },
+                            ]}
+                            yAxis={[
+                              { scaleType: 'band', dataKey: 'name', width: 140 },
+                            ]}
+                            series={[
+                              { dataKey: 'quantity', color: '#1976d2', barLabel: 'value',           // show the value
+                              barLabelPlacement: 'center', // center the label inside each bar
+                              // font styling (color may still follow theme)
+                              barLabelStyle: {
+                                fontSize: 12,
+                                fontWeight: 'bold',
+                              }, },
+                            ]}
+                            margin={{ left: 10, right: 50, top: 20, bottom: 30 }}
+                            height={chartHeight}
+                            width={500}
 
-      sx={{
-        '& .MuiBarLabel-root': {
-          fontSize: '11px',
-          fill:'white'
-        },
-      }}
-  />
-
-  
-</Box>
-
-
-
+                              sx={{
+                                '& .MuiBarLabel-root': {
+                                  fontSize: '11px',
+                                  fill:'white'
+                                },
+                              }}
+                          />
+                </Box>
               </Paper>
             </Grid>
     </Grid>
