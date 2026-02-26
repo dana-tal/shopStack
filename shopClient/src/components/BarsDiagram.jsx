@@ -38,8 +38,8 @@ const BarsDiagram = () => {
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
       
       {/* Header + User Select */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6" component="h3" >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2,gap:1 }}>
+        <Typography variant="h6" component="h3"  sx={{ textAlign: 'center', width: '100%' }}>
           Products Bought by {userId ? users.find(u => u.userId === userId)?.firstName : 'User'}
         </Typography>
         <FormControl size="small" sx={{ mt: { xs: 1, sm: 0 }, minWidth: 150 }}>

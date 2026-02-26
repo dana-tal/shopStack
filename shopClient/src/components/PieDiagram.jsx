@@ -17,7 +17,7 @@ function PieDiagram({data,title="",maxSlices=5}) {
         </Typography>
      
       <PieChart
-          sx={{ width: '80%', height:{ xs: '30vh', sm: '35vh', md: '32vh' }  }} /* { xs: '30vh', sm: '35vh', md: '32vh' }*/ 
+          sx={{ width: '80%', height:{ xs: '30vh', sm: '35vh', md: '32vh' } , mx: 'auto' }} /* { xs: '30vh', sm: '35vh', md: '32vh' }*/ 
         series={[
           {
             data:top,           
