@@ -6,7 +6,9 @@
  
 .site-container
 {
-   min-height: auto;
+  /* min-height: auto;*/
+    min-height: 100vh;     /* fallback */
+   min-height: 100dvh;    /* correct mobile fix */
     background: linear-gradient(45deg,#357EC7,#E0FFFF,#488AC7, #FFFAF0 ); /* #E0FFFF *#F0F8FF, #F2F0DF */
     display:flex;
     flex-direction:column;
@@ -53,10 +55,10 @@
 
 @media (min-width:1200px)
 {
-   .site-container
+  /* .site-container
    {
     height:100vh;
-   }
+   }*/
 
    .outlet-style
    {
