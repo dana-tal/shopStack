@@ -9,20 +9,15 @@ function PieDiagram({data,title="",maxSlices=5}) {
   if (otherValue > 0) top.push({ id: 'other', label: 'Other', value: otherValue });
 
   return (
-        <Box
-      sx={{
-        width: '100%',
-        height: {
-          xs: 260,
-          sm: 300,
-          md: 340,
-        },
-      }}
+      <Box  sx={{ width: '100%', flexGrow: 1 ,alignItems: 'center'}}   
+     
     >
         <Typography variant="h6" gutterBottom textAlign="center">
            {title}
         </Typography>
+     
       <PieChart
+          sx={{ width: '80%', height:{ xs: '30vh', sm: '35vh', md: '32vh' }  }} /* { xs: '30vh', sm: '35vh', md: '32vh' }*/ 
         series={[
           {
             data:top,           
@@ -34,6 +29,13 @@ function PieDiagram({data,title="",maxSlices=5}) {
         ]}
 
         slotProps={{
+             legend: {
+                  direction: 'row',
+                  position: { vertical: 'bottom', horizontal: 'middle' },
+                    labelStyle: {
+                            fontSize: 11,
+                    },
+                },
             pieArc: {
                 sx: {
                 stroke: 'none',

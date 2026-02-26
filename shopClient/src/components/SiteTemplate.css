@@ -43,10 +43,12 @@
     overflow: auto;
     background-color: #FFFAF0 /* floral white */ ;
     margin:0 auto;
-    min-width:80%;
+    min-width:80%; 
+    /* width: 100%; */
+  /*margin: 0;*/
     padding-bottom:0;
     align-content: center;
-   
+   border: 3px solid red; 
 }
 
 @media (min-width:1200px)
@@ -63,13 +65,14 @@
   
 }
 
+/*
 @media (min-width: 768px) {
   .outlet-style
   {
     width:80%;
     
   }
-}
+}*/
 
 @media (max-width: 360px) {
   .outlet-style
