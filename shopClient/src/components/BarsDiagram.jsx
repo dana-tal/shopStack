@@ -35,7 +35,7 @@ const BarsDiagram = () => {
   }, [userId]);
 
   return (
-    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       
       {/* Header + User Select */}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2,gap:1 }}>
@@ -88,7 +88,7 @@ const BarsDiagram = () => {
         </Box>
       </Box>
 
-    </Paper>
+   </Box>
   );
 }
 
