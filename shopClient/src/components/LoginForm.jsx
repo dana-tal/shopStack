@@ -85,13 +85,17 @@ function LoginForm() {
 
   return (
     <Box
-       width="80%"
+    width={{ xs: "90%", sm: "70%", md: "70%", lg: "40%" }}
+      
       mx="auto"
       mt={5}
       p={3}
       boxShadow={3}
       borderRadius={2}
-      
+      backgroundColor="#F8F6F0"
+      minHeight={{xs:"400px", sm:"500px", md:"500px",lg:"500px"}}
+      alignItems="center"
+      display="flex"
     >
      
        {errors.root && <Alert severity="error">{errors.root.message}</Alert>}

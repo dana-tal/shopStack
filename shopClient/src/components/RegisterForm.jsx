@@ -89,12 +89,13 @@ function RegisterForm() {
 
   return (
     <Box
-      width="80%"
+      width={{ xs: "90%", sm: "70%", md: "70%", lg: "40%" }}
       mx="auto"
       mt={5}
       p={3}
       boxShadow={3}
       borderRadius={2}
+       backgroundColor="#F8F6F0"
     >
       <Typography variant="h5" mb={3} textAlign="center" >
         Registration Form

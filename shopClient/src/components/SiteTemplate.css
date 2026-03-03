@@ -43,11 +43,9 @@
 {
    height: auto;
     overflow: auto;
-    background-color: #FFFAF0 /* floral white */ ;
+    background-color:#F8F6F0; /* #FFFAF0 /* floral white */ ;
     margin:0 auto;
     min-width:80%; 
-    /* width: 100%; */
-  /*margin: 0;*/
     padding-bottom:0;
     align-content: center;
   /* border: 3px solid red; */
@@ -55,11 +53,6 @@
 
 @media (min-width:1200px)
 {
-  /* .site-container
-   {
-    height:100vh;
-   }*/
-
    .outlet-style
    {
      min-height:854px;
