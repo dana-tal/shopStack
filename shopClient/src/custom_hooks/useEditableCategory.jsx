@@ -140,6 +140,7 @@ export const useEditableCategory = () => {
                  <TextField  sx={{
                                           "& .MuiInputBase-input": {
                                             textAlign: "center",
+                                            fontSize:{ xs:"8px", sm:"8px",md:"small",lg:"small"}
                                           },
                                         }}
                                         required

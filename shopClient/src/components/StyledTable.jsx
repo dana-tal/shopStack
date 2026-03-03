@@ -25,7 +25,6 @@ console.log("zebraRows:",zebraRows)
         </Typography> }
       <DataGrid
            loading={rows.length === 0}
-            style={{ minHeight: 400 }} 
             density="standard"
         rows={rows}
         columns={columns}
@@ -52,10 +51,11 @@ console.log("zebraRows:",zebraRows)
 
       sx={{
           ...getStyledTableStyles(),
-          minHeight: rows.length === 0 ? 400 : 'auto', // stable height while loading
+          /*minHeight: rows.length === 0 ? 400 : 'auto',*/
+          minHeight:{xs:"450px", sm:"640px", md:"640px",lg:"640px"},
           width: '100%',
 
-// #C9C0BB 
+
 
 // Zebra stripes with higher specificity
 "& .even.MuiDataGrid-row": { backgroundColor: "#f5f5f5" },
