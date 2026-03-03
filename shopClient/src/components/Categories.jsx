@@ -59,7 +59,7 @@ function Categories() {
       mx="auto"
       mt={5}
       p={3}
-      boxShadow={3}
+      boxShadow={0}
       borderRadius={2}
     >
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Categories"/>   

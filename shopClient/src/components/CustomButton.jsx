@@ -14,7 +14,7 @@ function CustomButton({ clickHandler, bgColor="#488AC7", textColor="white",textT
    
 
   return (
-     <Button onClick={clickHandler}  sx={{ backgroundColor:bgColor,textTransform:textTransform ,color:textColor, marginLeft:"10px", fontSize:`${buttonFontSize} !important` }}>{label}</Button>
+     <Button onClick={clickHandler} size="small"  sx={{ backgroundColor:bgColor,textTransform:textTransform ,color:textColor, marginLeft:"10px", fontSize:`${buttonFontSize} !important` }}>{label}</Button>
   )
 }
 

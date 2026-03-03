@@ -81,16 +81,17 @@ function AdminProducts() {
       mx="auto"
       mt={5}
       p={3}
-      boxShadow={3}
+      boxShadow={0}
       borderRadius={2}
     >
       {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
-      
+      <div style={{ display:"flex" ,flexDirection:"row", justifyContent:"center"}}>
       <CustomButton clickHandler={ () => { setIsLightBoxOpen(true);   setProductId(""); }} bgColor="#1974D2"  textColor="white" label="Add New Product"/>
    
       <CustomButton clickHandler={handleClick} bgColor="#CB6D51" textColor="white" label="Remove Products"/>
+      </div>
 
       <LightBox  key={productId || "new"}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
             <ProductForm   onAddProduct={handleProductAdd} onUpdateProduct={handleProductUpdate} prodId={productId} />
