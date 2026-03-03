@@ -62,8 +62,8 @@ function Categories() {
       boxShadow={0}
       borderRadius={2}
     >
-      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Categories"/>   
-      <CategoryForm onAddCategory={handleAddCategory} />
+     {rows &&  <><StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Categories"/>  
+     <CategoryForm onAddCategory={handleAddCategory} /></>}
     </Box>
   )
 }

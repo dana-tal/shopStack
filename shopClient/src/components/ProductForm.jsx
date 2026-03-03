@@ -98,7 +98,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
        <Paper
         elevation={0}
          sx={{
-                p: 3,
+                p: 0,
                 m: "auto",
                 width: "100%",             // take full width of parent
                 maxWidth: 1200,            // limit max width
@@ -109,7 +109,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
    
 
         {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
-        <form onSubmit={handleSubmit(onSubmit)} style={{ border:"1px solid blue", padding:"10px"}}>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ border:"2px solid #C19A6B",borderRadius:"10PX",padding:"10px",width:"100%"}}>
             <Typography variant="h5" align="center" sx={{ mb: 2 }}>
                { prodId ? 'Edit a Product': 'Add a New Product'}
             </Typography>
@@ -305,7 +305,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                 </Stack>
 
 
-                <Button type="submit" variant="contained" sx={{ alignSelf: "flex-start", mt: 1 }}>
+                <Button type="submit" variant="contained" sx={{ alignSelf: "flex-start", mt: 1 , textTransform:"capitalize"}}>
                    {selectedProduct ? 'Update Product':'Add Product'}
                 </Button>
             </Stack>
