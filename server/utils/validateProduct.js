@@ -7,6 +7,7 @@ const validateProductPayload = (body) =>
     let result = null;    
     const productObj = body;
 
+    
     result = genValidator.validateTitle('Product',productObj.title,2,80);
     if (result)
     {

@@ -7,6 +7,7 @@ export const useEditableProduct = () => {
       const [isLightboxOpen, setIsLightBoxOpen] = useState(false);
       const [ productId, setProductId ] = useState(""); // the product to be editted 
       const [feedbackMsg, setFeedbackMsg] = useState("");
+      const [errorMsg, setErrorMsg] = useState("");
 
 
     const handleEditProduct=(prodId) =>{
@@ -25,6 +26,13 @@ export const useEditableProduct = () => {
              setFeedbackMsg(msg);
               setTimeout(() => {
                     setFeedbackMsg("");
+                    }, 4000);
+     }
+
+     const showErrorMsg =  (msg)=>{
+        setErrorMsg(msg);
+         setTimeout(() => {
+                    setErrorMsg("");
                     }, 4000);
      }
     
@@ -72,6 +80,11 @@ export const useEditableProduct = () => {
 
       const handleRemoveProducts = async (ids) =>{
 
+        if (!ids || ids.length===0)
+        {
+            showErrorMsg("No products were selected for removal, please select some.");
+            return;
+        }
         const response = await requestRemoveProducts(ids);
         if (response.ok)
         {
@@ -108,7 +121,7 @@ export const useEditableProduct = () => {
                 rows,setRows, handleProductAdd ,handleProductUpdate,
                 fetchAllProducts, handleRemoveProducts,isLightboxOpen,
                 setIsLightBoxOpen,renderProductName, productId, setProductId,
-                feedbackMsg, setFeedbackMsg
+                feedbackMsg, errorMsg
             };
 };
 

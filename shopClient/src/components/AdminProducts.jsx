@@ -12,7 +12,7 @@ import { useIsMobile } from "../custom_hooks/useIsMobile";
 function AdminProducts() {
 
   const { rows, handleProductAdd,handleProductUpdate, fetchAllProducts, handleRemoveProducts,isLightboxOpen,
-     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg} = useEditableProduct();
+     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg,errorMsg} = useEditableProduct();
 
    const { isMobileDevice } = useIsMobile();
 
@@ -24,7 +24,16 @@ function AdminProducts() {
      if (tableRef.current) 
       {
         const selectedIDs = tableRef.current.getSelectedIds();
-        handleRemoveProducts(Array.from(selectedIDs.ids));      
+        console.log("selectedIDs:", selectedIDs.ids);
+       
+        if (!selectedIDs || !selectedIDs.ids )
+        {
+            handleRemoveProducts([]);
+        }
+        else 
+        {
+            handleRemoveProducts(Array.from(selectedIDs.ids));      
+        }
     }
   };
 
@@ -85,6 +94,7 @@ function AdminProducts() {
       borderRadius={2}
     >
       {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
+      {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
       <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
 
       <div style={{ display:"flex" ,flexDirection:"row", justifyContent:"center"}}>
