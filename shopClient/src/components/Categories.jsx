@@ -4,11 +4,13 @@ import  { useEditableCategory}  from '../custom_hooks/useEditableCategory';
 import { requestAllCategories } from '../utils/categoryRequests';
 import {Box} from "@mui/material";
 import CategoryForm from './CategoryForm';
+import {useState} from "react";
 
 function Categories() {
 
   const { rows, setRows, renderCategoryName,renderEditUpdateButton,renderRemoveButton, handleAddCategory } = useEditableCategory();
-  
+  const [isLoading, setIsLoading ] = useState(false);
+
   const columns = [
   { 
        field: 'categoryName',
@@ -45,8 +47,10 @@ function Categories() {
     {
       const readAllCategories = async ()=>
         {
+          setIsLoading(true);
           const all = await requestAllCategories();
           setRows(all.data.categoryData);
+          setIsLoading(false);
         }
         readAllCategories();
     }, []);
@@ -62,7 +66,7 @@ function Categories() {
       boxShadow={0}
       borderRadius={2}
     >
-     {rows &&  <><StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Categories"/>  
+     {rows &&  <><StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Categories" loading={isLoading}/>  
      <CategoryForm onAddCategory={handleAddCategory} /></>}
     </Box>
   )

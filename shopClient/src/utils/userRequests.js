@@ -100,6 +100,6 @@ export
     requestBuyers,
     requestRemoveUsers,
     requestUserUpdate,
-    requestUserById
+    requestUserById,   
 }
 

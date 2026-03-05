@@ -9,11 +9,14 @@ import LightBox from "./LightBox";
 import CustomerForm from "./CustomerForm";
 
 
+
 function Customers() {
 
   
    const { isMobileDevice } = useIsMobile();
-  const { rows, fetchAllUsers,feedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen ,renderCustomerName,userId} = useEditableUser();
+  const { rows, fetchAllUsers,feedbackMsg, handleUserUpdate,isLightboxOpen,
+     setIsLightBoxOpen ,renderCustomerName,userId,
+      renderCustomerOrders,lightBoxContent,userProducts,userFullName,loadingUsers, loadingProducts} = useEditableUser();
   const paginationModel = { page: 0, pageSize: 10 };
   
   const mobileColumns = [
@@ -65,10 +68,45 @@ function Customers() {
         sortable:false,
         valueGetter: (value,row)=>"orders",
         align:'left',
-        type:'string'
+        type:'string',
+        renderCell: renderCustomerOrders,
     }
 
   ]
+
+
+
+  const userColumns = [
+       {
+             field:'title',
+             headerName:'Product',
+             flex:1,
+             sortable:true,
+             valueGetter: (value,row)=>`${row.title}`,
+             align:'left',
+             headerAlign:'left'
+       },
+       {
+           field:'totalQuantity',
+           headerName:'Quantity',
+           flex:1,
+           sortable:true,
+           valueGetter: (value,row)=>`${row.totalQuantity}`,
+           align:'left',
+          headerAlign:'left'
+       },
+       {
+            field:'lastOrderDate',
+            headerName:'Order Date',
+            flex:1,
+            sortable:true,
+            valueGetter: (value,row)=>`${formatDate(row.lastOrderDate)}`,
+            align:'left',
+            headerAlign:'left'
+       }
+  ];
+
+ 
 
 
   useEffect( ()=>{
@@ -82,15 +120,18 @@ function Customers() {
               width={{ xs: "90%", sm: "70%", md: "70%", lg: "70%" }}
               mx="auto"
               mt={5}
-              p={3}
-              boxShadow={3}
+              p={0}
+              boxShadow={0}
               borderRadius={2}
           >
              {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
-             <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers"  />   
+             <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers"  loading={loadingUsers} />   
 
             <LightBox  key={userId}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
-                <CustomerForm   onUpdateUser={handleUserUpdate} userId={userId} />
+                { lightBoxContent==="user-form" && <CustomerForm   onUpdateUser={handleUserUpdate} userId={userId} />}
+                { lightBoxContent==="user-orders" && 
+                    <StyledTable rows={userProducts} columns={userColumns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title={userFullName+' Products'} loading={loadingProducts} />
+                }
             </LightBox>
            
           </Box>

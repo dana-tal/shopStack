@@ -77,7 +77,6 @@ const getUserProductQuantities = async (req,res) =>
     catch(err)
     {
         console.log(err);
-        console.log(err);
          return res.status(500).json({
                 ok: false,
                 message: err.message                 

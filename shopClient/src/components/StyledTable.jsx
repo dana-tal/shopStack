@@ -7,7 +7,7 @@ import { getStyledTableStyles} from "../utils/styledTableStyles";
 import { useMediaQuery } from '@mui/material';
 
 
-const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, title="",includeCheckboxes=false, zebraRows = false},ref)=>
+const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, title="",includeCheckboxes=false, zebraRows = false, loading=false },ref)=>
 {
    const isMobile = useMediaQuery('(max-width:600px)');
    const selectionRef = useRef([]);
@@ -24,9 +24,10 @@ console.log("zebraRows:",zebraRows)
                {title}
         </Typography> }
       <DataGrid
-           loading={rows.length === 0}
+           loading={ loading }
             density="standard"
-        rows={rows}
+            localeText={{ noRowsLabel: "No records found" }}
+        rows={rows || []}
         columns={columns}
         getRowClassName={(params) =>{
                 if (zebraRows)

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { requestAllUsers,requestRemoveUsers, requestUserUpdate} from "../utils/userRequests";
+import { requestAllUsers,requestRemoveUsers, requestUserUpdate, } from "../utils/userRequests";
+import { requestUserProducts } from "../utils/orderRequests";
 
 
 
@@ -7,21 +8,42 @@ export const useEditableUser = () => {
     const [rows, setRows] = useState([]);
     const [feedbackMsg, setFeedbackMsg] = useState("");
     const [isLightboxOpen, setIsLightBoxOpen] = useState(false);
+    const [lightBoxContent, setLightBoxContent] = useState("");
     const [ userId, setUserId ] = useState(""); // the user to be editted 
+    const [ userFullName, setUserFullName ] = useState("");
+    const [userProducts, setUserProducts] = useState([]);
+    const [loadingUsers, setLoadingUsers] = useState(false);
+    const [loadingProducts, setLoadingProducts] = useState(false);
 
 
     
     const handleEditUser=(uId) =>{
              setUserId(uId);
              setIsLightBoxOpen(true);
+             setLightBoxContent("user-form");
     }
 
+    const handleUserOrders = async (uId, fullName)=>{
+             setUserId(uId);
+             setUserFullName(fullName)
+             setIsLightBoxOpen(true);
+             setLightBoxContent("user-orders"); 
+             setLoadingProducts(true);
+             const info = await requestUserProducts(uId);
+             setUserProducts(info.data.orderData);
+             setLoadingProducts(false);
+            
+    }
 
     
     const renderCustomerName = (params)=>{
              return <span onClick={ ()=>{  handleEditUser( params.row.id );  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>
                 {params.row.firstName+' '+params.row.lastName }
                 </span>
+    }
+
+    const renderCustomerOrders = (params)=>{
+        return <span onClick={ ()=>{  handleUserOrders( params.row.id,  params.row.firstName+' '+params.row.lastName);  }} style={{ color:"blue", textDecoration:"underline" ,cursor: "pointer"}}>Orders</span>
     }
 
       const showFeedback = (msg)=>{
@@ -33,6 +55,7 @@ export const useEditableUser = () => {
 
       const fetchAllUsers = async () =>{
 
+           setLoadingUsers(true);
            const response = await requestAllUsers();
            if (response.ok)
            {
@@ -42,6 +65,7 @@ export const useEditableUser = () => {
            {
                console.log(response.message);
            }
+           setLoadingUsers(false);
       }
 
 
@@ -100,5 +124,7 @@ export const useEditableUser = () => {
     }
 
 
-      return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg, setFeedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen,renderCustomerName,userId,handleSimpleUserUpdate};
+      return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg,
+                setFeedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen,
+                renderCustomerName,userId,renderCustomerOrders,lightBoxContent,userProducts,userFullName, loadingUsers,loadingProducts};
 }

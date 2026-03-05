@@ -167,34 +167,54 @@ const getUserOrders = (userId) =>{
 
         if (orderIds.length === 0) return []; // user has no orders
 
-        // Aggregate orderDetails for these orders
-       return OrderDetails.aggregate([
-            { $match: { orderId: { $in: orderIds } } }, // only this user's orders
-            { 
-                $group: { 
-                    _id: "$productId",           // group by product
-                    totalQuantity: { $sum: "$quantity" } // sum quantity
+
+        return OrderDetails.aggregate([
+            {
+                $lookup: {
+                    from: "orders",
+                    localField: "orderId",
+                    foreignField: "_id",
+                    as: "order"
                 }
             },
-            { 
-                $lookup: {                    // join with products collection to get product details
+            { $unwind: "$order" },
+
+            {
+                $match: {
+                    "order.userId": new mongoose.Types.ObjectId(userId)
+                }
+            },
+
+            {
+                $group: {
+                    _id: "$productId",
+                    totalQuantity: { $sum: "$quantity" },
+                    lastOrderDate: { $max: "$order.createdAt" } // 👈 THIS
+                }
+            },
+
+            {
+                $lookup: {
                     from: "products",
-                    localField: "_id",   //grouped _id is the productId
-                    foreignField: "_id", // products._id
+                    localField: "_id",
+                    foreignField: "_id",
                     as: "product"
                 }
             },
-            { $unwind: "$product" },          // flatten the product array
-            { 
-                $project: {                    // select what to return
-                    productId: "$_id",
+            { $unwind: "$product" },
+
+            {
+                $project: {
+                    id: "$_id",
                     title: "$product.title",
                     totalQuantity: 1,
+                    lastOrderDate: 1,
                     _id: 0
-                } 
+                }
             }
         ]);
 
+     
        
    
 }

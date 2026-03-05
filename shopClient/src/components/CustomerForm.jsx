@@ -83,8 +83,9 @@ function CustomerForm({userId, onUpdateUser}) {
       mx="auto"
       mt={5}
       p={3}
-      boxShadow={3}
+      boxShadow={0}
       borderRadius={2}
+      border="2px solid #C19A6B"
     >
       <Typography variant="h5" mb={3} textAlign="center" >
           User Update Form
@@ -93,7 +94,7 @@ function CustomerForm({userId, onUpdateUser}) {
       {errors.root && <Alert severity="error">{errors.root.message}</Alert>}
       {isSubmitSuccessful && <Alert severity="success">User update successful!</Alert>}
 
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width:"100%"}}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width:"100%",  }}>
         <Stack spacing={2}>
                 <Stack direction="row" alignItems="center" spacing={2}>
                         <Typography sx={{ width: 120, whiteSpace:"nowrap" }} className="reg-label-font">First Name:</Typography>
@@ -259,7 +260,7 @@ function CustomerForm({userId, onUpdateUser}) {
                <Button
                     type="submit"
                     variant="contained"
-                    sx={{ mt: 2, alignSelf: "flex-start" }}
+                    sx={{ mt: 2, alignSelf: "flex-start" , textTransform:"capitalize"}}
                     >
                     Update User
                 </Button>
