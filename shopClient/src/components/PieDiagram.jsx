@@ -32,7 +32,7 @@ function PieDiagram({data,title="",maxSlices=5}) {
              legend: {
                   direction: 'row',
                   position: { vertical: 'bottom', horizontal: 'middle' },
-                    labelStyle: {
+                    labelstyle: {
                             fontSize: 11,
                     },
                 },
