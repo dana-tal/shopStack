@@ -12,7 +12,7 @@ import { useIsMobile } from "../custom_hooks/useIsMobile";
 function AdminProducts() {
 
   const { rows, handleProductAdd,handleProductUpdate, fetchAllProducts, handleRemoveProducts,isLightboxOpen,
-     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg,errorMsg} = useEditableProduct();
+     setIsLightBoxOpen ,renderProductName,productId,setProductId, feedbackMsg,errorMsg,loadingProducts} = useEditableProduct();
 
    const { isMobileDevice } = useIsMobile();
 
@@ -95,7 +95,7 @@ function AdminProducts() {
     >
       {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
       {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" includeCheckboxes={true} ref={tableRef} />   
+      <StyledTable rows={rows} columns={columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Products" loading={loadingProducts} includeCheckboxes={true} ref={tableRef} />   
 
       <div style={{ display:"flex" ,flexDirection:"row", justifyContent:"center"}}>
       <CustomButton clickHandler={ () => { setIsLightBoxOpen(true);   setProductId(""); }} bgColor="#1974D2"  textColor="white" label="Add New Product"/>

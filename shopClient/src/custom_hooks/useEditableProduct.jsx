@@ -8,6 +8,7 @@ export const useEditableProduct = () => {
       const [ productId, setProductId ] = useState(""); // the product to be editted 
       const [feedbackMsg, setFeedbackMsg] = useState("");
       const [errorMsg, setErrorMsg] = useState("");
+      const [loadingProducts, setLoadingProducts] = useState(false);
 
 
     const handleEditProduct=(prodId) =>{
@@ -104,6 +105,7 @@ export const useEditableProduct = () => {
 
       const fetchAllProducts = async () =>{
 
+            setLoadingProducts(true);
            const response = await requestAllProducts();
            if (response.ok)
            {
@@ -114,6 +116,7 @@ export const useEditableProduct = () => {
            {
                console.log(response.message);
            }
+           setLoadingProducts(false);
       }
 
 
@@ -121,7 +124,7 @@ export const useEditableProduct = () => {
                 rows,setRows, handleProductAdd ,handleProductUpdate,
                 fetchAllProducts, handleRemoveProducts,isLightboxOpen,
                 setIsLightBoxOpen,renderProductName, productId, setProductId,
-                feedbackMsg, errorMsg
+                feedbackMsg, errorMsg,loadingProducts
             };
 };
 
