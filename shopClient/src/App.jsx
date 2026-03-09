@@ -42,7 +42,7 @@ function App() {
       } 
       catch (err) 
       {
-        console.error("checkAuth failed:", err);
+        //console.error("checkAuth failed:", err);
         dispatch(clearUser());
       }
       finally

@@ -1,19 +1,40 @@
+import store from "../store";
+import { clearUser } from "../store/authSlice";
 
 const DOMAIN = import.meta.env.VITE_APP_DOMAIN;
+
+let redirecting = false; // prevents multiple redirects if many requests fail at once
 
 const analize_error = (err) =>{
    
       console.log("analize error");
     if (err.response)  // Server responded with non-2xx status
       {
-      console.log("Server responded with:", err.response.data);
-      const msg = err.response.data.message;
-      let errInfo = {   ok: false, message: err.response.data.message || "Action failed", data: err.response.data};
-      if (msg === 'Not logged in')
+      console.log("Server responded with:",err.response.status,err.response.data);
+      if (err.response?.status === 401) // not logged in ....
       {
-          errInfo.redirectTo ="/auth/login";             
+         if (!redirecting) {
+            redirecting = true;
+            store.dispatch(clearUser());
+            document.body.innerHTML = "Redirecting to login..."; // to prevent blank page
+           window.location.href = `${window.location.origin}/auth/login`;
+
+           // make redirecting great again ;-) (for next expired cookie)
+            setTimeout(() => {
+                redirecting = false;
+              }, 1000); // 1 second, just in case
+          }
+           return {
+              ok: false,
+              message: "Session expired",
+               data: err.response.data,
+            };
+      }
+      else
+      {
+          return {   ok: false, message: err.response.data.message || "Action failed", data: err.response.data};
       }  
-      return errInfo;
+     
     } 
     else if (err.request) // Request was sent, but no response
     {
