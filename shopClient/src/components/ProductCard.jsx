@@ -2,7 +2,7 @@ import { Card, CardMedia, CardContent, Typography, CardActions, Button, Box ,Ico
 import QuantitySetter from "./QuantitySetter";
 import { memo} from "react";
 
-function ProductCard({ product }) {
+function ProductCard({ product , compareClick}) {
 
   const { title, price, imageUrl, inStock, soldUnits } = product;
 
@@ -63,7 +63,7 @@ function ProductCard({ product }) {
       </CardContent>
 
          <QuantitySetter product={product} />
-       
+       <Button onClick={()=>{compareClick(title) }} sx={{ backgroundColor:"green", color:"white", textTransform:"capitalize"}}>Compare</Button>
       </Card>
     </Box>
   );

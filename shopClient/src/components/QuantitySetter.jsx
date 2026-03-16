@@ -132,6 +132,8 @@ function QuantitySetter({ product, showInCart= false}) {
             >
             <AddIcon  fontSize={showInCart ? "small" : "medium"} />
           </IconButton>
+
+         
         </CardActions>
   )
 }

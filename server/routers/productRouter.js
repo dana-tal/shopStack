@@ -8,6 +8,7 @@ router.get('/sold', productController.getSoldProducts);
 router.get('/page',productController.getProductsPage); // // GET /product/page?pageNum=1&pageSize=10&isActive=true
 router.get('/:id', productController.getProductById);
 router.post('/add', productController.addProduct);
+router.post('/offers', productController.getProductOffers);
 router.put('/update/:id', productController.updateProduct);
 router.delete("/remove/:id", productController.deleteProduct);
 router.delete("/remove-many",productController.deleteProducts);

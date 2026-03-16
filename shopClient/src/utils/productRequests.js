@@ -2,6 +2,28 @@ import axios from "axios";
 import { analize_error,DOMAIN  } from "./generalFuncs";
 
 
+const requestProductOffers = async (prodName)=>
+{
+       try
+       {
+             const response = await axios.post( DOMAIN+'/product/offers', 
+            {
+                title: prodName,               
+        },  { withCredentials: true } );
+
+        return {
+                   ok:true,
+                   data: response.data,
+                   message:'Product offers recieved successfully'
+        };
+       }
+       catch(err)
+        {
+            console.log("requestProductOffers catch")
+            return analize_error(err);
+        }
+}
+
 const requestProductUpdate = async (product_obj)=>
 { 
      try
@@ -166,5 +188,6 @@ export {
      requestSoldProducts,
      requestProductsPage,
      requestRemoveProducts,
-     requestProductById
+     requestProductById,
+     requestProductOffers
 }

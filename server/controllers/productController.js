@@ -1,6 +1,7 @@
 const productService = require('../services/productServices');
 const genValidator = require('../utils/generalValidator');
 const productValidator = require('../utils/validateProduct');
+const aiService= require('../services/aiService.js');
 
 
 const getAllProducts = async (req,res) =>
@@ -130,6 +131,34 @@ const addProduct = async (req,res) =>
     }
 }
 
+
+const getProductOffers = async (req,res)=>
+{
+    const productObj = req.body;
+    const result = genValidator.validateTitle('Product',productObj.title,2,80);
+    if (result)
+    {
+            return res.status(result.status).json({ok:false,prudcutData:null,message:result.message});
+    }
+    try
+    {
+        const offers = await  aiService.getProductOffers(productObj.title);
+        console.log("ai offers:");
+        console.log(offers);
+         return res.status(200).json({ok:true, productData:offers, message:'Product offers returned successfully'});
+    }
+     catch(err)
+    {
+        console.log("Error");
+        console.log( err);
+       return res.status(err.status || 500).json({
+            ok: false,
+            message: err.message,
+            errorField: err.field,           
+         });    
+    }
+}
+
 const updateProduct = async (req,res) =>
 {
     try
@@ -138,8 +167,10 @@ const updateProduct = async (req,res) =>
         const id = req.params.id;        
         const productObj = req.body;
 
-        console.log("my product");
-        console.log(productObj);
+      //  console.log("my product");
+        //console.log(productObj);
+
+      
         const updatedProduct = await productService.updateProduct(id,productObj);
         return res.status(200).json({ok:true, productData:updatedProduct, message:'Product updated successfully '});
     }
@@ -220,5 +251,6 @@ module.exports =
     getAllProducts,
     getSoldProducts,
     getProductsPage,
-    getProductById
+    getProductById,
+    getProductOffers
 }
