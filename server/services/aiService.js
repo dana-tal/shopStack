@@ -18,26 +18,48 @@ const serper = new Serper({
 
 // ---------------- STORE LIST ----------------
 const stores = [
-  "Amazon", "Walmart", "BestBuy", "Target", "eBay",
-  "AliExpress", "Costco", "IKEA", "Wayfair", "Newegg",
-  "Home Depot", "Lowe's", "Zara", "H&M", "Uniqlo"
+  "Amazon", "Walmart", "BestBuy", "Target", "eBay"
 ];
 
 // ---------------- UTILITIES ----------------
+
+// Is this URL alive and reachable within 3 seconds?
 const isUrlReachable = async (url) => {
   try {
-    const res = await fetch(url, { method: "GET", redirect: "follow", timeout: 5000 });
-    return res.ok && !res.url.includes("404");
-  } catch {
-    return false;
-  }
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 3000);
+
+          const res = await fetch(url, {
+            method: "HEAD",
+            redirect: "follow",
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeout);
+          return res.ok && !res.url.includes("404");
+      }
+      catch 
+      {
+          return false;
+      }
 };
 
-const validateUrlsParallel = async (urls) => {
-  const promises = urls.map(async url => ({ url, reachable: await isUrlReachable(url) }));
-  const results = await Promise.all(promises);
-  return results.filter(r => r.reachable).map(r => r.url);
+
+const validateUrlsFast = async (urls, limit = 10) => {
+  const results = [];
+
+  await Promise.all(
+    urls.map(async (url) => {
+      if (results.length >= limit) return;
+
+      const ok = await isUrlReachable(url);
+      if (ok) results.push(url);
+    })
+  );
+
+  return results;
 };
+
 
 const extractJSON = (content) => {
   content = content.trim().replace(/```json\s*/i, "").replace(/```$/, "").trim();
@@ -48,97 +70,120 @@ const extractJSON = (content) => {
 // ---------------- MAIN FUNCTION ----------------
 const getProductOffers = async (productName) => {
 
-  // 1️⃣ Parallel multi-store search
-  const searchPromises = stores.map(store => {
-    const storeQuery = `site:${store.toLowerCase().replace(/ /g,"")}.com "${productName}" buy -review -blog`;
-    return serper.search(storeQuery, { num: 5 }); // top 5 results per store
-  });
+        // Searching all the stores in paraller, to save time 
+        const searchPromises = stores.map(store => 
+          {
+              const storeQuery = `site:${store.toLowerCase().replace(/ /g,"")}.com "${productName}" buy -review -blog`;
+              return serper.search(storeQuery, { num: 3 }); // top 3 results per store
+          });
+        const allResults = await Promise.all(searchPromises);
 
-  const allResults = await Promise.all(searchPromises);
+        /* allResults are structured like :  
+                          [
+                { organic: [ { link: "..." }, { link: "..." } ] }, // Amazon
+                { organic: [ { link: "..." } ] },                  // Walmart
+                { organic: [ { link: "..." } ] }                   // Target
+              ]
+        */
 
-  // 2️⃣ Flatten all URLs
-  const urls = allResults
-    .flatMap(res => res.organic.map(r => r.link))
-    .filter(Boolean);
+        const MAX_URLS = 15;      
 
-  if (!urls.length) return [];
+        //  Flatten all URLs and slice them 
+        const urls = allResults
+                    .flatMap(res => res.organic.map(r => r.link))
+                    .filter(Boolean)
+                    .slice(0, MAX_URLS);
 
-  // 3️⃣ Validate URLs in parallel
-  const validUrls = await validateUrlsParallel(urls);
-  if (!validUrls.length) return [];
+          /* urls are structured like : 
+              [
+                    "amazon-link1",
+                    "amazon-link2",
+                    "walmart-link1",
+                    "target-link1"
+                  ]  */
 
-  // 4️⃣ Ask AI to extract store name, price, confirm single product page
-  const prompt_template = ChatPromptTemplate.fromMessages([
-    ["system", "You are an online shopping expert. Respond only with valid JSON array."],
-    ["human", `
-Given the following URLs for a product:
+        if (!urls.length) return [];
 
-${validUrls.join("\n")}
+        //  Validate URLs
+        const validUrls = await validateUrlsFast(urls, 10);
 
-Extract exactly 15 offers that are **single product pages**.
-Each offer must include:
-- storeName
-- productPageLink (must be one of the URLs above)
-- price
+        //const validUrls = await validateUrlsParallel(urls);
+        if (!validUrls.length) return [];
 
-Return ONLY a JSON array in this format:
-[
-{{ "storeName": "Amazon", "productPageLink": "https://www.amazon.com/dp/B09XYZ123", "price": "$19" }},
-{{ "storeName": "Walmart", "productPageLink": "https://www.walmart.com/ip/123456", "price": "$25" }}
-]
+        // 4️⃣ Ask AI to extract store name, price, confirm single product page
+        const prompt_template = ChatPromptTemplate.fromMessages([
+          ["system", "You are an online shopping expert. Respond only with valid JSON array."],
+          ["human", `
+      Given the following URLs for a product:
 
-Do not include duplicates, listings, blogs, or category pages.
-`]
-  ]);
+      ${validUrls.slice(0, 10).join("\n")}
 
-  const formatted_prompt = await prompt_template.formatMessages({ productName });
-  const response = await model.invoke(formatted_prompt);
+      Extract up to 8 offers that are **single product pages**.
+      Each offer must include:
+      - storeName
+      - productPageLink (must be one of the URLs above)
+      - price
 
-  // 5️⃣ Parse JSON safely
-  const jsonString = extractJSON(response.content);
-  if (!jsonString) return [];
+      Return ONLY a JSON array in this format:
+      [
+      {{ "storeName": "Amazon", "productPageLink": "https://www.amazon.com/dp/B09XYZ123", "price": "$19" }},
+      {{ "storeName": "Walmart", "productPageLink": "https://www.walmart.com/ip/123456", "price": "$25" }}
+      ]
 
-  let offers;
-  try {
-    offers = JSON.parse(jsonString);
-  } catch {
-    console.error("AI returned invalid JSON:", response.content);
-    return [];
-  }
+      - Use only the URLs provided above
+      - Prefer different stores when possible
+      - Do not include duplicates, listings, blogs, or category pages.
+      `]
+        ]);
 
-  // 6️⃣ Enforce store diversity: max 1 offer per store first, then fill remaining
-  const finalOffers = [];
-  const seenUrls = new Set();
-  const storesUsed = new Set();
+        const formatted_prompt = await prompt_template.formatMessages({ productName });
+        const response = await model.invoke(formatted_prompt);
 
-  // pick one per store
-  for (const offer of offers) {
-    if (finalOffers.length === 5) break;
-    if (!offer.productPageLink || seenUrls.has(offer.productPageLink)) continue;
-    if (storesUsed.has(offer.storeName)) continue;
-      finalOffers.push({
-          id: crypto.randomUUID(),
-           ...offer
-      });
-  //  finalOffers.push(offer);
-    seenUrls.add(offer.productPageLink);
-    storesUsed.add(offer.storeName);
-  }
+        // Parse JSON safely
+        const jsonString = extractJSON(response.content);
+        if (!jsonString) return [];
 
-  // fill remaining offers ignoring store
-  for (const offer of offers) {
-    if (finalOffers.length === 5) break;
-    if (!offer.productPageLink || seenUrls.has(offer.productPageLink)) continue;
-    //finalOffers.push(offer);
-      finalOffers.push({
-          id: crypto.randomUUID(),
-           ...offer
-      });
-  //  finalOffers
-    seenUrls.add(offer.productPageLink);
-  }
+        let offers;
+        try {
+          offers = JSON.parse(jsonString);
+        } catch {
+          console.error("AI returned invalid JSON:", response.content);
+          return [];
+        }
 
-  return finalOffers;
+        // 6️⃣ Enforce store diversity: max 1 offer per store first, then fill remaining
+        const finalOffers = [];
+        const seenUrls = new Set();
+        const storesUsed = new Set();
+
+        // pick one per store
+        for (const offer of offers) {
+          if (finalOffers.length === 5) break;
+          if (!offer.productPageLink || seenUrls.has(offer.productPageLink)) continue;
+          if (storesUsed.has(offer.storeName)) continue;
+            finalOffers.push({
+                id: crypto.randomUUID(),
+                ...offer
+            });
+        //  finalOffers.push(offer);
+          seenUrls.add(offer.productPageLink);
+          storesUsed.add(offer.storeName);
+        }
+
+        // fill remaining offers ignoring store
+        for (const offer of offers) {
+          if (finalOffers.length === 5) break;
+          if (!offer.productPageLink || seenUrls.has(offer.productPageLink)) continue;
+          //finalOffers.push(offer);
+            finalOffers.push({
+                id: crypto.randomUUID(),
+                ...offer
+            });
+        //  finalOffers
+          seenUrls.add(offer.productPageLink);
+        }
+
+        return finalOffers;
 };
 
 module.exports = { getProductOffers };
