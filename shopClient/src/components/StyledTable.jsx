@@ -20,8 +20,8 @@ console.log("zebraRows:",zebraRows)
 
   return (
       <Paper sx={{  width: '96%', marginBottom:'30px !important' , backgroundColor:"#FAF0E6" }}> 
-        { title && <Typography variant="h6" sx={{ flex: 1, textAlign: 'center', backgroundColor:'#9F8C76', margin: 0,  padding: '8px 0',color:'white', fontWeight:'bold'}}>
-               {title}
+        { title && <Typography variant="h6" sx={{ flex: 1, textAlign: 'center', backgroundColor:'#659EC7' , margin: 0,  padding: '8px 0',color:'white', fontWeight:'bold'}}>
+               {title /* '#9F8C76' */} 
         </Typography> }
       <DataGrid
            loading={ loading }
@@ -60,7 +60,7 @@ console.log("zebraRows:",zebraRows)
 
 // Zebra stripes with higher specificity
 "& .even.MuiDataGrid-row": { backgroundColor: "#f5f5f5" },
-"& .odd.MuiDataGrid-row": { backgroundColor: "#C8AD7F" },
+"& .odd.MuiDataGrid-row": { backgroundColor:"#B4CFEC"  }, /* "#C8AD7F" */
 
 
 // Hover effect
