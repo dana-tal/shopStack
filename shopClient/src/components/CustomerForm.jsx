@@ -82,6 +82,7 @@ function CustomerForm({userId, onUpdateUser}) {
       width="80%"
       mx="auto"
       mt={5}
+      sx={{ mb:{ xs:5, lg:0}}}
       p={3}
       boxShadow={0}
       borderRadius={2}

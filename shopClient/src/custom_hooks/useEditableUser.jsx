@@ -126,5 +126,5 @@ export const useEditableUser = () => {
 
       return { rows,setRows, fetchAllUsers,handleRemoveUsers ,feedbackMsg,
                 setFeedbackMsg, handleUserUpdate,isLightboxOpen, setIsLightBoxOpen,
-                renderCustomerName,userId,renderCustomerOrders,lightBoxContent,userProducts,userFullName, loadingUsers,loadingProducts};
+                renderCustomerName,userId,renderCustomerOrders,lightBoxContent,userProducts,userFullName, loadingUsers,loadingProducts,handleSimpleUserUpdate};
 }
