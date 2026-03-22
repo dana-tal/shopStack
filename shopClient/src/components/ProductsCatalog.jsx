@@ -43,7 +43,6 @@ function ProductsCatalog() {
 
   const onParamsChange = (filterObj) =>{
 
-    console.log("Filters changed:", filterObj);
     setCurrentPage(1);
     fetchProductsPage(filterObj); 
   }

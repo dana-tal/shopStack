@@ -110,7 +110,7 @@ const getProductOffers = async (productName) => {
         //const validUrls = await validateUrlsParallel(urls);
         if (!validUrls.length) return [];
 
-        // 4️⃣ Ask AI to extract store name, price, confirm single product page
+        //  Ask AI to extract store name, price, confirm single product page
         const prompt_template = ChatPromptTemplate.fromMessages([
           ["system", "You are an online shopping expert. Respond only with valid JSON array."],
           ["human", `
@@ -151,7 +151,7 @@ const getProductOffers = async (productName) => {
           return [];
         }
 
-        // 6️⃣ Enforce store diversity: max 1 offer per store first, then fill remaining
+        // Enforce store diversity: max 1 offer per store first, then fill remaining
         const finalOffers = [];
         const seenUrls = new Set();
         const storesUsed = new Set();

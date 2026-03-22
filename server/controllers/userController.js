@@ -75,8 +75,6 @@ const updateUser = async ( req,res) =>
     }
     catch(err)
     {
-        console.log("Error");
-        console.log( err);
         return res.status(err.status || 500).json({
             ok: false,
             message: err.message,

@@ -19,12 +19,10 @@ function SiteTemplate() {
 
     const info = useSelector((state) => state.auth);
 
-  //  console.log(info.userData);
    
   let links;
 
   const handleLogout = ()=>{
-        console.log('logging out');
         dispatch(resetCart())
         requestLogout();
         navigate("/auth/login", { replace: true });

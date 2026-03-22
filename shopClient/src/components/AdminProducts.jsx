@@ -23,9 +23,7 @@ function AdminProducts() {
   const handleClick = () => {
      if (tableRef.current) 
       {
-        const selectedIDs = tableRef.current.getSelectedIds();
-        console.log("selectedIDs:", selectedIDs.ids);
-       
+        const selectedIDs = tableRef.current.getSelectedIds(); 
         if (!selectedIDs || !selectedIDs.ids )
         {
             handleRemoveProducts([]);

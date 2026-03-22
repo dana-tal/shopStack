@@ -72,7 +72,6 @@ const requestProductAdd = async (product_obj) =>{
     }
     catch(err)
     {
-        console.log("requestProductAdd catch")
         return analize_error(err);
     }
 }

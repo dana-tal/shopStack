@@ -80,10 +80,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
             {
                 setCategories(allCats.data.categoryData);
             }
-            else
-            {
-                console.log( allCats.message);
-            }
+            
            
         }
 

@@ -61,10 +61,7 @@ export const useEditableUser = () => {
            {
                 setRows(response.data.userData);                
            }
-           else
-           {
-               console.log(response.message);
-           }
+           
            setLoadingUsers(false);
       }
 
@@ -81,10 +78,7 @@ export const useEditableUser = () => {
              })
             showFeedback("User(s) removed successfully");     
         }
-        else
-        {
-            console.log(response.message);
-        }
+        
       }
 
 
@@ -97,7 +91,6 @@ export const useEditableUser = () => {
             }
             else
             {
-                console.log(response.message);
                 setError("root", { type: "server", message: response.message || "Update failed" }); 
             }
       }
@@ -118,7 +111,6 @@ export const useEditableUser = () => {
         }
         else
         {
-            console.log(response.message);
             setError("root", { type: "server", message: response.message || "Update failed" }); 
         }
     }

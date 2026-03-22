@@ -50,7 +50,6 @@ const renderStoreName = (params)=>{
   ];
 
 const compareHandler = async (title)=>{
-console.log("compareHandler");
   setProdName(title);
   setRows([]);   
   setIsLightBoxOpen(true);

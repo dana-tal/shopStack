@@ -11,7 +11,6 @@ const addCategory = async (catName) =>
     }
     catch(err)
     {
-        console.log("addCategory failed with :",err);  
         throw err;
     }
 
@@ -26,7 +25,6 @@ const updateCategory = async (catId, catName)=>
     }
     catch(err)
     {
-        console.log("updateCategory failed with :",err);  
         throw err;
     }
 }
@@ -40,7 +38,6 @@ const getCategoryById = async (catId) =>
     }
     catch(err)
     {
-        console.log("getCategoryById failed with :",err);  
         throw err;
     }
 }
@@ -54,7 +51,6 @@ const getAllCategories = async ()=>
     }
     catch(err)
     {
-        console.log("getAllCategories failed with :",err);  
         throw err;
     }
 }
@@ -68,7 +64,6 @@ const categoryExists = async (catId) =>
     }
     catch(err)
     {
-        console.log("categoryExists failed with :",err);  
         throw err;
     }
 }
@@ -82,7 +77,6 @@ const removeCategory = async (catId) =>
     }
     catch(err)
     {
-        console.log("removeCategory failed with :",err);  
         throw err;
     }
 }

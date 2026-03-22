@@ -30,7 +30,7 @@ function MyOrders() {
       return (
          <Box sx={{ width: '100%' }}>
           <RowField label="Product:" value={row.productName } />
-          <RowField label="Quantity: " value={formatDate(row.quantity)} />
+          <RowField label="Quantity: " value={row.quantity} />
           <RowField label="Total:" value={row.total} />
           <RowField label="Order Date:" value={formatDate(row.orderDate)} />
         </Box>
@@ -83,8 +83,6 @@ function MyOrders() {
    const fetchOrders = async ()=>{
 
          const orders = await requestUserOrders(userId);
-        // console.log("my orders:")
-        // console.log(orders.data.orderData);
          setUserOrders(orders.data.orderData);
     }
     fetchOrders();

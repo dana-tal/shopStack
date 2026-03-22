@@ -24,11 +24,6 @@ function Cart() {
   const info = useSelector((state) => state.auth);
   const myCart = useSelector( (state)=> state.cart);
 
-
-console.log( "cart products");
-console.log(myCart.cartProducts);
-console.log("totalPrice",myCart.totalPrice);
-
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -40,16 +35,11 @@ console.log("totalPrice",myCart.totalPrice);
       try
       {
           const orderInfo = { total: myCart.totalPrice, products:Object.values(myCart.cartProducts) };
-          console.log("orderInfo:");
-          console.log(orderInfo);
-          console.log( "userId:"+info.userData.id);
-
+         
           const res = await requestOrderPlace(info.userData.id,orderInfo);
           if (res.ok)
           {
               const orderId = res.data.orderData.id;
-              console.log('success, orderId:'+orderId);
-              console.log(res);
                dispatch(resetCart()); // empty the cart 
                navigate('/store/thankyou',  { state: { orderId: orderId } }); // navigate the user to a thank you page 
           }

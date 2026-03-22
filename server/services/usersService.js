@@ -17,7 +17,6 @@ const addUser = async (userObj) =>
     }
     catch(err)
     {
-        console.log("addUser failed with :",err);  
         throw err;
     }
 
@@ -42,7 +41,6 @@ const updateUser = async (id, userObj) =>
     }
     catch(err)
     {
-         console.log("updateUser failed with :",err);  
         throw err;
     }
 }
@@ -70,7 +68,6 @@ const verifyUser = async (username,password) =>{
      }
      catch(err)
      {
-          console.log("verifyUser failed with :",err);  
            throw err;
      }
 
@@ -85,7 +82,6 @@ const userExists = async (username) =>{
     }
     catch(err)
     {
-        console.log("userExists failed with :",err);  
         throw err;
     }
 }
@@ -98,7 +94,6 @@ const getAllUsers = async () =>{
     }
     catch(err)
     {
-        console.log("getAllUsers failed with :",err);  
         throw err;
     }
 
@@ -117,7 +112,6 @@ const getUserById = async (id) => {
     }
     catch(err)
     {
-        console.log("getUserByID failed with :",err);  
         throw err;
     }
 
@@ -137,7 +131,6 @@ const getBuyers = async () =>{
     }
     catch(err)
     {
-        console.log("getAllUsers failed with :",err);  
         throw err;
     }
 }

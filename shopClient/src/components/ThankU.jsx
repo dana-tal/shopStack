@@ -13,8 +13,6 @@ function ThankU() {
 
   const { orderId } = location.state || {};
 
-  console.log("orderId is:");
-  console.log(orderId);
 
   return (
     <Box

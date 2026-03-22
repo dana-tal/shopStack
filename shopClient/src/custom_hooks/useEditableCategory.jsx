@@ -64,7 +64,6 @@ export const useEditableCategory = () => {
       }
       else // requestCategoryUpdate failed .....
       {
-        console.log("setting errors");
         setUpdateErrors((prev) => ({ ...prev, [params.row.id]: resp.message || "Update failed" }));
       }  
     }                        
@@ -102,10 +101,7 @@ export const useEditableCategory = () => {
                        return afterRemoval;
                })
           }
-          else
-          {
-              console.log("Removing category failed")
-          }
+        
 
   }
 

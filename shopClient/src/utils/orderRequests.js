@@ -21,7 +21,6 @@ const requestOrderPlace = async (userId,order_obj)=>{
     }
     catch(err)
     {
-        console.log("requestOrderPlace catch")
         return analize_error(err);
     }
 }

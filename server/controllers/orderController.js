@@ -8,16 +8,11 @@ const placeOrder = async (req,res) =>
     {
         orderValidator.validateOrderPayload(req.body);
         const orderInfo = req.body;
-
-        console.log("orderInfo:");
-        console.log(orderInfo);
         const newOrder = await orderService.addOrder(orderInfo);
         return res.status(201).json({ok:true, orderData:newOrder,message:'Order placed successfully'});
     }
     catch(err)
     {
-        console.log("ERROR:");
-        console.log(err);
         return res.status(err.status || 500).json({
             ok: false,
             message: err.message,
@@ -36,10 +31,7 @@ const getUserOrders = async (req,res) =>
             return res.status(result.status).json({ok:false,orderData:null,message:result.message});
         }
         const userId = req.params.userId; 
-        console.log("userId="+userId);
         const ordersInfo = await orderService.getUserOrders(userId);
-        console.log("ordersInfo:");
-        console.log(ordersInfo);
         if (!ordersInfo)
         {
               return res.status(404).json({ok:false,orderData:null,message: `The user ${userId} does not have any orders yet` });
@@ -48,8 +40,6 @@ const getUserOrders = async (req,res) =>
     }
     catch(err)
     {
-        console.log(err);
-        console.log(err);
          return res.status(500).json({
                 ok: false,
                 message: err.message                 
@@ -76,7 +66,6 @@ const getUserProductQuantities = async (req,res) =>
     }
     catch(err)
     {
-        console.log(err);
          return res.status(500).json({
                 ok: false,
                 message: err.message                 

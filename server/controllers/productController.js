@@ -121,8 +121,6 @@ const addProduct = async (req,res) =>
     }
     catch(err)
     {
-        console.log("ERROR:");
-        console.log(err);
         return res.status(err.status || 500).json({
             ok: false,
             message: err.message,
@@ -143,15 +141,11 @@ const getProductOffers = async (req,res)=>
     try
     {
         const offers = await  aiService.getProductOffers(productObj.title);
-        console.log("ai offers:");
-        console.log(offers);
          return res.status(200).json({ok:true, productData:offers, message:'Product offers returned successfully'});
     }
      catch(err)
     {
-        console.log("Error");
-        console.log( err);
-       return res.status(err.status || 500).json({
+         return res.status(err.status || 500).json({
             ok: false,
             message: err.message,
             errorField: err.field,           
@@ -166,18 +160,12 @@ const updateProduct = async (req,res) =>
         productValidator.validateProductPayload(req.body);        
         const id = req.params.id;        
         const productObj = req.body;
-
-      //  console.log("my product");
-        //console.log(productObj);
-
-      
+  
         const updatedProduct = await productService.updateProduct(id,productObj);
         return res.status(200).json({ok:true, productData:updatedProduct, message:'Product updated successfully '});
     }
     catch(err)
     {
-        console.log("Error");
-        console.log( err);
        return res.status(err.status || 500).json({
             ok: false,
             message: err.message,

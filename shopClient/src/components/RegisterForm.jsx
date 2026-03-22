@@ -47,12 +47,10 @@ function RegisterForm() {
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
  const onSubmit = async (data) => {
-   // console.log("Form submitted:", data);
        
         try
         {
             const response = await sendRegistrationData(data);
-          //  console.log("Server response:", response);
             if (!response.ok) 
             {
                 if (response.errorField) 

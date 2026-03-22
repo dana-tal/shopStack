@@ -12,7 +12,6 @@ export const useEditableProduct = () => {
 
 
     const handleEditProduct=(prodId) =>{
-             //console.log("productId="+productId);
              setProductId(prodId);
              setIsLightBoxOpen(true);
     }
@@ -50,7 +49,6 @@ export const useEditableProduct = () => {
           }
           else
           {
-              console.log(response.message);
                setError("root", { type: "server", message: response.message || "Adding failed" });
           }
          
@@ -73,7 +71,6 @@ export const useEditableProduct = () => {
         }
         else
         {
-            console.log(response.message);
             setError("root", { type: "server", message: response.message || "Update failed" }); 
         }
     }
@@ -96,10 +93,7 @@ export const useEditableProduct = () => {
              })
               showFeedback("Product(s) removed successfully");     
         }
-        else
-        {
-            console.log(response.message);
-        }
+        
 
       }
 
@@ -110,12 +104,8 @@ export const useEditableProduct = () => {
            if (response.ok)
            {
                 setRows(response.data.productData);
-                //console.log(response.data.productData);
            }
-           else
-           {
-               console.log(response.message);
-           }
+           
            setLoadingProducts(false);
       }
 

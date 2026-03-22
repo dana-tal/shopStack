@@ -17,7 +17,6 @@ const requestUserUpdate = async (user_obj)=>
     }
     catch(err)
     {
-        console.log("requestProductUpdate catch")
         return analize_error(err);
     }
 }

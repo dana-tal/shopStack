@@ -16,8 +16,6 @@ const StyledTable= forwardRef( ({rows, columns, paginationModel , pageSizes, tit
     getSelectedIds: () => selectionRef.current
   }));
 
-console.log("zebraRows:",zebraRows)
-
   return (
       <Paper sx={{  width: '96%', marginBottom:'30px !important' , backgroundColor:"#FAF0E6" }}> 
         { title && <Typography variant="h6" sx={{ flex: 1, textAlign: 'center', backgroundColor:'#659EC7' , margin: 0,  padding: '8px 0',color:'white', fontWeight:'bold'}}>
