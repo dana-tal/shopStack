@@ -104,10 +104,9 @@ const getProductOffers = async (productName) => {
 
         if (!urls.length) return [];
 
-        //  Validate URLs
+        //  Validate URLs, return up to 10 links 
         const validUrls = await validateUrlsFast(urls, 10);
 
-        //const validUrls = await validateUrlsParallel(urls);
         if (!validUrls.length) return [];
 
         //  Ask AI to extract store name, price, confirm single product page
@@ -116,9 +115,9 @@ const getProductOffers = async (productName) => {
           ["human", `
       Given the following URLs for a product:
 
-      ${validUrls.slice(0, 10).join("\n")}
+      ${validUrls.join("\n")}
 
-      Extract up to 8 offers that are **single product pages**.
+      Extract up to 5 offers that are **single product pages**.
       Each offer must include:
       - storeName
       - productPageLink (must be one of the URLs above)
