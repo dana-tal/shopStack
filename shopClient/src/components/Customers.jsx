@@ -33,7 +33,7 @@ function Customers() {
          <Box sx={{ width: '100%' }}>
           <RowField label="Full Name :" value={row.firstName+' '+row.lastName } />
           <RowField label="Joined At: " value={formatDate(row.createdAt)} />
-          <RowField label="Orders: " value={<span style={{color:'purple'}}>Orders</span>} />
+          <RowField label="Orders: " value={ renderCustomerOrders(params) } />
         </Box>
       );
     }
@@ -125,7 +125,7 @@ function Customers() {
               borderRadius={2}
           >
              {feedbackMsg && <Alert severity="success">{feedbackMsg}</Alert>}
-             <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers"  loading={loadingUsers} />   
+             <StyledTable rows={rows} columns={isMobileDevice ?mobileColumns:columns} paginationModel={paginationModel} pageSizes={[5,10,20,30]} title="Customers"  loading={loadingUsers} zebraRows={isMobileDevice?true:false}/>   
 
             <LightBox  key={userId}         isOpen={isLightboxOpen} onCloseCallback={() => setIsLightBoxOpen(false)} backdropColor="rgba(14, 135, 204, 0.3)">
                 { lightBoxContent==="user-form" && <CustomerForm   onUpdateUser={handleUserUpdate} userId={userId} />}

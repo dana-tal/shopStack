@@ -19,7 +19,6 @@ const requestProductOffers = async (prodName)=>
        }
        catch(err)
         {
-            console.log("requestProductOffers catch")
             return analize_error(err);
         }
 }
@@ -46,7 +45,6 @@ const requestProductUpdate = async (product_obj)=>
     }
     catch(err)
     {
-        console.log("requestProductUpdate catch")
         return analize_error(err);
     }
 }
