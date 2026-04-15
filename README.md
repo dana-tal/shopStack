@@ -16,28 +16,29 @@ username: testy
 password: Test123#T
 
 Features:
- User authentication (Login & Registration)
- Admin dashboard for managing categories, products, customers, and statistics
- Customer interface for browsing products, filtering, placing orders, and AI comparison of product prices
- Dynamic product catalog with filters (category, price, title)
- Shopping cart with real-time updates
- Orders management for users
- Statistics dashboard with charts
- Responsive design for desktop and mobile
+User authentication (Login & Registration)
+Admin dashboard for managing categories, products, customers, and statistics
+Customer interface for browsing products, filtering, placing orders, and AI comparison of product prices
+Dynamic product catalog with filters (category, price, title)
+Shopping cart with real-time updates
+Orders management for users
+Statistics dashboard with charts
+Responsive design for desktop and mobile
 
 Admin Capabilities:
- Manage product categories (add, update, delete)
- Manage products and inventory
- View customers and their orders
- View statistics (charts)
+Manage product categories (add, update, delete)
+Manage products and inventory
+View customers and their orders
+View statistics (charts)
 
 Customer Capabilities:
- Register and login
- View and update account details
- Browse and filter products
- AI comparison of product prices from external sources
- Add products to cart and place orders
- View order history
+Register and login
+View and update account details
+Browse and filter products
+AI comparison of product prices from external sources
+Add products to cart and place orders
+View order history
+
 Screenshots:
 Screenshots are available in the repository under the 'screenshots' folder, including both desktop
 and mobile views.
