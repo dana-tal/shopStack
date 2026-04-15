@@ -42,6 +42,7 @@ View order history
 Screenshots:
 Screenshots are available in the repository under the 'screenshots' folder, including both desktop
 and mobile views.
+
 Important Note:
 The server runs on a free Render plan.
 Therefore, it may go to sleep after a period of inactivity. In such cases, the first request may take up to 5 minutes.
