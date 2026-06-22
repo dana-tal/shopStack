@@ -54,8 +54,19 @@ function App() {
      verifyUser();
   }, [dispatch]);
 
-  if (loading) return <div>Loading...</div>;
-
+  if (loading) 
+     return (
+    <div style={{
+      height: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontSize: "16px"
+    }}>
+      Loading, please wait... waking up the server...
+    </div>
+  );
+  
   return (
     <>
         <Routes>
