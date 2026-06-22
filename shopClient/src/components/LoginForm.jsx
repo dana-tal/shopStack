@@ -9,13 +9,15 @@ import {
    IconButton, InputAdornment 
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
+import Divider from '@mui/material/Divider';
+import { useState, useEffect } from "react";
 import { sendLoginData } from '../utils/authRequests';
 import {Link, useNavigate } from 'react-router-dom';
 
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice"; 
 import "./AuthForm.css";
+import axios from "axios";
 
 function LoginForm() {
 
@@ -39,49 +41,80 @@ function LoginForm() {
     const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [isGuestLoading , setIsGuestLoading] = useState(false);
+
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+
+    
+    const warmUpServer = () => {
+      axios.get(`${import.meta.env.VITE_APP_DOMAIN}/`, {
+        withCredentials: true,
+      }).catch(() => {
+        // ignore errors - warm-up only
+      });
+    };
+    
+
+   const loginHandler = async (data)=>
+    {
+      console.log("loginHandler");
+        try
+        {
+            const response = await sendLoginData(data);           
+            reset(); 
+            dispatch(setUser(response.data.userData)); // send the user info to  the Redux store 
+            if ( response.data.userData.isAdmin)
+            {
+                  navigate("/admin/categories", { replace: true });
+            }
+            else
+            {
+                navigate("/store/products", { replace: true });
+            }          
+        }
+      catch (err)
+      {
+          const data = err.response?.data;
+          if (data?.errorField) 
+          {
+            setError(data.errorField, {type: "server",message: data.message});
+          }
+          else
+          {
+            setError("root", {type: "server",message: data?.message || "Login failed"});
+          }
+      }
+   } 
+
+
+   
+  const handleGuestLogin= async ()=>{
+      console.log("guest login");
+    
+      const data = { userName: import.meta.env.VITE_GUEST_USERNAME , password: import.meta.env.VITE_GUEST_PASSWORD };
+      setIsGuestLoading(true);
+      await loginHandler(data);
+      setIsGuestLoading(false);
+  }
+
 
    const onSubmit = async (data) => {
     const trimmedData = {
         userName: data.userName.trim(),
         password: data.password.trim()
     };
-    const response = await sendLoginData(trimmedData);   
-      if(response.ok)
-      {  //  clear the form after successful submission
-        reset(); 
-
-         dispatch(setUser(response.data.userData)); // send the user info to  the Redux store 
-        if ( response.data.userData.isAdmin)
-        {
-               navigate("/admin/categories", { replace: true });
-        }
-        else
-        {
-             navigate("/store/products", { replace: true });
-        }
-      }
-    else
-    {
-        if (response.errorField) 
-        {
-            setError(response.errorField, {
-            type: "server",
-            message: response.message,
-            });
-        } 
-        else 
-        {
-          setError("root", {
-          type: "server",
-          message: response.message || "Login failed",
-          });
-        }
-        return;
-    }
-        
+    setIsLoginLoading(true);
+    await loginHandler(trimmedData);
+    setIsLoginLoading(false);    
   };
 
+  
+  useEffect(() => {
+    warmUpServer();
+  }, []);
+  
+  
 
   return (
     <Box
@@ -161,9 +194,26 @@ function LoginForm() {
                     variant="contained"
                     sx={{ mt: 2, alignSelf: "flex-start" }}
                     >
-                    Login
+                    {isLoginLoading ?"Please wait, waking up the server...":"Login"}
                 </Button>
                 <Typography variant="h5" mb={3} textAlign="center">New user ? <Link to="/auth/register"> Register </Link></Typography>
+
+              <Divider sx={{ my: 2, fontFamily:"Arial",fontSize: "20px",   '&::before, &::after': {borderColor: 'black',}, }} > Or </Divider>
+            
+
+              <Button
+              fullWidth
+              type="button"
+              variant="contained"
+              color="info"
+               sx={{
+                mt: 2,
+                alignSelf: "flex-start",
+              }}
+              onClick={handleGuestLogin}
+            >
+             { isGuestLoading ? "Please wait, waking up the server...":"Continue As Guest"}
+            </Button>
          </Stack>
     </form>
     </Box>
