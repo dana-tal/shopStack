@@ -21,9 +21,9 @@ import ThankU from "./components/ThankU";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-
+ 
+  const dispatch = useDispatch();
+ 
    // Check if user is already logged in (based on cookie)
   useEffect(() => {
     const verifyUser = async () => {
@@ -45,27 +45,12 @@ function App() {
         //console.error("checkAuth failed:", err);
         dispatch(clearUser());
       }
-      finally
-       {
-          setLoading(false);
-      }
+     
     };
 
      verifyUser();
   }, [dispatch]);
 
-  if (loading) 
-     return (
-    <div style={{
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      fontSize: "16px"
-    }}>
-      Loading, please wait... waking up the server...
-    </div>
-  );
   
   return (
     <>
