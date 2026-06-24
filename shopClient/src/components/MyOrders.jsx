@@ -63,7 +63,15 @@ function MyOrders() {
           headerName: 'Total',
           flex:1 ,
           sortable:true,
-          valueGetter: (value,row)=>`${row.total}`,
+          valueGetter: (value, row) => {
+                return Number(row.total);
+          },
+
+        // for display only
+        valueFormatter: (value) => {
+          return value != null ? value.toFixed(1) : '';
+        },
+
           align:'left',
           headerAlign: 'left',  
       },
