@@ -34,7 +34,8 @@ const requestProductUpdate = async (product_obj)=>
                 inStock: +product_obj.inStock,
                 catId: product_obj.catId,
                 imageUrl: product_obj.imageUrl,
-                description: product_obj.description
+                description: product_obj.description,
+                long_desc : product_obj.long_desc,
         },  { withCredentials: true } );
 
         return {
@@ -59,7 +60,8 @@ const requestProductAdd = async (product_obj) =>{
                 inStock: +product_obj.inStock,
                 catId: product_obj.catId,
                 imageUrl: product_obj.imageUrl,
-                description: product_obj.description
+                description: product_obj.description,
+                long_desc: product_obj.long_desc,
         },  { withCredentials: true } );
 
         return {

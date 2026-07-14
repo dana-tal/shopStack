@@ -153,6 +153,22 @@ const getProductOffers = async (req,res)=>
     }
 }
 
+const productsYouMayLike = async (req,res) =>
+{
+    try
+    {
+
+    }
+    catch(err)
+    {
+       return res.status(err.status || 500).json({
+            ok: false,
+            message: err.message,
+            errorField: err.field,           
+         });    
+    }
+}
+
 const updateProduct = async (req,res) =>
 {
     try

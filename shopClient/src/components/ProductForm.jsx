@@ -7,7 +7,7 @@ import { requestProductById } from "../utils/productRequests";
  
 const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
 
-    const productForm = useForm({ defaultValues: { id:"",title: "", price:0,inStock:0, catId:"",imageUrl:"", description:"", }, });
+    const productForm = useForm({ defaultValues: { id:"",title: "", price:0,inStock:0, catId:"",imageUrl:"", description:"", long_desc:""}, });
     const { handleSubmit,control,formState: { errors },reset, setError}  = productForm;  
 
     const [categories, setCategories] = useState([]);
@@ -26,7 +26,8 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
             inStock: selectedProduct.inStock,
             catId: selectedProduct.category.id,
             imageUrl: selectedProduct.imageUrl,
-            description: selectedProduct.description
+            description: selectedProduct.description,
+            long_desc: selectedProduct.long_desc
         });
     }
 }, [selectedProduct, reset]);
@@ -136,6 +137,9 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                     )}
                     />
                 </Stack>
+
+
+                
 
                   <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
                     <Typography sx={{ width:80 }}>Price:</Typography>
@@ -258,7 +262,7 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                 </Stack>
 
                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
-                <Typography sx={{ width: 80 }}>Description:</Typography>
+                <Typography sx={{ width: 80 }}>Short Description:</Typography>
                 <Controller
                 name="description"
                 control={control}
@@ -299,6 +303,40 @@ const ProductForm = ({ onAddProduct , onUpdateProduct, prodId="" }) =>{
                             <input type="hidden" {...field} />
                         )}
                         />
+                </Stack>
+
+                 <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems={{ xs: "flex-start", sm: "center" }} sx={{ width: "100%" }}>
+                <Typography sx={{ width: 80 }}>Long Description:</Typography>
+                <Controller
+                name="long_desc"
+                control={control}
+                 rules={{ 
+                        required: "Product description is missing." ,
+                        minLength: { value: 5, message: "Description must be at least 5 characters" },
+                        maxLength: { value: 10000, message: "Description cannot exceed 10000 characters" },    
+                         validate: (value) => {
+                                if (forbiddenChars.test(value)) {
+                                    return "Description contains forbidden characters: < > { } [ ]";
+                                }
+                                if (scriptPattern.test(value)) {
+                                    return "Description contains unsafe script-like patterns";
+                                }
+                                return true; // all good
+                        }
+                      }}       
+                render={({ field }) => (
+                    <TextField
+                    {...field}
+                    size="small"
+                    sx={{ width: "100%" }}
+                    multiline
+                    rows={4}
+                    placeholder="Long Description"
+                     error={!!errors.long_desc}
+                     helperText={errors.long_desc?.message}
+                    />
+                )}
+                />
                 </Stack>
 
 

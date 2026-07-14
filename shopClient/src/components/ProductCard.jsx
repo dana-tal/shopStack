@@ -1,6 +1,7 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Box ,IconButton} from "@mui/material";
+import { Card, CardMedia, CardContent,CardActionArea, Typography, CardActions, Button, Box ,IconButton} from "@mui/material";
 import QuantitySetter from "./QuantitySetter";
 import { memo} from "react";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product , compareClick}) {
 
@@ -19,9 +20,11 @@ function ProductCard({ product , compareClick}) {
         }}
       >
         {/* Image takes 60% of the height */}
+          
           <CardMedia
-            component="img"
             image={imageUrl}
+             component={Link}
+             to={`/store/products/${product.id}`}
             alt={title}
             sx={{
               width: "100%",

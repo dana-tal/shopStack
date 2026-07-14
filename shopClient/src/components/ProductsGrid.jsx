@@ -7,6 +7,7 @@ import { requestProductOffers } from "../utils/productRequests";
 import StyledTable from "./StyledTable";
 
 
+
 function ProductsGrid({ products }) {
 
   const paginationModel = { page: 0, pageSize: 10 };
@@ -82,7 +83,7 @@ const compareHandler = async (title)=>{
           md={4}
           lg={3}
         >
-          <ProductCard product={product} compareClick={compareHandler}/>
+         <ProductCard product={product} compareClick={compareHandler}/>
         </Grid>
       ))}
 

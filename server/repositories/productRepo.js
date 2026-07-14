@@ -50,7 +50,7 @@ const deleteProducts = (productIds) => {
 };
 
 const getProductById = async (productId) => {
-  
+
   if (!mongoose.Types.ObjectId.isValid(productId)) // Ensure productId is a valid ObjectId
   {
     throw new Error('Invalid product ID');
@@ -74,6 +74,7 @@ const getProductById = async (productId) => {
         price: 1,
         imageUrl: 1,
         description: 1,
+        long_desc:1,
         inStock:1,
         soldUnits:1,
         category: {

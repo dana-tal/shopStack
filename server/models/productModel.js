@@ -19,7 +19,8 @@ const productSchema = new mongoose.Schema({
       description: { type:String, required:true, trim:true },
        isActive: { type: Boolean, default: true },
        inStock: { type: Number, default:0 },
-       soldUnits: {type:Number, default:0}
+       soldUnits: {type:Number, default:0},
+       long_desc: {type:String, default:""}
 },{
      versionKey: false,
      timestamps:true
