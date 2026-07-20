@@ -66,7 +66,7 @@ function ProductCard({ product , compareClick}) {
       </CardContent>
 
          <QuantitySetter product={product} />
-       <Button onClick={()=>{compareClick(title) }} sx={{ backgroundColor:"green", color:"white", textTransform:"capitalize"}}>Compare</Button>
+       { false && <Button onClick={()=>{compareClick(title) }} sx={{ backgroundColor:"green", color:"white", textTransform:"capitalize"}}>Compare</Button>}
       </Card>
     </Box>
   );

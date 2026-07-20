@@ -7,6 +7,7 @@ router.get('/all',productController.getAllProducts);
 router.get('/sold', productController.getSoldProducts);
 router.get('/page',productController.getProductsPage); // // GET /product/page?pageNum=1&pageSize=10&isActive=true
 router.get('/:id', productController.getProductById);
+router.get('/recommendations/:productName', productController.productsYouMayLike);
 router.post('/add', productController.addProduct);
 router.post('/offers', productController.getProductOffers);
 router.put('/update/:id', productController.updateProduct);

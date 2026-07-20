@@ -5,14 +5,15 @@ import Cart from "./Cart";
 import QuantitySetter from "./QuantitySetter";
 
 import {Container,Grid,Typography,Box,CardMedia,Chip,Stack,Divider,Paper} from "@mui/material";
-import { requestProductById } from "../utils/productRequests";
-
+import { requestProductById, requestProdcutRecommendations } from "../utils/productRequests";
+import Skeleton from "@mui/material/Skeleton";
 
 const ProductPage = () => {
 
     const { id } = useParams();
     const [product, setProduct] = useState(null);
-
+    const [recommendations, setRecommendations] = useState([]);
+    const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async (id) => 
@@ -27,6 +28,25 @@ const ProductPage = () => {
         }
     }, [id]);
 
+    useEffect( ()=>{
+           
+        const fetchRecommendations = async ( name )=>
+        {
+            setLoadingRecommendations(true);
+             const response = await requestProdcutRecommendations(name);
+             if (response.ok)
+             {
+                setRecommendations(response.data.productData);
+             }
+            setLoadingRecommendations(false);
+        }
+          
+        if (product && product.title)
+        {
+            fetchRecommendations(product.title)
+        }
+
+    }, [product]);
 
     if (!product) 
     {
@@ -42,30 +62,33 @@ const ProductPage = () => {
 
     const {title,price,imageUrl,long_desc,soldUnits,inStock} = product;
 
-
-    const recommendedProducts = [
-        "Product link placeholder 1",
-        "Product link placeholder 2",
-        "Product link placeholder 3",
-        "Product link placeholder 4"
-    ];
-
-
     const Recommendations = () => (
         <Box sx={{ mt: 3, width: "100%",maxWidth: 420 }}>
-            <Typography variant="h6" fontWeight={600} mb={2} >
+          {!loadingRecommendations &&   <Typography variant="h6" fontWeight={600} mb={2} >
                 You may also like - AI-powered recommendations:
-            </Typography>
+            </Typography> }
 
-            <Stack spacing={1}>
-                {recommendedProducts.map((item, index) => (
-                    <Paper key={index} variant="outlined" sx={{ p: 1.5, cursor: "pointer", "&:hover": { backgroundColor: "action.hover"} }}>
+           {!loadingRecommendations && <Stack spacing={1}>
+                {recommendations.map((item, index) => (
+                    <Paper key={item.name} variant="outlined" sx={{ p: 1.5, cursor: "pointer", "&:hover": { backgroundColor: "action.hover"} }}>
                         <Typography variant="body2" color="primary">
-                            {item}
+                            <a href={item.link} target="_blank">{item.name}</a>
                         </Typography>
                     </Paper>
                 ))}
-            </Stack>
+            </Stack>}
+
+            {loadingRecommendations &&  <Stack spacing={1}>
+                <Typography variant="h6" fontWeight={600} mb={2} >
+                    Finding the best AI recommendations for you...
+                </Typography>
+
+                {[1, 2, 3].map((item) => (
+                    <Paper key={item} variant="outlined" sx={{ p: 1.5 }}>
+                        <Skeleton variant="text" width="90%" />
+                    </Paper>
+                ))}
+            </Stack>}
         </Box>
     );
 
@@ -87,7 +110,7 @@ const ProductPage = () => {
 
                     {/* products you may like for desktop */}
                     <Box sx={{ display: { xs: "none", md: "block"}, width: "100%"}}>
-                        <Recommendations />
+                        { recommendations && <Recommendations /> }
                     </Box>
                 </Grid>
 
@@ -123,7 +146,7 @@ const ProductPage = () => {
 
                             {/* "products you may like"  list for mobile */}
                             <Box sx={{ display: {xs: "block", md: "none"} }}>
-                                <Recommendations />
+                                { recommendations && <Recommendations /> }
                             </Box>
                         </Box>
                     </Stack>

@@ -2,6 +2,7 @@ const productService = require('../services/productServices');
 const genValidator = require('../utils/generalValidator');
 const productValidator = require('../utils/validateProduct');
 const aiService= require('../services/aiService.js');
+const recommendationService = require ('../services/recommendationService.js')
 
 
 const getAllProducts = async (req,res) =>
@@ -84,6 +85,27 @@ const getProductsPage = async (req,res) =>
     }
 }
 
+const productsYouMayLike = async (req,res) =>{
+    try
+    {
+        const result = genValidator.validateTitle('Product',req.params.productName,2,80);
+        if (result)
+        {
+            return res.status(result.status).json({ok:false,productData:null,message:result.message});
+        }
+        const productName = req.params.productName;
+        const recommendations = await recommendationService.getRecommendations(productName);
+        return res.status(200).json({ok:true, productData:recommendations ,message:'Product recommendations returned successfully'});   
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+                ok: false,
+                message: err.message                 
+            });     
+    }
+}
+
 const getProductById = async (req,res) =>
 {
     try
@@ -153,21 +175,6 @@ const getProductOffers = async (req,res)=>
     }
 }
 
-const productsYouMayLike = async (req,res) =>
-{
-    try
-    {
-
-    }
-    catch(err)
-    {
-       return res.status(err.status || 500).json({
-            ok: false,
-            message: err.message,
-            errorField: err.field,           
-         });    
-    }
-}
 
 const updateProduct = async (req,res) =>
 {
@@ -256,5 +263,6 @@ module.exports =
     getSoldProducts,
     getProductsPage,
     getProductById,
-    getProductOffers
+    getProductOffers,
+    productsYouMayLike
 }

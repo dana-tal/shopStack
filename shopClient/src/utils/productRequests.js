@@ -94,6 +94,24 @@ const requestProductById = async (prodId) =>
     }
 }
 
+const requestProdcutRecommendations = async (productName) =>
+{
+    try
+    {
+        const response = await axios.get(DOMAIN+`/product/recommendations/${encodeURIComponent(productName)}`, { withCredentials: true });
+        return {
+            ok:true,
+            data: response.data,
+            message:"Product recommendations read successfully"
+        }
+    }
+    catch(err)
+    {
+        return analize_error(err);
+    }
+}
+
+
 const requestAllProducts = async ()=> {
 
     try
@@ -188,5 +206,6 @@ export {
      requestProductsPage,
      requestRemoveProducts,
      requestProductById,
-     requestProductOffers
+     requestProductOffers,
+     requestProdcutRecommendations
 }
