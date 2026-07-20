@@ -2,3 +2,4 @@ server/.env
 server/.env.development
 server/.env.production
 server/node_modules/
+server/test.js
